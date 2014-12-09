@@ -342,7 +342,7 @@ sub _factor {
         # This is not possible if current lexeme should be standalone (because it could take the place of a copiable
         # lexeme with the same content that will come-in later)
         #
-        if ($type eq $LEXEME_STRING && $valueDetail =~ /^[a-zA-Z ]+$/ && ! $uncopiable) {
+        if ($type eq $LEXEME_STRING && $valueDetail =~ /^[a-zA-Z_]+$/ && ! $uncopiable) {
           $name = $valueDetail;
         } else {
 	  $name = sprintf('Lex%03d', 1 + (keys %{$self->{lexemes}}));
