@@ -17,15 +17,16 @@ foreach (__PACKAGE__->section_data_names) {
 
 __DATA__
 __[ String Literals ]__
+/* Please note that SQL2003 *REQUIRES* a FROM */
 SELECT _latin1'string' FROM dual;
-SELECT _latin1'string' COLLATE latin1_danish_ci;
-SELECT N'some text';
-SELECT n'some text';
-SELECT _utf8'some text';
-SELECT 'hello', '"hello"', '""hello""', 'hel''lo', '\'hello';
-SELECT "hello", "'hello'", "''hello''", "hel""lo", "\"hello";
-SELECT 'This\nIs\nFour\nLines';
-SELECT 'disappearing\ backslash';
+SELECT _latin1'string' COLLATE latin1_danish_ci FROM dual;
+SELECT N'some text' FROM dual;
+SELECT n'some text' FROM dual;
+SELECT _utf8'some text' FROM dual;
+SELECT 'hello', '"hello"', '""hello""', 'hel''lo', '\'hello' FROM dual;
+SELECT "hello", "'hello'", "''hello''", "hel""lo", "\"hello" FROM dual;
+SELECT 'This\nIs\nFour\nLines' FROM dual;
+SELECT 'disappearing\ backslash' FROM dual;
 
 __[ CHARACTER SET ]__
 

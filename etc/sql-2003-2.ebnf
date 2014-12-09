@@ -51,6 +51,9 @@
 # * force every rhs that is a factor to be an uncopiable lexeme using      #
 #   LEX in front.                                                          #
 # * Lexemes can have priorities a in Marpa's BNF                           #
+#                                                                          #
+# Marpa's :discard is handling all spaces, simple and bracketed comments   #
+# This mean that <separator>, <comment> and its subrules are removed.      #
 ############################################################################
 */
 
@@ -217,7 +220,7 @@
 
 <Unicode escape character> ~ /*LEX*/#x1b
 
-<nondoublequote character> ~ /*LEX*/[^"]
+<nondoublequote character> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
 
 <doublequote symbol> ~ /*LEX*/'""'
 
@@ -254,6 +257,7 @@
 
 <double period> ::= <period> <period>
 
+/*
 <separator> ::= ( <comment> | <space> )+
 
 <comment> ::= <simple comment> | <bracketed comment>
@@ -274,6 +278,7 @@
 <comment character> ::= <nonquote character> | <quote>
 
 <newline> ::= \n
+*/
 
 <key word> ::= <reserved word> | <non_reserved word>
 
@@ -791,34 +796,58 @@
 	|	<interval literal>
 	|	<boolean literal>
 
+/* Rewriten because explicit <separator> in the rule causes trouble */
+/*
 <character string literal> ::=
 		( <introducer><character set specification> )?
 		<quote> <character representation>* <quote>
 		( <separator> <quote> <character representation>* <quote> )*
+*/
+<character string literal> ::=
+		( <introducer><character set specification> )?
+		( <quote> <character representation>* <quote> )+
 
 <introducer> ::= <underscore>
 
 <character representation> ::= <nonquote character> | <quote symbol>
 
-<nonquote character> ::= [^']
+<nonquote character> ~ /*LEX*/[^'] | /*LEX*/#x5c /*LEX*/[']
 
-<quote symbol> ::= <quote><quote>
+<quote symbol> ~ /*LEX*/"'" /*LEX*/"'"
 
+/* Rewriten because explicit <separator> in the rule causes trouble */
+/*
 <national character string literal> ::=
 		N <quote> <character representation>* <quote>
 		( <separator> <quote> <character representation>* <quote> )*
+*/
+<national character string literal> ::=
+		N ( <quote> <character representation>* <quote> )+
 
+/* Rewriten because explicit <separator> in the rule causes trouble */
+/*
 <Unicode character string literal> ::=
 		( <introducer><character set specification> )?
 		U<ampersand><quote> <Unicode representation>* <quote>
 		( <separator> <quote> <Unicode representation>* <quote> )*
 		( ESCAPE <escape character> )?
+*/
+<Unicode character string literal> ::=
+		( <introducer><character set specification> )?
+		U<ampersand>(<quote> <Unicode representation>* <quote>)+
+		( ESCAPE <escape character> )?
 
 <Unicode representation> ::= <character representation> | <Unicode escape value>
 
+/* Rewriten because explicit <separator> in the rule causes trouble */
+/*
 <binary string literal> ::=
 		X <quote> ( <hexit><hexit> )* <quote>
 		( <separator> <quote> ( <hexit><hexit> )* <quote> )*
+		( ESCAPE <escape character> )?
+*/
+<binary string literal> ::=
+		X ( <quote> ( <hexit><hexit> )* <quote> )+
 		( ESCAPE <escape character> )?
 
 <hexit> ::= <digit> | A | B | C | D | E | F | a | b | c | d | e | f
@@ -2128,10 +2157,10 @@
 */
 
 /* <non_escaped character> ::= !! See the Syntax Rules. */
-<non_escaped character> ::= [^\[\]()|\^\-+*_%?{\\]
+<non_escaped character> ~ [^\[\]()|\^\-+*_%?{\\]
 
 /* <escaped character> ::= !! See the Syntax Rules. */
-<escaped character> ::= #x5c [\[\]()|\^\-+*_%?{\\]
+<escaped character> ~ /*LEX*/#x5c /*LEX*/[\[\]()|\^\-+*_%?{\\]
 
 <regular character set> ::=
 		<underscore>
