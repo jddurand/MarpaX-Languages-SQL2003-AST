@@ -87,8 +87,7 @@ Token value.
 
 =cut
 
-no warnings;
-sub Marpa::R2::Scanless::G::parse {
+sub Marpa::R2::Scanless::G::_parse_debug {
     my ( $slg, $input_ref, $arg1, @more_args ) = @_;
     if ( not defined $input_ref or ref $input_ref ne 'SCALAR' ) {
         Marpa::R2::exception(
