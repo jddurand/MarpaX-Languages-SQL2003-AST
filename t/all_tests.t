@@ -11,7 +11,7 @@ use_ok('MarpaX::Languages::SQL2003::AST');
 my $obj = new_ok('MarpaX::Languages::SQL2003::AST');
 foreach (__PACKAGE__->section_data_names) {
   my $stringp = __PACKAGE__->section_data($_);
-  ok(defined($obj->asBlessed(${$stringp}, trace_terminals => 1)), $_ . ': asBlessed() is ok');
+  ok(defined($obj->asBlessed(${$stringp})), $_ . ': asBlessed() is ok');
   ok(defined($obj->asXML(${$stringp})), $_ . ': asXML() is ok');
 }
 
@@ -28,8 +28,7 @@ SELECT "hello", "'hello'", "''hello''", "hel""lo", "\"hello" FROM dual;
 SELECT 'This\nIs\nFour\nLines' FROM dual;
 SELECT 'disappearing\ backslash' FROM dual;
 
-__[ CHARACTER SET ]__
-
+__[ Character Set ]__
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1;
 CREATE CHARACTER SET bob.charset_1 GET LATIN1;
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1 COLLATE bob.collation_1;
