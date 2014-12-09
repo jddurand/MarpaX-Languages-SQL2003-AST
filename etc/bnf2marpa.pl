@@ -127,10 +127,10 @@ sub _pushG1 {
 sub _rules {
   my ($self, @rules) = @_;
 
-  my @rc = ();
+  my @rc = ('#', '# This is a generated grammar', '#');
   push(@rc, 'inaccessible is ok by default');
 #   push(@rc, ':default ::= action => [values] bless => ::lhs');
-  push(@rc, ':default ::= action => nonTerminalSemantic');
+  push(@rc, ':default ::= action => _nonTerminalSemantic');
   push(@rc, 'lexeme default = action => [start,length,value] latm => 1');
   if (defined($self->{start}->{number})) {
       push(@rc, ':start ::= ' . $self->{start}->{rule});
@@ -183,13 +183,13 @@ sub _symbol {
   if (! exists($UNALTERABLED_SYMBOLS{$symbol})) {
     $symbol =~ s/[^[:alnum:]]/ /g;
     #
-    # Break symbol in words, ucfirst() on all
+    # Break symbol in words, ucfirst(lc()) on all but the first one that is lc()
     #
     pos($symbol) = undef;
     my @words = ();
     while ($symbol =~ m/(\w+)/sxmg) {
       my $match = substr($symbol, $-[1], $+[1] - $-[1]);
-      push(@words, ($match eq 'SQL' ? $match : ucfirst(lc($match))));
+      push(@words, ($match eq 'SQL' ? $match : (@words ? ucfirst(lc($match)) : lc($match))));
     }
     $symbol = join('_', @words);
   }
@@ -410,7 +410,7 @@ sub _termFactorQuantifier {
 
   my $symbol;
   if ($quantifier eq '*' || $quantifier eq '+') {
-      $symbol = $forcedSymbol || sprintf('%s_%s', $factor, ($quantifier eq '*') ? 'any' : 'many');
+      $symbol = $forcedSymbol || $self->_symbol(sprintf('%s_%s', $factor, ($quantifier eq '*') ? 'any' : 'many'));
       if (! exists($self->{quantifiedSymbols}->{$symbol})) {
 	  $self->{quantifiedSymbols}->{$symbol}++;
 	  if (exists($self->{lexemesExact}->{$factor}) &&
@@ -432,7 +432,7 @@ sub _termFactorQuantifier {
 		  my $thisContent = "$self->{lexemes}->{$factor}$thisQuantifier";
                   if ($quantifier eq '*') {
                     $thisQuantifier = '+';
-                    $thisSymbol = sprintf('%s_%s', $factor, 'many');
+                    $thisSymbol = $self->_symbol(sprintf('%s_%s', $factor, 'many'));
                   }
                   my $rulesep = $self->{unCopiableLexemes}->{$factor} ? '~' : '::=';
                   print STDERR "[INFO] Transformation to a lexeme: $thisSymbol $rulesep $factor$thisQuantifier\n";
@@ -470,7 +470,7 @@ sub _termFactorQuantifier {
 	  }
       }
   } elsif ($quantifier eq '?') {
-      $symbol = sprintf('%s_maybe', $factor);
+      $symbol = $self->_symbol(sprintf('%s_maybe', $factor));
       if (! exists($self->{quantifiedSymbols}->{$symbol})) {
         my $rulesep = $self->{unCopiableLexemes}->{$factor} ? '~' : '::=';
 	  $self->{quantifiedSymbols}->{$symbol}++;

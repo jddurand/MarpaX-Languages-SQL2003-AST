@@ -103,65 +103,65 @@
 	|	<left brace>
 	|	<right brace>
 
-<space> ::= \s
+<space> ~ \s
 
-<double quote> ::= '"'
+<double quote> ~ '"'
 
-<percent> ::= '%'
+<percent> ~ '%'
 
-<ampersand> ::= '&'
+<ampersand> ~ '&'
 
-<quote> ::= "'"
+<quote> ~ "'"
 
-<left paren> ::= '('
+<left paren> ~ '('
 
-<right paren> ::= ')'
+<right paren> ~ ')'
 
-<asterisk> ::= '*'
+<asterisk> ~ '*'
 
-<plus sign> ::= '+'
+<plus sign> ~ '+'
 
-<comma> ::= ','
+<comma> ~ ','
 
-<minus sign> ::= '-'
+<minus sign> ~ '-'
 
-<period> ::= '.'
+<period> ~ '.'
 
-<solidus> ::= '/'
+<solidus> ~ '/'
 
-<colon> ::= ':'
+<colon> ~ ':'
 
-<semicolon> ::= ';'
+<semicolon> ~ ';'
 
-<less than operator> ::= '<'
+<less than operator> ~ '<'
 
-<equals operator> ::= '='
+<equals operator> ~ '='
 
-<greater than operator> ::= '>'
+<greater than operator> ~ '>'
 
-<question mark> ::= '?'
+<question mark> ~ '?'
 
 <left bracket or trigraph> ::= <left bracket> | <left bracket trigraph>
 
 <right bracket or trigraph> ::= <right bracket> | <right bracket trigraph>
 
-<left bracket> ::= '['
+<left bracket> ~ '['
 
-<left bracket trigraph> ::= '??('
+<left bracket trigraph> ~ '??('
 
-<right bracket> ::= ']'
+<right bracket> ~ ']'
 
-<right bracket trigraph> ::= '??)'
+<right bracket trigraph> ~ '??)'
 
-<circumflex> ::= '^'
+<circumflex> ~ '^'
 
-<underscore> ::= '_'
+<underscore> ~ '_'
 
-<vertical bar> ::= '|'
+<vertical bar> ~ '|'
 
-<left brace> ::= '{'
+<left brace> ~ '{'
 
-<right brace> ::= '}'
+<right brace> ~ '}'
 
 <token> ::= <nondelimiter token> | <delimiter token>
 
@@ -3560,7 +3560,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 		SET COLLATION <collation specification> ( FOR <character set specification list> )?
 	|	SET NO COLLATION ( FOR <character set specification list> )?
 
-<character set specification list> ::= <character set specification> ( ',' <character set specification> )*
+<character set specification list> ::= <character set specification> ( <comma> <character set specification> )*
 
 <collation specification> ::= <value specification>
 
@@ -3853,7 +3853,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <SQL condition> ::=
 		<major category>
-	|	SQLSTATE ( <SQLSTATE class value> ( ',' <SQLSTATE subclass value> )? )
+	|	SQLSTATE ( <SQLSTATE class value> ( <comma> <SQLSTATE subclass value> )? )
 	|	CONSTRAINT <constraint name>
 
 <major category> ::= SQLEXCEPTION | SQLWARNING | NOT FOUND
@@ -4230,7 +4230,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <Fortran type specification> ::=
 		CHARACTER ( <asterisk> <length> )? ( CHARACTER SET IS? <character set specification> )?
-	|	CHARACTER KIND '=' [0-9] [0-9]* ( <asterisk> <length> )? ( CHARACTER SET IS? <character set specification> )?
+	|	CHARACTER KIND <equals operator> [0-9] [0-9]* ( <asterisk> <length> )? ( CHARACTER SET IS? <character set specification> )?
 	|	INTEGER
 	|	REAL
 	|	DOUBLE PRECISION
