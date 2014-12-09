@@ -144,7 +144,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Right_Bracket> ::= <Lex025> rank => 0
 <Right_Bracket_Trigraph> ::= <Lex026> rank => 0
 <Circumflex> ::= <Lex027> rank => 0
-<Underscore> ::= <Lex028> rank => 0
+<Underscore> ::= <_> rank => 0
 <Vertical_Bar> ::= <Lex029> rank => 0
 <Left_Brace> ::= <Lex030> rank => 0
 <Right_Brace> ::= <Lex031> rank => 0
@@ -258,58 +258,58 @@ lexeme default = action => [start,length,value] latm => 1
                       | <CARDINALITY> rank => -18
                       | <CASCADE> rank => -19
                       | <CATALOG> rank => -20
-                      | <Lex071> rank => -21
+                      | <CATALOG_NAME> rank => -21
                       | <CEIL> rank => -22
                       | <CEILING> rank => -23
                       | <CHAIN> rank => -24
                       | <CHARACTERISTICS> rank => -25
                       | <CHARACTERS> rank => -26
-                      | <Lex077> rank => -27
-                      | <Lex078> rank => -28
-                      | <Lex079> rank => -29
-                      | <Lex080> rank => -30
-                      | <Lex081> rank => -31
+                      | <CHARACTER_LENGTH> rank => -27
+                      | <CHARACTER_SET_CATALOG> rank => -28
+                      | <CHARACTER_SET_NAME> rank => -29
+                      | <CHARACTER_SET_SCHEMA> rank => -30
+                      | <CHAR_LENGTH> rank => -31
                       | <CHECKED> rank => -32
-                      | <Lex083> rank => -33
+                      | <CLASS_ORIGIN> rank => -33
                       | <COALESCE> rank => -34
                       | <COBOL> rank => -35
-                      | <Lex086> rank => -36
+                      | <CODE_UNITS> rank => -36
                       | <COLLATION> rank => -37
-                      | <Lex088> rank => -38
-                      | <Lex089> rank => -39
-                      | <Lex090> rank => -40
+                      | <COLLATION_CATALOG> rank => -38
+                      | <COLLATION_NAME> rank => -39
+                      | <COLLATION_SCHEMA> rank => -40
                       | <COLLECT> rank => -41
-                      | <Lex092> rank => -42
-                      | <Lex093> rank => -43
-                      | <Lex094> rank => -44
+                      | <COLUMN_NAME> rank => -42
+                      | <COMMAND_FUNCTION> rank => -43
+                      | <COMMAND_FUNCTION_CODE> rank => -44
                       | <COMMITTED> rank => -45
                       | <CONDITION> rank => -46
-                      | <Lex097> rank => -47
-                      | <Lex098> rank => -48
+                      | <CONDITION_NUMBER> rank => -47
+                      | <CONNECTION_NAME> rank => -48
                       | <CONSTRAINTS> rank => -49
-                      | <Lex100> rank => -50
-                      | <Lex101> rank => -51
-                      | <Lex102> rank => -52
+                      | <CONSTRAINT_CATALOG> rank => -50
+                      | <CONSTRAINT_NAME> rank => -51
+                      | <CONSTRAINT_SCHEMA> rank => -52
                       | <CONSTRUCTORS> rank => -53
                       | <CONTAINS> rank => -54
                       | <CONVERT> rank => -55
                       | <CORR> rank => -56
                       | <COUNT> rank => -57
-                      | <Lex108> rank => -58
-                      | <Lex109> rank => -59
-                      | <Lex110> rank => -60
-                      | <Lex111> rank => -61
-                      | <Lex112> rank => -62
+                      | <COVAR_POP> rank => -58
+                      | <COVAR_SAMP> rank => -59
+                      | <CUME_DIST> rank => -60
+                      | <CURRENT_COLLATION> rank => -61
+                      | <CURSOR_NAME> rank => -62
                       | <DATA> rank => -63
-                      | <Lex114> rank => -64
-                      | <Lex115> rank => -65
+                      | <DATETIME_INTERVAL_CODE> rank => -64
+                      | <DATETIME_INTERVAL_PRECISION> rank => -65
                       | <DEFAULTS> rank => -66
                       | <DEFERRABLE> rank => -67
                       | <DEFERRED> rank => -68
                       | <DEFINED> rank => -69
                       | <DEFINER> rank => -70
                       | <DEGREE> rank => -71
-                      | <Lex122> rank => -72
+                      | <DENSE_RANK> rank => -72
                       | <DEPTH> rank => -73
                       | <DERIVED> rank => -74
                       | <DESC> rank => -75
@@ -317,8 +317,8 @@ lexeme default = action => [start,length,value] latm => 1
                       | <DIAGNOSTICS> rank => -77
                       | <DISPATCH> rank => -78
                       | <DOMAIN> rank => -79
-                      | <Lex130> rank => -80
-                      | <Lex131> rank => -81
+                      | <DYNAMIC_FUNCTION> rank => -80
+                      | <DYNAMIC_FUNCTION_CODE> rank => -81
                       | <EQUALS> rank => -82
                       | <EVERY> rank => -83
                       | <EXCEPTION> rank => -84
@@ -350,8 +350,8 @@ lexeme default = action => [start,length,value] latm => 1
                       | <ISOLATION> rank => -110
                       | <K> rank => -111
                       | <KEY> rank => -112
-                      | <Lex161> rank => -113
-                      | <Lex162> rank => -114
+                      | <KEY_MEMBER> rank => -113
+                      | <KEY_TYPE> rank => -114
                       | <LAST> rank => -115
                       | <LENGTH> rank => -116
                       | <LEVEL> rank => -117
@@ -363,9 +363,9 @@ lexeme default = action => [start,length,value] latm => 1
                       | <MATCHED> rank => -123
                       | <MAX> rank => -124
                       | <MAXVALUE> rank => -125
-                      | <Lex173> rank => -126
-                      | <Lex174> rank => -127
-                      | <Lex175> rank => -128
+                      | <MESSAGE_LENGTH> rank => -126
+                      | <MESSAGE_OCTET_LENGTH> rank => -127
+                      | <MESSAGE_TEXT> rank => -128
                       | <MIN> rank => -129
                       | <MINVALUE> rank => -130
                       | <MOD> rank => -131
@@ -383,7 +383,7 @@ lexeme default = action => [start,length,value] latm => 1
                       | <NUMBER> rank => -143
                       | <OBJECT> rank => -144
                       | <OCTETS> rank => -145
-                      | <Lex193> rank => -146
+                      | <OCTET_LENGTH> rank => -146
                       | <OPTION> rank => -147
                       | <OPTIONS> rank => -148
                       | <ORDERING> rank => -149
@@ -392,18 +392,18 @@ lexeme default = action => [start,length,value] latm => 1
                       | <OVERLAY> rank => -152
                       | <OVERRIDING> rank => -153
                       | <PAD> rank => -154
-                      | <Lex202> rank => -155
-                      | <Lex203> rank => -156
-                      | <Lex204> rank => -157
-                      | <Lex205> rank => -158
-                      | <Lex206> rank => -159
-                      | <Lex207> rank => -160
+                      | <PARAMETER_MODE> rank => -155
+                      | <PARAMETER_NAME> rank => -156
+                      | <PARAMETER_ORDINAL_POSITION> rank => -157
+                      | <PARAMETER_SPECIFIC_CATALOG> rank => -158
+                      | <PARAMETER_SPECIFIC_NAME> rank => -159
+                      | <PARAMETER_SPECIFIC_SCHEMA> rank => -160
                       | <PARTIAL> rank => -161
                       | <PASCAL> rank => -162
                       | <PATH> rank => -163
-                      | <Lex211> rank => -164
-                      | <Lex212> rank => -165
-                      | <Lex213> rank => -166
+                      | <PERCENTILE_CONT> rank => -164
+                      | <PERCENTILE_DISC> rank => -165
+                      | <PERCENT_RANK> rank => -166
                       | <PLACING> rank => -167
                       | <PLI> rank => -168
                       | <POSITION> rank => -169
@@ -418,61 +418,61 @@ lexeme default = action => [start,length,value] latm => 1
                       | <RELATIVE> rank => -178
                       | <REPEATABLE> rank => -179
                       | <RESTART> rank => -180
-                      | <Lex228> rank => -181
-                      | <Lex229> rank => -182
-                      | <Lex230> rank => -183
-                      | <Lex231> rank => -184
+                      | <RETURNED_CARDINALITY> rank => -181
+                      | <RETURNED_LENGTH> rank => -182
+                      | <RETURNED_OCTET_LENGTH> rank => -183
+                      | <RETURNED_SQLSTATE> rank => -184
                       | <ROLE> rank => -185
                       | <ROUTINE> rank => -186
-                      | <Lex234> rank => -187
-                      | <Lex235> rank => -188
-                      | <Lex236> rank => -189
-                      | <Lex237> rank => -190
-                      | <Lex238> rank => -191
+                      | <ROUTINE_CATALOG> rank => -187
+                      | <ROUTINE_NAME> rank => -188
+                      | <ROUTINE_SCHEMA> rank => -189
+                      | <ROW_COUNT> rank => -190
+                      | <ROW_NUMBER> rank => -191
                       | <SCALE> rank => -192
                       | <SCHEMA> rank => -193
-                      | <Lex241> rank => -194
-                      | <Lex242> rank => -195
-                      | <Lex243> rank => -196
-                      | <Lex244> rank => -197
+                      | <SCHEMA_NAME> rank => -194
+                      | <SCOPE_CATALOG> rank => -195
+                      | <SCOPE_NAME> rank => -196
+                      | <SCOPE_SCHEMA> rank => -197
                       | <SECTION> rank => -198
                       | <SECURITY> rank => -199
                       | <SELF> rank => -200
                       | <SEQUENCE> rank => -201
                       | <SERIALIZABLE> rank => -202
-                      | <Lex250> rank => -203
+                      | <SERVER_NAME> rank => -203
                       | <SESSION> rank => -204
                       | <SETS> rank => -205
                       | <SIMPLE> rank => -206
                       | <SIZE> rank => -207
                       | <SOURCE> rank => -208
                       | <SPACE> rank => -209
-                      | <Lex257> rank => -210
+                      | <SPECIFIC_NAME> rank => -210
                       | <SQRT> rank => -211
                       | <STATE> rank => -212
                       | <STATEMENT> rank => -213
-                      | <Lex261> rank => -214
-                      | <Lex262> rank => -215
+                      | <STDDEV_POP> rank => -214
+                      | <STDDEV_SAMP> rank => -215
                       | <STRUCTURE> rank => -216
                       | <STYLE> rank => -217
-                      | <Lex265> rank => -218
+                      | <SUBCLASS_ORIGIN> rank => -218
                       | <SUBSTRING> rank => -219
                       | <SUM> rank => -220
                       | <TABLESAMPLE> rank => -221
-                      | <Lex269> rank => -222
+                      | <TABLE_NAME> rank => -222
                       | <TEMPORARY> rank => -223
                       | <TIES> rank => -224
-                      | <Lex272> rank => -225
+                      | <TOP_LEVEL_COUNT> rank => -225
                       | <TRANSACTION> rank => -226
-                      | <Lex274> rank => -227
-                      | <Lex275> rank => -228
-                      | <Lex276> rank => -229
+                      | <TRANSACTIONS_COMMITTED> rank => -227
+                      | <TRANSACTIONS_ROLLED_BACK> rank => -228
+                      | <TRANSACTION_ACTIVE> rank => -229
                       | <TRANSFORM> rank => -230
                       | <TRANSFORMS> rank => -231
                       | <TRANSLATE> rank => -232
-                      | <Lex280> rank => -233
-                      | <Lex281> rank => -234
-                      | <Lex282> rank => -235
+                      | <TRIGGER_CATALOG> rank => -233
+                      | <TRIGGER_NAME> rank => -234
+                      | <TRIGGER_SCHEMA> rank => -235
                       | <TRIM> rank => -236
                       | <TYPE> rank => -237
                       | <UNBOUNDED> rank => -238
@@ -480,10 +480,10 @@ lexeme default = action => [start,length,value] latm => 1
                       | <UNDER> rank => -240
                       | <UNNAMED> rank => -241
                       | <USAGE> rank => -242
-                      | <Lex290> rank => -243
-                      | <Lex291> rank => -244
-                      | <Lex292> rank => -245
-                      | <Lex293> rank => -246
+                      | <USER_DEFINED_TYPE_CATALOG> rank => -243
+                      | <USER_DEFINED_TYPE_CODE> rank => -244
+                      | <USER_DEFINED_TYPE_NAME> rank => -245
+                      | <USER_DEFINED_TYPE_SCHEMA> rank => -246
                       | <VIEW> rank => -247
                       | <WORK> rank => -248
                       | <WRITE> rank => -249
@@ -531,14 +531,14 @@ lexeme default = action => [start,length,value] latm => 1
                   | <CROSS> rank => -40
                   | <CUBE> rank => -41
                   | <CURRENT> rank => -42
-                  | <Lex341> rank => -43
-                  | <Lex342> rank => -44
-                  | <Lex343> rank => -45
-                  | <Lex344> rank => -46
-                  | <Lex345> rank => -47
-                  | <Lex346> rank => -48
-                  | <Lex347> rank => -49
-                  | <Lex348> rank => -50
+                  | <CURRENT_DATE> rank => -43
+                  | <CURRENT_DEFAULT_TRANSFORM_GROUP> rank => -44
+                  | <CURRENT_PATH> rank => -45
+                  | <CURRENT_ROLE> rank => -46
+                  | <CURRENT_TIME> rank => -47
+                  | <CURRENT_TIMESTAMP> rank => -48
+                  | <CURRENT_TRANSFORM_GROUP_FOR_TYPE> rank => -49
+                  | <CURRENT_USER> rank => -50
                   | <CURSOR> rank => -51
                   | <CYCLE> rank => -52
                   | <DATE> rank => -53
@@ -656,15 +656,15 @@ lexeme default = action => [start,length,value] latm => 1
                   | <REF> rank => -165
                   | <REFERENCES> rank => -166
                   | <REFERENCING> rank => -167
-                  | <Lex465> rank => -168
-                  | <Lex466> rank => -169
-                  | <Lex467> rank => -170
-                  | <Lex468> rank => -171
+                  | <REGR_AVGX> rank => -168
+                  | <REGR_AVGY> rank => -169
+                  | <REGR_COUNT> rank => -170
+                  | <REGR_INTERCEPT> rank => -171
                   | <Lex469> rank => -172
-                  | <Lex470> rank => -173
-                  | <Lex471> rank => -174
-                  | <Lex472> rank => -175
-                  | <Lex473> rank => -176
+                  | <REGR_SLOPE> rank => -173
+                  | <REGR_SXX> rank => -174
+                  | <REGR_SXY> rank => -175
+                  | <REGR_SYY> rank => -176
                   | <RELEASE> rank => -177
                   | <RESULT> rank => -178
                   | <RETURN> rank => -179
@@ -681,7 +681,7 @@ lexeme default = action => [start,length,value] latm => 1
                   | <SECOND> rank => -190
                   | <SELECT> rank => -191
                   | <SENSITIVE> rank => -192
-                  | <Lex490> rank => -193
+                  | <SESSION_USER> rank => -193
                   | <SET> rank => -194
                   | <SIMILAR> rank => -195
                   | <SMALLINT> rank => -196
@@ -697,13 +697,13 @@ lexeme default = action => [start,length,value] latm => 1
                   | <SUBMULTISET> rank => -206
                   | <SYMMETRIC> rank => -207
                   | <SYSTEM> rank => -208
-                  | <Lex506> rank => -209
+                  | <SYSTEM_USER> rank => -209
                   | <TABLE> rank => -210
                   | <THEN> rank => -211
                   | <TIME> rank => -212
                   | <TIMESTAMP> rank => -213
-                  | <Lex511> rank => -214
-                  | <Lex512> rank => -215
+                  | <TIMEZONE_HOUR> rank => -214
+                  | <TIMEZONE_MINUTE> rank => -215
                   | <TO> rank => -216
                   | <TRAILING> rank => -217
                   | <TRANSLATION> rank => -218
@@ -721,14 +721,14 @@ lexeme default = action => [start,length,value] latm => 1
                   | <USING> rank => -230
                   | <VALUE> rank => -231
                   | <VALUES> rank => -232
-                  | <Lex530> rank => -233
-                  | <Lex531> rank => -234
+                  | <VAR_POP> rank => -233
+                  | <VAR_SAMP> rank => -234
                   | <VARCHAR> rank => -235
                   | <VARYING> rank => -236
                   | <WHEN> rank => -237
                   | <WHENEVER> rank => -238
                   | <WHERE> rank => -239
-                  | <Lex537> rank => -240
+                  | <WIDTH_BUCKET> rank => -240
                   | <WINDOW> rank => -241
                   | <WITH> rank => -242
                   | <WITHIN> rank => -243
@@ -1080,7 +1080,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Large_Object_Length> ::= <Unsigned_Integer> <Multiplier_maybe> <Char_Length_Units_maybe> rank => 0
                         | <Large_Object_Length_Token> <Char_Length_Units_maybe> rank => -1
 <Char_Length_Units> ::= <CHARACTERS> rank => 0
-                      | <Lex086> rank => -1
+                      | <CODE_UNITS> rank => -1
                       | <OCTETS> rank => -2
 <Precision> ::= <Unsigned_Integer> rank => 0
 <Scale> ::= <Unsigned_Integer> rank => 0
@@ -1157,13 +1157,13 @@ lexeme default = action => [start,length,value] latm => 1
                                 | <Dynamic_Parameter_Specification> rank => -2
                                 | <Embedded_Variable_Specification> rank => -3
                                 | <Current_Collation_Specification> rank => -4
-                                | <Lex342> rank => -5
-                                | <Lex343> rank => -6
-                                | <Lex344> rank => -7
-                                | <Lex347> <Path_Resolved_User_Defined_Type_Name> rank => -8
-                                | <Lex348> rank => -9
-                                | <Lex490> rank => -10
-                                | <Lex506> rank => -11
+                                | <CURRENT_DEFAULT_TRANSFORM_GROUP> rank => -5
+                                | <CURRENT_PATH> rank => -6
+                                | <CURRENT_ROLE> rank => -7
+                                | <CURRENT_TRANSFORM_GROUP_FOR_TYPE> <Path_Resolved_User_Defined_Type_Name> rank => -8
+                                | <CURRENT_USER> rank => -9
+                                | <SESSION_USER> rank => -10
+                                | <SYSTEM_USER> rank => -11
                                 | <USER> rank => -12
                                 | <VALUE> rank => -13
 <Simple_Value_Specification> ::= <Literal> rank => 0
@@ -1194,7 +1194,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Target_Array_Element_Specification> ::= <Target_Array_Reference> <Left_Bracket_Or_Trigraph> <Simple_Value_Specification> <Right_Bracket_Or_Trigraph> rank => 0
 <Target_Array_Reference> ::= <SQL_Parameter_Reference> rank => 0
                            | <Column_Reference> rank => -1
-<Current_Collation_Specification> ::= <Lex111> <Left_Paren> <String_Value_Expression> <Right_Paren> rank => 0
+<Current_Collation_Specification> ::= <CURRENT_COLLATION> <Left_Paren> <String_Value_Expression> <Right_Paren> rank => 0
 <Contextually_Typed_Value_Specification> ::= <Implicitly_Typed_Value_Specification> rank => 0
                                            | <Default_Specification> rank => -1
 <Implicitly_Typed_Value_Specification> ::= <Null_Specification> rank => 0
@@ -1217,12 +1217,12 @@ lexeme default = action => [start,length,value] latm => 1
 <Grouping_Operation> ::= <GROUPING> <Left_Paren> <Column_Reference> <Gen1141_any> <Right_Paren> rank => 0
 <Window_Function> ::= <Window_Function_Type> <OVER> <Window_Name_Or_Specification> rank => 0
 <Window_Function_Type> ::= <Rank_Function_Type> <Left_Paren> <Right_Paren> rank => 0
-                         | <Lex238> <Left_Paren> <Right_Paren> rank => -1
+                         | <ROW_NUMBER> <Left_Paren> <Right_Paren> rank => -1
                          | <Aggregate_Function> rank => -2
 <Rank_Function_Type> ::= <RANK> rank => 0
-                       | <Lex122> rank => -1
-                       | <Lex213> rank => -2
-                       | <Lex110> rank => -3
+                       | <DENSE_RANK> rank => -1
+                       | <PERCENT_RANK> rank => -2
+                       | <CUME_DIST> rank => -3
 <Window_Name_Or_Specification> ::= <Window_Name> rank => 0
                                  | <In_Line_Window_Specification> rank => -1
 <In_Line_Window_Specification> ::= <Window_Specification> rank => 0
@@ -1342,18 +1342,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Blob_Position_Expression> ::= <POSITION> <Left_Paren> <Blob_Value_Expression> <IN> <Blob_Value_Expression> <Right_Paren> rank => 0
 <Length_Expression> ::= <Char_Length_Expression> rank => 0
                       | <Octet_Length_Expression> rank => -1
-<Gen1271> ::= <Lex081> rank => 0
-            | <Lex077> rank => -1
+<Gen1271> ::= <CHAR_LENGTH> rank => 0
+            | <CHARACTER_LENGTH> rank => -1
 <Gen1273> ::= <USING> <Char_Length_Units> rank => 0
 <Gen1273_maybe> ::= <Gen1273> rank => 0
 <Gen1273_maybe> ::= rank => -1
 <Char_Length_Expression> ::= <Gen1271> <Left_Paren> <String_Value_Expression> <Gen1273_maybe> <Right_Paren> rank => 0
-<Octet_Length_Expression> ::= <Lex193> <Left_Paren> <String_Value_Expression> <Right_Paren> rank => 0
+<Octet_Length_Expression> ::= <OCTET_LENGTH> <Left_Paren> <String_Value_Expression> <Right_Paren> rank => 0
 <Extract_Expression> ::= <EXTRACT> <Left_Paren> <Extract_Field> <FROM> <Extract_Source> <Right_Paren> rank => 0
 <Extract_Field> ::= <Primary_Datetime_Field> rank => 0
                   | <Time_Zone_Field> rank => -1
-<Time_Zone_Field> ::= <Lex511> rank => 0
-                    | <Lex512> rank => -1
+<Time_Zone_Field> ::= <TIMEZONE_HOUR> rank => 0
+                    | <TIMEZONE_MINUTE> rank => -1
 <Extract_Source> ::= <Datetime_Value_Expression> rank => 0
                    | <Interval_Value_Expression> rank => -1
 <Cardinality_Expression> ::= <CARDINALITY> <Left_Paren> <Collection_Value_Expression> <Right_Paren> rank => 0
@@ -1369,7 +1369,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Gen1295> ::= <CEIL> rank => 0
             | <CEILING> rank => -1
 <Ceiling_Function> ::= <Gen1295> <Left_Paren> <Numeric_Value_Expression> <Right_Paren> rank => 0
-<Width_Bucket_Function> ::= <Lex537> <Left_Paren> <Width_Bucket_Operand> <Comma> <Width_Bucket_Bound_1> <Comma> <Width_Bucket_Bound_2> <Comma> <Width_Bucket_Count> <Right_Paren> rank => 0
+<Width_Bucket_Function> ::= <WIDTH_BUCKET> <Left_Paren> <Width_Bucket_Operand> <Comma> <Width_Bucket_Bound_1> <Comma> <Width_Bucket_Bound_2> <Comma> <Width_Bucket_Count> <Right_Paren> rank => 0
 <Width_Bucket_Operand> ::= <Numeric_Value_Expression> rank => 0
 <Width_Bucket_Bound_1> ::= <Numeric_Value_Expression> rank => 0
 <Width_Bucket_Bound_2> ::= <Numeric_Value_Expression> rank => 0
@@ -1475,11 +1475,11 @@ lexeme default = action => [start,length,value] latm => 1
                             | <Current_Timestamp_Value_Function> rank => -2
                             | <Current_Local_Time_Value_Function> rank => -3
                             | <Current_Local_Timestamp_Value_Function> rank => -4
-<Current_Date_Value_Function> ::= <Lex341> rank => 0
+<Current_Date_Value_Function> ::= <CURRENT_DATE> rank => 0
 <Gen1405> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
 <Gen1405_maybe> ::= <Gen1405> rank => 0
 <Gen1405_maybe> ::= rank => -1
-<Current_Time_Value_Function> ::= <Lex345> <Gen1405_maybe> rank => 0
+<Current_Time_Value_Function> ::= <CURRENT_TIME> <Gen1405_maybe> rank => 0
 <Gen1409> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
 <Gen1409_maybe> ::= <Gen1409> rank => 0
 <Gen1409_maybe> ::= rank => -1
@@ -1487,7 +1487,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Gen1413> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
 <Gen1413_maybe> ::= <Gen1413> rank => 0
 <Gen1413_maybe> ::= rank => -1
-<Current_Timestamp_Value_Function> ::= <Lex346> <Gen1413_maybe> rank => 0
+<Current_Timestamp_Value_Function> ::= <CURRENT_TIMESTAMP> <Gen1413_maybe> rank => 0
 <Gen1417> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
 <Gen1417_maybe> ::= <Gen1417> rank => 0
 <Gen1417_maybe> ::= rank => -1
@@ -2140,10 +2140,10 @@ lexeme default = action => [start,length,value] latm => 1
                             | <ANY> rank => -5
                             | <SOME> rank => -6
                             | <COUNT> rank => -7
-                            | <Lex261> rank => -8
-                            | <Lex262> rank => -9
-                            | <Lex531> rank => -10
-                            | <Lex530> rank => -11
+                            | <STDDEV_POP> rank => -8
+                            | <STDDEV_SAMP> rank => -9
+                            | <VAR_SAMP> rank => -10
+                            | <VAR_POP> rank => -11
                             | <COLLECT> rank => -12
                             | <FUSION> rank => -13
                             | <INTERSECTION> rank => -14
@@ -2151,18 +2151,18 @@ lexeme default = action => [start,length,value] latm => 1
                    | <ALL> rank => -1
 <Filter_Clause> ::= <FILTER> <Left_Paren> <WHERE> <Search_Condition> <Right_Paren> rank => 0
 <Binary_Set_Function> ::= <Binary_Set_Function_Type> <Left_Paren> <Dependent_Variable_Expression> <Comma> <Independent_Variable_Expression> <Right_Paren> rank => 0
-<Binary_Set_Function_Type> ::= <Lex108> rank => 0
-                             | <Lex109> rank => -1
+<Binary_Set_Function_Type> ::= <COVAR_POP> rank => 0
+                             | <COVAR_SAMP> rank => -1
                              | <CORR> rank => -2
-                             | <Lex470> rank => -3
-                             | <Lex468> rank => -4
-                             | <Lex467> rank => -5
+                             | <REGR_SLOPE> rank => -3
+                             | <REGR_INTERCEPT> rank => -4
+                             | <REGR_COUNT> rank => -5
                              | <Lex469> rank => -6
-                             | <Lex465> rank => -7
-                             | <Lex466> rank => -8
-                             | <Lex471> rank => -9
-                             | <Lex473> rank => -10
-                             | <Lex472> rank => -11
+                             | <REGR_AVGX> rank => -7
+                             | <REGR_AVGY> rank => -8
+                             | <REGR_SXX> rank => -9
+                             | <REGR_SYY> rank => -10
+                             | <REGR_SXY> rank => -11
 <Dependent_Variable_Expression> ::= <Numeric_Value_Expression> rank => 0
 <Independent_Variable_Expression> ::= <Numeric_Value_Expression> rank => 0
 <Ordered_Set_Function> ::= <Hypothetical_Set_Function> rank => 0
@@ -2174,8 +2174,8 @@ lexeme default = action => [start,length,value] latm => 1
 <Hypothetical_Set_Function_Value_Expression_List> ::= <Value_Expression> <Gen2098_any> rank => 0
 <Inverse_Distribution_Function> ::= <Inverse_Distribution_Function_Type> <Left_Paren> <Inverse_Distribution_Function_Argument> <Right_Paren> <Within_Group_Specification> rank => 0
 <Inverse_Distribution_Function_Argument> ::= <Numeric_Value_Expression> rank => 0
-<Inverse_Distribution_Function_Type> ::= <Lex211> rank => 0
-                                       | <Lex212> rank => -1
+<Inverse_Distribution_Function_Type> ::= <PERCENTILE_CONT> rank => 0
+                                       | <PERCENTILE_DISC> rank => -1
 <Gen2105> ::= <Comma> <Sort_Specification> rank => 0
 <Gen2105_any> ::= <Gen2105>* rank => 0
 <Sort_Specification_List> ::= <Sort_Specification> <Gen2105_any> rank => 0
@@ -2313,11 +2313,11 @@ lexeme default = action => [start,length,value] latm => 1
 <Default_Option> ::= <Literal> rank => 0
                    | <Datetime_Value_Function> rank => -1
                    | <USER> rank => -2
-                   | <Lex348> rank => -3
-                   | <Lex344> rank => -4
-                   | <Lex490> rank => -5
-                   | <Lex506> rank => -6
-                   | <Lex343> rank => -7
+                   | <CURRENT_USER> rank => -3
+                   | <CURRENT_ROLE> rank => -4
+                   | <SESSION_USER> rank => -5
+                   | <SYSTEM_USER> rank => -6
+                   | <CURRENT_PATH> rank => -7
                    | <Implicitly_Typed_Value_Specification> rank => -8
 <Table_Constraint_Definition> ::= <Constraint_Name_Definition_maybe> <Table_Constraint> <Constraint_Characteristics_maybe> rank => 0
 <Table_Constraint> ::= <Unique_Constraint_Definition> rank => 0
@@ -2872,8 +2872,8 @@ lexeme default = action => [start,length,value] latm => 1
 <Privilege_Column_List> ::= <Column_Name_List> rank => 0
 <Grantee> ::= <PUBLIC> rank => 0
             | <Authorization_Identifier> rank => -1
-<Grantor> ::= <Lex348> rank => 0
-            | <Lex344> rank => -1
+<Grantor> ::= <CURRENT_USER> rank => 0
+            | <CURRENT_ROLE> rank => -1
 <Gen2803> ::= <WITH> <ADMIN> <Grantor> rank => 0
 <Gen2803_maybe> ::= <Gen2803> rank => 0
 <Gen2803_maybe> ::= rank => -1
@@ -3325,51 +3325,51 @@ lexeme default = action => [start,length,value] latm => 1
                                | <VALUE> <Item_Number> <Get_Item_Information> <Gen3248_any> rank => -1
 <Get_Header_Information> ::= <Simple_Target_Specification_1> <Equals_Operator> <Header_Item_Name> rank => 0
 <Header_Item_Name> ::= <COUNT> rank => 0
-                     | <Lex162> rank => -1
-                     | <Lex130> rank => -2
-                     | <Lex131> rank => -3
-                     | <Lex272> rank => -4
+                     | <KEY_TYPE> rank => -1
+                     | <DYNAMIC_FUNCTION> rank => -2
+                     | <DYNAMIC_FUNCTION_CODE> rank => -3
+                     | <TOP_LEVEL_COUNT> rank => -4
 <Get_Item_Information> ::= <Simple_Target_Specification_2> <Equals_Operator> <Descriptor_Item_Name> rank => 0
 <Item_Number> ::= <Simple_Value_Specification> rank => 0
 <Simple_Target_Specification_1> ::= <Simple_Target_Specification> rank => 0
 <Simple_Target_Specification_2> ::= <Simple_Target_Specification> rank => 0
 <Descriptor_Item_Name> ::= <CARDINALITY> rank => 0
-                         | <Lex078> rank => -1
-                         | <Lex079> rank => -2
-                         | <Lex080> rank => -3
-                         | <Lex088> rank => -4
-                         | <Lex089> rank => -5
-                         | <Lex090> rank => -6
+                         | <CHARACTER_SET_CATALOG> rank => -1
+                         | <CHARACTER_SET_NAME> rank => -2
+                         | <CHARACTER_SET_SCHEMA> rank => -3
+                         | <COLLATION_CATALOG> rank => -4
+                         | <COLLATION_NAME> rank => -5
+                         | <COLLATION_SCHEMA> rank => -6
                          | <DATA> rank => -7
-                         | <Lex114> rank => -8
-                         | <Lex115> rank => -9
+                         | <DATETIME_INTERVAL_CODE> rank => -8
+                         | <DATETIME_INTERVAL_PRECISION> rank => -9
                          | <DEGREE> rank => -10
                          | <INDICATOR> rank => -11
-                         | <Lex161> rank => -12
+                         | <KEY_MEMBER> rank => -12
                          | <LENGTH> rank => -13
                          | <LEVEL> rank => -14
                          | <NAME> rank => -15
                          | <NULLABLE> rank => -16
-                         | <Lex193> rank => -17
-                         | <Lex202> rank => -18
-                         | <Lex204> rank => -19
-                         | <Lex205> rank => -20
-                         | <Lex206> rank => -21
-                         | <Lex207> rank => -22
+                         | <OCTET_LENGTH> rank => -17
+                         | <PARAMETER_MODE> rank => -18
+                         | <PARAMETER_ORDINAL_POSITION> rank => -19
+                         | <PARAMETER_SPECIFIC_CATALOG> rank => -20
+                         | <PARAMETER_SPECIFIC_NAME> rank => -21
+                         | <PARAMETER_SPECIFIC_SCHEMA> rank => -22
                          | <PRECISION> rank => -23
-                         | <Lex228> rank => -24
-                         | <Lex229> rank => -25
-                         | <Lex230> rank => -26
+                         | <RETURNED_CARDINALITY> rank => -24
+                         | <RETURNED_LENGTH> rank => -25
+                         | <RETURNED_OCTET_LENGTH> rank => -26
                          | <SCALE> rank => -27
-                         | <Lex242> rank => -28
-                         | <Lex243> rank => -29
-                         | <Lex244> rank => -30
+                         | <SCOPE_CATALOG> rank => -28
+                         | <SCOPE_NAME> rank => -29
+                         | <SCOPE_SCHEMA> rank => -30
                          | <TYPE> rank => -31
                          | <UNNAMED> rank => -32
-                         | <Lex290> rank => -33
-                         | <Lex292> rank => -34
-                         | <Lex293> rank => -35
-                         | <Lex291> rank => -36
+                         | <USER_DEFINED_TYPE_CATALOG> rank => -33
+                         | <USER_DEFINED_TYPE_NAME> rank => -34
+                         | <USER_DEFINED_TYPE_SCHEMA> rank => -35
+                         | <USER_DEFINED_TYPE_CODE> rank => -36
 <Set_Descriptor_Statement> ::= <SET> <SQL_maybe> <DESCRIPTOR> <Descriptor_Name> <Set_Descriptor_Information> rank => 0
 <Gen3300> ::= <Comma> <Set_Header_Information> rank => 0
 <Gen3300_any> ::= <Gen3300>* rank => 0
@@ -3582,19 +3582,19 @@ lexeme default = action => [start,length,value] latm => 1
                                      | <Lex569> <Period> <INT> rank => -2
                                      | <Lex569> <Period> <BIGINT> rank => -3
                                      | <Lex569> <Period> <REAL> rank => -4
-                                     | <Lex569> <Period> <Lex571> rank => -5
+                                     | <Lex569> <Period> <DOUBLE_PRECISION> rank => -5
                                      | <Lex569> <Period> <BOOLEAN> rank => -6
-                                     | <Lex569> <Period> <Lex572> rank => -7
-                                     | <Lex569> <Period> <Lex573> rank => -8
+                                     | <Lex569> <Period> <SQLSTATE_TYPE> rank => -7
+                                     | <Lex569> <Period> <INDICATOR_TYPE> rank => -8
 <Ada_Unqualified_Type_Specification> ::= <CHAR> <Left_Paren> <Lex570> <Double_Period> <Length> <Right_Paren> rank => 0
                                        | <SMALLINT> rank => -1
                                        | <INT> rank => -2
                                        | <BIGINT> rank => -3
                                        | <REAL> rank => -4
-                                       | <Lex571> rank => -5
+                                       | <DOUBLE_PRECISION> rank => -5
                                        | <BOOLEAN> rank => -6
-                                       | <Lex572> rank => -7
-                                       | <Lex573> rank => -8
+                                       | <SQLSTATE_TYPE> rank => -7
+                                       | <INDICATOR_TYPE> rank => -8
 <Ada_Derived_Type_Specification> ::= <Ada_Clob_Variable> rank => 0
                                    | <Ada_Clob_Locator_Variable> rank => -1
                                    | <Ada_Blob_Variable> rank => -2
@@ -4044,47 +4044,47 @@ lexeme default = action => [start,length,value] latm => 1
 <Statement_Information_Item> ::= <Simple_Target_Specification> <Equals_Operator> <Statement_Information_Item_Name> rank => 0
 <Statement_Information_Item_Name> ::= <NUMBER> rank => 0
                                     | <MORE> rank => -1
-                                    | <Lex093> rank => -2
-                                    | <Lex094> rank => -3
-                                    | <Lex130> rank => -4
-                                    | <Lex131> rank => -5
-                                    | <Lex237> rank => -6
-                                    | <Lex274> rank => -7
-                                    | <Lex275> rank => -8
-                                    | <Lex276> rank => -9
+                                    | <COMMAND_FUNCTION> rank => -2
+                                    | <COMMAND_FUNCTION_CODE> rank => -3
+                                    | <DYNAMIC_FUNCTION> rank => -4
+                                    | <DYNAMIC_FUNCTION_CODE> rank => -5
+                                    | <ROW_COUNT> rank => -6
+                                    | <TRANSACTIONS_COMMITTED> rank => -7
+                                    | <TRANSACTIONS_ROLLED_BACK> rank => -8
+                                    | <TRANSACTION_ACTIVE> rank => -9
 <Gen3981> ::= <EXCEPTION> rank => 0
             | <CONDITION> rank => -1
 <Gen3983> ::= <Comma> <Condition_Information_Item> rank => 0
 <Gen3983_any> ::= <Gen3983>* rank => 0
 <Condition_Information> ::= <Gen3981> <Condition_Number> <Condition_Information_Item> <Gen3983_any> rank => 0
 <Condition_Information_Item> ::= <Simple_Target_Specification> <Equals_Operator> <Condition_Information_Item_Name> rank => 0
-<Condition_Information_Item_Name> ::= <Lex071> rank => 0
-                                    | <Lex083> rank => -1
-                                    | <Lex092> rank => -2
-                                    | <Lex097> rank => -3
-                                    | <Lex098> rank => -4
-                                    | <Lex100> rank => -5
-                                    | <Lex101> rank => -6
-                                    | <Lex102> rank => -7
-                                    | <Lex112> rank => -8
-                                    | <Lex173> rank => -9
-                                    | <Lex174> rank => -10
-                                    | <Lex175> rank => -11
-                                    | <Lex202> rank => -12
-                                    | <Lex203> rank => -13
-                                    | <Lex204> rank => -14
-                                    | <Lex231> rank => -15
-                                    | <Lex234> rank => -16
-                                    | <Lex235> rank => -17
-                                    | <Lex236> rank => -18
-                                    | <Lex241> rank => -19
-                                    | <Lex250> rank => -20
-                                    | <Lex257> rank => -21
-                                    | <Lex265> rank => -22
-                                    | <Lex269> rank => -23
-                                    | <Lex280> rank => -24
-                                    | <Lex281> rank => -25
-                                    | <Lex282> rank => -26
+<Condition_Information_Item_Name> ::= <CATALOG_NAME> rank => 0
+                                    | <CLASS_ORIGIN> rank => -1
+                                    | <COLUMN_NAME> rank => -2
+                                    | <CONDITION_NUMBER> rank => -3
+                                    | <CONNECTION_NAME> rank => -4
+                                    | <CONSTRAINT_CATALOG> rank => -5
+                                    | <CONSTRAINT_NAME> rank => -6
+                                    | <CONSTRAINT_SCHEMA> rank => -7
+                                    | <CURSOR_NAME> rank => -8
+                                    | <MESSAGE_LENGTH> rank => -9
+                                    | <MESSAGE_OCTET_LENGTH> rank => -10
+                                    | <MESSAGE_TEXT> rank => -11
+                                    | <PARAMETER_MODE> rank => -12
+                                    | <PARAMETER_NAME> rank => -13
+                                    | <PARAMETER_ORDINAL_POSITION> rank => -14
+                                    | <RETURNED_SQLSTATE> rank => -15
+                                    | <ROUTINE_CATALOG> rank => -16
+                                    | <ROUTINE_NAME> rank => -17
+                                    | <ROUTINE_SCHEMA> rank => -18
+                                    | <SCHEMA_NAME> rank => -19
+                                    | <SERVER_NAME> rank => -20
+                                    | <SPECIFIC_NAME> rank => -21
+                                    | <SUBCLASS_ORIGIN> rank => -22
+                                    | <TABLE_NAME> rank => -23
+                                    | <TRIGGER_CATALOG> rank => -24
+                                    | <TRIGGER_NAME> rank => -25
+                                    | <TRIGGER_SCHEMA> rank => -26
 <Condition_Number> ::= <Simple_Value_Specification> rank => 0
 <A> ~ 'A':i
 <ABS> ~ 'ABS':i
@@ -4163,6 +4163,7 @@ lexeme default = action => [start,length,value] latm => 1
 :lexeme ~ <CAST>  priority => 1
 <CAST> ~ 'CAST':i
 <CATALOG> ~ 'CATALOG':i
+<CATALOG_NAME> ~ 'CATALOG_NAME':i
 <CEIL> ~ 'CEIL':i
 <CEILING> ~ 'CEILING':i
 <CHAIN> ~ 'CHAIN':i
@@ -4172,31 +4173,49 @@ lexeme default = action => [start,length,value] latm => 1
 <CHARACTER> ~ 'CHARACTER':i
 <CHARACTERISTICS> ~ 'CHARACTERISTICS':i
 <CHARACTERS> ~ 'CHARACTERS':i
+<CHARACTER_LENGTH> ~ 'CHARACTER_LENGTH':i
+<CHARACTER_SET_CATALOG> ~ 'CHARACTER_SET_CATALOG':i
+<CHARACTER_SET_NAME> ~ 'CHARACTER_SET_NAME':i
+<CHARACTER_SET_SCHEMA> ~ 'CHARACTER_SET_SCHEMA':i
+<CHAR_LENGTH> ~ 'CHAR_LENGTH':i
 :lexeme ~ <CHECK>  priority => 1
 <CHECK> ~ 'CHECK':i
 <CHECKED> ~ 'CHECKED':i
+<CLASS_ORIGIN> ~ 'CLASS_ORIGIN':i
 :lexeme ~ <CLOB>  priority => 1
 <CLOB> ~ 'CLOB':i
 :lexeme ~ <CLOSE>  priority => 1
 <CLOSE> ~ 'CLOSE':i
 <COALESCE> ~ 'COALESCE':i
 <COBOL> ~ 'COBOL':i
+<CODE_UNITS> ~ 'CODE_UNITS':i
 :lexeme ~ <COLLATE>  priority => 1
 <COLLATE> ~ 'COLLATE':i
 <COLLATION> ~ 'COLLATION':i
+<COLLATION_CATALOG> ~ 'COLLATION_CATALOG':i
+<COLLATION_NAME> ~ 'COLLATION_NAME':i
+<COLLATION_SCHEMA> ~ 'COLLATION_SCHEMA':i
 <COLLECT> ~ 'COLLECT':i
 :lexeme ~ <COLUMN>  priority => 1
 <COLUMN> ~ 'COLUMN':i
+<COLUMN_NAME> ~ 'COLUMN_NAME':i
+<COMMAND_FUNCTION> ~ 'COMMAND_FUNCTION':i
+<COMMAND_FUNCTION_CODE> ~ 'COMMAND_FUNCTION_CODE':i
 :lexeme ~ <COMMIT>  priority => 1
 <COMMIT> ~ 'COMMIT':i
 <COMMITTED> ~ 'COMMITTED':i
 <CONDITION> ~ 'CONDITION':i
+<CONDITION_NUMBER> ~ 'CONDITION_NUMBER':i
 :lexeme ~ <CONNECT>  priority => 1
 <CONNECT> ~ 'CONNECT':i
 <CONNECTION> ~ 'CONNECTION':i
+<CONNECTION_NAME> ~ 'CONNECTION_NAME':i
 :lexeme ~ <CONSTRAINT>  priority => 1
 <CONSTRAINT> ~ 'CONSTRAINT':i
 <CONSTRAINTS> ~ 'CONSTRAINTS':i
+<CONSTRAINT_CATALOG> ~ 'CONSTRAINT_CATALOG':i
+<CONSTRAINT_NAME> ~ 'CONSTRAINT_NAME':i
+<CONSTRAINT_SCHEMA> ~ 'CONSTRAINT_SCHEMA':i
 <CONSTRUCTOR> ~ 'CONSTRUCTOR':i
 <CONSTRUCTORS> ~ 'CONSTRUCTORS':i
 <CONTAINS> ~ 'CONTAINS':i
@@ -4207,22 +4226,45 @@ lexeme default = action => [start,length,value] latm => 1
 :lexeme ~ <CORRESPONDING>  priority => 1
 <CORRESPONDING> ~ 'CORRESPONDING':i
 <COUNT> ~ 'COUNT':i
+<COVAR_POP> ~ 'COVAR_POP':i
+<COVAR_SAMP> ~ 'COVAR_SAMP':i
 :lexeme ~ <CREATE>  priority => 1
 <CREATE> ~ 'CREATE':i
 :lexeme ~ <CROSS>  priority => 1
 <CROSS> ~ 'CROSS':i
 :lexeme ~ <CUBE>  priority => 1
 <CUBE> ~ 'CUBE':i
+<CUME_DIST> ~ 'CUME_DIST':i
 :lexeme ~ <CURRENT>  priority => 1
 <CURRENT> ~ 'CURRENT':i
+<CURRENT_COLLATION> ~ 'CURRENT_COLLATION':i
+:lexeme ~ <CURRENT_DATE>  priority => 1
+<CURRENT_DATE> ~ 'CURRENT_DATE':i
+:lexeme ~ <CURRENT_DEFAULT_TRANSFORM_GROUP>  priority => 1
+<CURRENT_DEFAULT_TRANSFORM_GROUP> ~ 'CURRENT_DEFAULT_TRANSFORM_GROUP':i
+:lexeme ~ <CURRENT_PATH>  priority => 1
+<CURRENT_PATH> ~ 'CURRENT_PATH':i
+:lexeme ~ <CURRENT_ROLE>  priority => 1
+<CURRENT_ROLE> ~ 'CURRENT_ROLE':i
+:lexeme ~ <CURRENT_TIME>  priority => 1
+<CURRENT_TIME> ~ 'CURRENT_TIME':i
+:lexeme ~ <CURRENT_TIMESTAMP>  priority => 1
+<CURRENT_TIMESTAMP> ~ 'CURRENT_TIMESTAMP':i
+:lexeme ~ <CURRENT_TRANSFORM_GROUP_FOR_TYPE>  priority => 1
+<CURRENT_TRANSFORM_GROUP_FOR_TYPE> ~ 'CURRENT_TRANSFORM_GROUP_FOR_TYPE':i
+:lexeme ~ <CURRENT_USER>  priority => 1
+<CURRENT_USER> ~ 'CURRENT_USER':i
 :lexeme ~ <CURSOR>  priority => 1
 <CURSOR> ~ 'CURSOR':i
+<CURSOR_NAME> ~ 'CURSOR_NAME':i
 :lexeme ~ <CYCLE>  priority => 1
 <CYCLE> ~ 'CYCLE':i
 <D> ~ 'D':i
 <DATA> ~ 'DATA':i
 :lexeme ~ <DATE>  priority => 1
 <DATE> ~ 'DATE':i
+<DATETIME_INTERVAL_CODE> ~ 'DATETIME_INTERVAL_CODE':i
+<DATETIME_INTERVAL_PRECISION> ~ 'DATETIME_INTERVAL_PRECISION':i
 :lexeme ~ <DAY>  priority => 1
 <DAY> ~ 'DAY':i
 <DCL> ~ 'DCL':i
@@ -4244,6 +4286,7 @@ lexeme default = action => [start,length,value] latm => 1
 <DEGREE> ~ 'DEGREE':i
 :lexeme ~ <DELETE>  priority => 1
 <DELETE> ~ 'DELETE':i
+<DENSE_RANK> ~ 'DENSE_RANK':i
 <DEPTH> ~ 'DEPTH':i
 :lexeme ~ <DEREF>  priority => 1
 <DEREF> ~ 'DEREF':i
@@ -4264,10 +4307,13 @@ lexeme default = action => [start,length,value] latm => 1
 <DOMAIN> ~ 'DOMAIN':i
 :lexeme ~ <DOUBLE>  priority => 1
 <DOUBLE> ~ 'DOUBLE':i
+<DOUBLE_PRECISION> ~ 'DOUBLE_PRECISION':i
 :lexeme ~ <DROP>  priority => 1
 <DROP> ~ 'DROP':i
 :lexeme ~ <DYNAMIC>  priority => 1
 <DYNAMIC> ~ 'DYNAMIC':i
+<DYNAMIC_FUNCTION> ~ 'DYNAMIC_FUNCTION':i
+<DYNAMIC_FUNCTION_CODE> ~ 'DYNAMIC_FUNCTION_CODE':i
 <E> ~ 'E':i
 :lexeme ~ <EACH>  priority => 1
 <EACH> ~ 'EACH':i
@@ -4359,6 +4405,7 @@ lexeme default = action => [start,length,value] latm => 1
 <INCREMENT> ~ 'INCREMENT':i
 :lexeme ~ <INDICATOR>  priority => 1
 <INDICATOR> ~ 'INDICATOR':i
+<INDICATOR_TYPE> ~ 'INDICATOR_TYPE':i
 <INITIALLY> ~ 'INITIALLY':i
 :lexeme ~ <INNER>  priority => 1
 <INNER> ~ 'INNER':i
@@ -4392,6 +4439,8 @@ lexeme default = action => [start,length,value] latm => 1
 <JOIN> ~ 'JOIN':i
 <K> ~ 'K':i
 <KEY> ~ 'KEY':i
+<KEY_MEMBER> ~ 'KEY_MEMBER':i
+<KEY_TYPE> ~ 'KEY_TYPE':i
 <KIND> ~ 'KIND':i
 :lexeme ~ <LANGUAGE>  priority => 1
 <LANGUAGE> ~ 'LANGUAGE':i
@@ -4446,7 +4495,6 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex025> ~ ']'
 <Lex026> ~ '??)'
 <Lex027> ~ '^'
-<Lex028> ~ '_':i
 <Lex029> ~ '|'
 <Lex030> ~ '{'
 <Lex031> ~ '}'
@@ -4465,130 +4513,10 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex047> ~ [^"]
 <Lex048> ~ '""'
 <Lex049> ~ [\n]
-<Lex071> ~ 'CATALOG_NAME':i
-<Lex077> ~ 'CHARACTER_LENGTH':i
-<Lex078> ~ 'CHARACTER_SET_CATALOG':i
-<Lex079> ~ 'CHARACTER_SET_NAME':i
-<Lex080> ~ 'CHARACTER_SET_SCHEMA':i
-<Lex081> ~ 'CHAR_LENGTH':i
-<Lex083> ~ 'CLASS_ORIGIN':i
-<Lex086> ~ 'CODE_UNITS':i
-<Lex088> ~ 'COLLATION_CATALOG':i
-<Lex089> ~ 'COLLATION_NAME':i
-<Lex090> ~ 'COLLATION_SCHEMA':i
-<Lex092> ~ 'COLUMN_NAME':i
-<Lex093> ~ 'COMMAND_FUNCTION':i
-<Lex094> ~ 'COMMAND_FUNCTION_CODE':i
-<Lex097> ~ 'CONDITION_NUMBER':i
-<Lex098> ~ 'CONNECTION_NAME':i
-<Lex100> ~ 'CONSTRAINT_CATALOG':i
-<Lex101> ~ 'CONSTRAINT_NAME':i
-<Lex102> ~ 'CONSTRAINT_SCHEMA':i
-<Lex108> ~ 'COVAR_POP':i
-<Lex109> ~ 'COVAR_SAMP':i
-<Lex110> ~ 'CUME_DIST':i
-<Lex111> ~ 'CURRENT_COLLATION':i
-<Lex112> ~ 'CURSOR_NAME':i
-<Lex114> ~ 'DATETIME_INTERVAL_CODE':i
-<Lex115> ~ 'DATETIME_INTERVAL_PRECISION':i
-<Lex122> ~ 'DENSE_RANK':i
-<Lex130> ~ 'DYNAMIC_FUNCTION':i
-<Lex131> ~ 'DYNAMIC_FUNCTION_CODE':i
-<Lex161> ~ 'KEY_MEMBER':i
-<Lex162> ~ 'KEY_TYPE':i
-<Lex173> ~ 'MESSAGE_LENGTH':i
-<Lex174> ~ 'MESSAGE_OCTET_LENGTH':i
-<Lex175> ~ 'MESSAGE_TEXT':i
-<Lex193> ~ 'OCTET_LENGTH':i
-<Lex202> ~ 'PARAMETER_MODE':i
-<Lex203> ~ 'PARAMETER_NAME':i
-<Lex204> ~ 'PARAMETER_ORDINAL_POSITION':i
-<Lex205> ~ 'PARAMETER_SPECIFIC_CATALOG':i
-<Lex206> ~ 'PARAMETER_SPECIFIC_NAME':i
-<Lex207> ~ 'PARAMETER_SPECIFIC_SCHEMA':i
-<Lex211> ~ 'PERCENTILE_CONT':i
-<Lex212> ~ 'PERCENTILE_DISC':i
-<Lex213> ~ 'PERCENT_RANK':i
-<Lex228> ~ 'RETURNED_CARDINALITY':i
-<Lex229> ~ 'RETURNED_LENGTH':i
-<Lex230> ~ 'RETURNED_OCTET_LENGTH':i
-<Lex231> ~ 'RETURNED_SQLSTATE':i
-<Lex234> ~ 'ROUTINE_CATALOG':i
-<Lex235> ~ 'ROUTINE_NAME':i
-<Lex236> ~ 'ROUTINE_SCHEMA':i
-<Lex237> ~ 'ROW_COUNT':i
-<Lex238> ~ 'ROW_NUMBER':i
-<Lex241> ~ 'SCHEMA_NAME':i
-<Lex242> ~ 'SCOPE_CATALOG':i
-<Lex243> ~ 'SCOPE_NAME':i
-<Lex244> ~ 'SCOPE_SCHEMA':i
-<Lex250> ~ 'SERVER_NAME':i
-<Lex257> ~ 'SPECIFIC_NAME':i
-<Lex261> ~ 'STDDEV_POP':i
-<Lex262> ~ 'STDDEV_SAMP':i
-<Lex265> ~ 'SUBCLASS_ORIGIN':i
-<Lex269> ~ 'TABLE_NAME':i
-<Lex272> ~ 'TOP_LEVEL_COUNT':i
-<Lex274> ~ 'TRANSACTIONS_COMMITTED':i
-<Lex275> ~ 'TRANSACTIONS_ROLLED_BACK':i
-<Lex276> ~ 'TRANSACTION_ACTIVE':i
-<Lex280> ~ 'TRIGGER_CATALOG':i
-<Lex281> ~ 'TRIGGER_NAME':i
-<Lex282> ~ 'TRIGGER_SCHEMA':i
-<Lex290> ~ 'USER_DEFINED_TYPE_CATALOG':i
-<Lex291> ~ 'USER_DEFINED_TYPE_CODE':i
-<Lex292> ~ 'USER_DEFINED_TYPE_NAME':i
-<Lex293> ~ 'USER_DEFINED_TYPE_SCHEMA':i
-:lexeme ~ <Lex341>  priority => 1
-<Lex341> ~ 'CURRENT_DATE':i
-:lexeme ~ <Lex342>  priority => 1
-<Lex342> ~ 'CURRENT_DEFAULT_TRANSFORM_GROUP':i
-:lexeme ~ <Lex343>  priority => 1
-<Lex343> ~ 'CURRENT_PATH':i
-:lexeme ~ <Lex344>  priority => 1
-<Lex344> ~ 'CURRENT_ROLE':i
-:lexeme ~ <Lex345>  priority => 1
-<Lex345> ~ 'CURRENT_TIME':i
-:lexeme ~ <Lex346>  priority => 1
-<Lex346> ~ 'CURRENT_TIMESTAMP':i
-:lexeme ~ <Lex347>  priority => 1
-<Lex347> ~ 'CURRENT_TRANSFORM_GROUP_FOR_TYPE':i
-:lexeme ~ <Lex348>  priority => 1
-<Lex348> ~ 'CURRENT_USER':i
 :lexeme ~ <Lex371>  priority => 1
 <Lex371> ~ 'END-EXEC'
-:lexeme ~ <Lex465>  priority => 1
-<Lex465> ~ 'REGR_AVGX':i
-:lexeme ~ <Lex466>  priority => 1
-<Lex466> ~ 'REGR_AVGY':i
-:lexeme ~ <Lex467>  priority => 1
-<Lex467> ~ 'REGR_COUNT':i
-:lexeme ~ <Lex468>  priority => 1
-<Lex468> ~ 'REGR_INTERCEPT':i
 :lexeme ~ <Lex469>  priority => 1
 <Lex469> ~ 'REGR_R2'
-:lexeme ~ <Lex470>  priority => 1
-<Lex470> ~ 'REGR_SLOPE':i
-:lexeme ~ <Lex471>  priority => 1
-<Lex471> ~ 'REGR_SXX':i
-:lexeme ~ <Lex472>  priority => 1
-<Lex472> ~ 'REGR_SXY':i
-:lexeme ~ <Lex473>  priority => 1
-<Lex473> ~ 'REGR_SYY':i
-:lexeme ~ <Lex490>  priority => 1
-<Lex490> ~ 'SESSION_USER':i
-:lexeme ~ <Lex506>  priority => 1
-<Lex506> ~ 'SYSTEM_USER':i
-:lexeme ~ <Lex511>  priority => 1
-<Lex511> ~ 'TIMEZONE_HOUR':i
-:lexeme ~ <Lex512>  priority => 1
-<Lex512> ~ 'TIMEZONE_MINUTE':i
-:lexeme ~ <Lex530>  priority => 1
-<Lex530> ~ 'VAR_POP':i
-:lexeme ~ <Lex531>  priority => 1
-<Lex531> ~ 'VAR_SAMP':i
-:lexeme ~ <Lex537>  priority => 1
-<Lex537> ~ 'WIDTH_BUCKET':i
 <Lex543> ~ [^']
 <Lex557_many> ~ [\d]+
 <Lex558> ~ [a-zA-Z]
@@ -4599,9 +4527,6 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex568_many> ~ [^\s]+
 <Lex569> ~ 'Interfaces.SQL'
 <Lex570> ~ '1'
-<Lex571> ~ 'DOUBLE_PRECISION':i
-<Lex572> ~ 'SQLSTATE_TYPE':i
-<Lex573> ~ 'INDICATOR_TYPE':i
 <Lex585_many> ~ [^\s]+
 <Lex586_many> ~ [^\s]+
 <Lex587> ~ '01'
@@ -4622,6 +4547,9 @@ lexeme default = action => [start,length,value] latm => 1
 <MEMBER> ~ 'MEMBER':i
 :lexeme ~ <MERGE>  priority => 1
 <MERGE> ~ 'MERGE':i
+<MESSAGE_LENGTH> ~ 'MESSAGE_LENGTH':i
+<MESSAGE_OCTET_LENGTH> ~ 'MESSAGE_OCTET_LENGTH':i
+<MESSAGE_TEXT> ~ 'MESSAGE_TEXT':i
 :lexeme ~ <METHOD>  priority => 1
 <METHOD> ~ 'METHOD':i
 <MIN> ~ 'MIN':i
@@ -4672,6 +4600,7 @@ lexeme default = action => [start,length,value] latm => 1
 <NUMERIC> ~ 'NUMERIC':i
 <OBJECT> ~ 'OBJECT':i
 <OCTETS> ~ 'OCTETS':i
+<OCTET_LENGTH> ~ 'OCTET_LENGTH':i
 :lexeme ~ <OF>  priority => 1
 <OF> ~ 'OF':i
 :lexeme ~ <OLD>  priority => 1
@@ -4707,11 +4636,20 @@ lexeme default = action => [start,length,value] latm => 1
 <PAD> ~ 'PAD':i
 :lexeme ~ <PARAMETER>  priority => 1
 <PARAMETER> ~ 'PARAMETER':i
+<PARAMETER_MODE> ~ 'PARAMETER_MODE':i
+<PARAMETER_NAME> ~ 'PARAMETER_NAME':i
+<PARAMETER_ORDINAL_POSITION> ~ 'PARAMETER_ORDINAL_POSITION':i
+<PARAMETER_SPECIFIC_CATALOG> ~ 'PARAMETER_SPECIFIC_CATALOG':i
+<PARAMETER_SPECIFIC_NAME> ~ 'PARAMETER_SPECIFIC_NAME':i
+<PARAMETER_SPECIFIC_SCHEMA> ~ 'PARAMETER_SPECIFIC_SCHEMA':i
 <PARTIAL> ~ 'PARTIAL':i
 :lexeme ~ <PARTITION>  priority => 1
 <PARTITION> ~ 'PARTITION':i
 <PASCAL> ~ 'PASCAL':i
 <PATH> ~ 'PATH':i
+<PERCENTILE_CONT> ~ 'PERCENTILE_CONT':i
+<PERCENTILE_DISC> ~ 'PERCENTILE_DISC':i
+<PERCENT_RANK> ~ 'PERCENT_RANK':i
 <PIC> ~ 'PIC':i
 <PICTURE> ~ 'PICTURE':i
 <PLACING> ~ 'PLACING':i
@@ -4747,6 +4685,22 @@ lexeme default = action => [start,length,value] latm => 1
 <REFERENCES> ~ 'REFERENCES':i
 :lexeme ~ <REFERENCING>  priority => 1
 <REFERENCING> ~ 'REFERENCING':i
+:lexeme ~ <REGR_AVGX>  priority => 1
+<REGR_AVGX> ~ 'REGR_AVGX':i
+:lexeme ~ <REGR_AVGY>  priority => 1
+<REGR_AVGY> ~ 'REGR_AVGY':i
+:lexeme ~ <REGR_COUNT>  priority => 1
+<REGR_COUNT> ~ 'REGR_COUNT':i
+:lexeme ~ <REGR_INTERCEPT>  priority => 1
+<REGR_INTERCEPT> ~ 'REGR_INTERCEPT':i
+:lexeme ~ <REGR_SLOPE>  priority => 1
+<REGR_SLOPE> ~ 'REGR_SLOPE':i
+:lexeme ~ <REGR_SXX>  priority => 1
+<REGR_SXX> ~ 'REGR_SXX':i
+:lexeme ~ <REGR_SXY>  priority => 1
+<REGR_SXY> ~ 'REGR_SXY':i
+:lexeme ~ <REGR_SYY>  priority => 1
+<REGR_SYY> ~ 'REGR_SYY':i
 <RELATIVE> ~ 'RELATIVE':i
 :lexeme ~ <RELEASE>  priority => 1
 <RELEASE> ~ 'RELEASE':i
@@ -4757,6 +4711,10 @@ lexeme default = action => [start,length,value] latm => 1
 <RESULT> ~ 'RESULT':i
 :lexeme ~ <RETURN>  priority => 1
 <RETURN> ~ 'RETURN':i
+<RETURNED_CARDINALITY> ~ 'RETURNED_CARDINALITY':i
+<RETURNED_LENGTH> ~ 'RETURNED_LENGTH':i
+<RETURNED_OCTET_LENGTH> ~ 'RETURNED_OCTET_LENGTH':i
+<RETURNED_SQLSTATE> ~ 'RETURNED_SQLSTATE':i
 :lexeme ~ <RETURNS>  priority => 1
 <RETURNS> ~ 'RETURNS':i
 :lexeme ~ <REVOKE>  priority => 1
@@ -4769,16 +4727,25 @@ lexeme default = action => [start,length,value] latm => 1
 :lexeme ~ <ROLLUP>  priority => 1
 <ROLLUP> ~ 'ROLLUP':i
 <ROUTINE> ~ 'ROUTINE':i
+<ROUTINE_CATALOG> ~ 'ROUTINE_CATALOG':i
+<ROUTINE_NAME> ~ 'ROUTINE_NAME':i
+<ROUTINE_SCHEMA> ~ 'ROUTINE_SCHEMA':i
 :lexeme ~ <ROW>  priority => 1
 <ROW> ~ 'ROW':i
 :lexeme ~ <ROWS>  priority => 1
 <ROWS> ~ 'ROWS':i
+<ROW_COUNT> ~ 'ROW_COUNT':i
+<ROW_NUMBER> ~ 'ROW_NUMBER':i
 <S> ~ 'S':i
 :lexeme ~ <SAVEPOINT>  priority => 1
 <SAVEPOINT> ~ 'SAVEPOINT':i
 <SCALE> ~ 'SCALE':i
 <SCHEMA> ~ 'SCHEMA':i
+<SCHEMA_NAME> ~ 'SCHEMA_NAME':i
 <SCOPE> ~ 'SCOPE':i
+<SCOPE_CATALOG> ~ 'SCOPE_CATALOG':i
+<SCOPE_NAME> ~ 'SCOPE_NAME':i
+<SCOPE_SCHEMA> ~ 'SCOPE_SCHEMA':i
 :lexeme ~ <SCROLL>  priority => 1
 <SCROLL> ~ 'SCROLL':i
 :lexeme ~ <SEARCH>  priority => 1
@@ -4795,7 +4762,10 @@ lexeme default = action => [start,length,value] latm => 1
 <SEPARATE> ~ 'SEPARATE':i
 <SEQUENCE> ~ 'SEQUENCE':i
 <SERIALIZABLE> ~ 'SERIALIZABLE':i
+<SERVER_NAME> ~ 'SERVER_NAME':i
 <SESSION> ~ 'SESSION':i
+:lexeme ~ <SESSION_USER>  priority => 1
+<SESSION_USER> ~ 'SESSION_USER':i
 :lexeme ~ <SET>  priority => 1
 <SET> ~ 'SET':i
 <SETS> ~ 'SETS':i
@@ -4814,12 +4784,14 @@ lexeme default = action => [start,length,value] latm => 1
 <SPECIFIC> ~ 'SPECIFIC':i
 :lexeme ~ <SPECIFICTYPE>  priority => 1
 <SPECIFICTYPE> ~ 'SPECIFICTYPE':i
+<SPECIFIC_NAME> ~ 'SPECIFIC_NAME':i
 :lexeme ~ <SQL>  priority => 1
 <SQL> ~ 'SQL':i
 :lexeme ~ <SQLEXCEPTION>  priority => 1
 <SQLEXCEPTION> ~ 'SQLEXCEPTION':i
 :lexeme ~ <SQLSTATE>  priority => 1
 <SQLSTATE> ~ 'SQLSTATE':i
+<SQLSTATE_TYPE> ~ 'SQLSTATE_TYPE':i
 :lexeme ~ <SQLWARNING>  priority => 1
 <SQLWARNING> ~ 'SQLWARNING':i
 <SQRT> ~ 'SQRT':i
@@ -4829,8 +4801,11 @@ lexeme default = action => [start,length,value] latm => 1
 <STATEMENT> ~ 'STATEMENT':i
 :lexeme ~ <STATIC>  priority => 1
 <STATIC> ~ 'STATIC':i
+<STDDEV_POP> ~ 'STDDEV_POP':i
+<STDDEV_SAMP> ~ 'STDDEV_SAMP':i
 <STRUCTURE> ~ 'STRUCTURE':i
 <STYLE> ~ 'STYLE':i
+<SUBCLASS_ORIGIN> ~ 'SUBCLASS_ORIGIN':i
 :lexeme ~ <SUBMULTISET>  priority => 1
 <SUBMULTISET> ~ 'SUBMULTISET':i
 <SUBSTRING> ~ 'SUBSTRING':i
@@ -4839,9 +4814,12 @@ lexeme default = action => [start,length,value] latm => 1
 <SYMMETRIC> ~ 'SYMMETRIC':i
 :lexeme ~ <SYSTEM>  priority => 1
 <SYSTEM> ~ 'SYSTEM':i
+:lexeme ~ <SYSTEM_USER>  priority => 1
+<SYSTEM_USER> ~ 'SYSTEM_USER':i
 :lexeme ~ <TABLE>  priority => 1
 <TABLE> ~ 'TABLE':i
 <TABLESAMPLE> ~ 'TABLESAMPLE':i
+<TABLE_NAME> ~ 'TABLE_NAME':i
 <TEMPORARY> ~ 'TEMPORARY':i
 :lexeme ~ <THEN>  priority => 1
 <THEN> ~ 'THEN':i
@@ -4850,11 +4828,19 @@ lexeme default = action => [start,length,value] latm => 1
 <TIME> ~ 'TIME':i
 :lexeme ~ <TIMESTAMP>  priority => 1
 <TIMESTAMP> ~ 'TIMESTAMP':i
+:lexeme ~ <TIMEZONE_HOUR>  priority => 1
+<TIMEZONE_HOUR> ~ 'TIMEZONE_HOUR':i
+:lexeme ~ <TIMEZONE_MINUTE>  priority => 1
+<TIMEZONE_MINUTE> ~ 'TIMEZONE_MINUTE':i
 :lexeme ~ <TO>  priority => 1
 <TO> ~ 'TO':i
+<TOP_LEVEL_COUNT> ~ 'TOP_LEVEL_COUNT':i
 :lexeme ~ <TRAILING>  priority => 1
 <TRAILING> ~ 'TRAILING':i
 <TRANSACTION> ~ 'TRANSACTION':i
+<TRANSACTIONS_COMMITTED> ~ 'TRANSACTIONS_COMMITTED':i
+<TRANSACTIONS_ROLLED_BACK> ~ 'TRANSACTIONS_ROLLED_BACK':i
+<TRANSACTION_ACTIVE> ~ 'TRANSACTION_ACTIVE':i
 <TRANSFORM> ~ 'TRANSFORM':i
 <TRANSFORMS> ~ 'TRANSFORMS':i
 <TRANSLATE> ~ 'TRANSLATE':i
@@ -4864,6 +4850,9 @@ lexeme default = action => [start,length,value] latm => 1
 <TREAT> ~ 'TREAT':i
 :lexeme ~ <TRIGGER>  priority => 1
 <TRIGGER> ~ 'TRIGGER':i
+<TRIGGER_CATALOG> ~ 'TRIGGER_CATALOG':i
+<TRIGGER_NAME> ~ 'TRIGGER_NAME':i
+<TRIGGER_SCHEMA> ~ 'TRIGGER_SCHEMA':i
 <TRIM> ~ 'TRIM':i
 :lexeme ~ <TRUE>  priority => 1
 <TRUE> ~ 'TRUE':i
@@ -4890,6 +4879,10 @@ lexeme default = action => [start,length,value] latm => 1
 <USAGE> ~ 'USAGE':i
 :lexeme ~ <USER>  priority => 1
 <USER> ~ 'USER':i
+<USER_DEFINED_TYPE_CATALOG> ~ 'USER_DEFINED_TYPE_CATALOG':i
+<USER_DEFINED_TYPE_CODE> ~ 'USER_DEFINED_TYPE_CODE':i
+<USER_DEFINED_TYPE_NAME> ~ 'USER_DEFINED_TYPE_NAME':i
+<USER_DEFINED_TYPE_SCHEMA> ~ 'USER_DEFINED_TYPE_SCHEMA':i
 :lexeme ~ <USING>  priority => 1
 <USING> ~ 'USING':i
 <V> ~ 'V':i
@@ -4901,6 +4894,10 @@ lexeme default = action => [start,length,value] latm => 1
 <VARCHAR> ~ 'VARCHAR':i
 :lexeme ~ <VARYING>  priority => 1
 <VARYING> ~ 'VARYING':i
+:lexeme ~ <VAR_POP>  priority => 1
+<VAR_POP> ~ 'VAR_POP':i
+:lexeme ~ <VAR_SAMP>  priority => 1
+<VAR_SAMP> ~ 'VAR_SAMP':i
 <VIEW> ~ 'VIEW':i
 :lexeme ~ <WHEN>  priority => 1
 <WHEN> ~ 'WHEN':i
@@ -4908,6 +4905,8 @@ lexeme default = action => [start,length,value] latm => 1
 <WHENEVER> ~ 'WHENEVER':i
 :lexeme ~ <WHERE>  priority => 1
 <WHERE> ~ 'WHERE':i
+:lexeme ~ <WIDTH_BUCKET>  priority => 1
+<WIDTH_BUCKET> ~ 'WIDTH_BUCKET':i
 :lexeme ~ <WINDOW>  priority => 1
 <WINDOW> ~ 'WINDOW':i
 :lexeme ~ <WITH>  priority => 1
@@ -4922,6 +4921,7 @@ lexeme default = action => [start,length,value] latm => 1
 :lexeme ~ <YEAR>  priority => 1
 <YEAR> ~ 'YEAR':i
 <ZONE> ~ 'ZONE':i
+<_> ~ '_':i
 <a> ~ 'a'
 <auto> ~ 'auto'
 <b> ~ 'b'
