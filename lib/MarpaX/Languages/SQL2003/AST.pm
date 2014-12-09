@@ -65,6 +65,10 @@ Parse $input and return $self. Accept an optional %opts hash that can be:
 
 If true, produces the AST as an XML::LibXML::Document object. Default is a false value, meaning that the AST is a composite structure of blessed hash references and array references. Any LHS or RHS of the SQL grammar is a blessed hash. Any token is an array reference containing three items:
 
+=item
+
+Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to have a meaning to Marpa's recognizer. Typical examples are: trace_terminals => 1, trace_values => 1.
+
 =over
 
 =item start
@@ -83,46 +87,107 @@ Token value.
 
 =cut
 
+no warnings;
+sub Marpa::R2::Scanless::G::parse {
+    my ( $slg, $input_ref, $arg1, @more_args ) = @_;
+    if ( not defined $input_ref or ref $input_ref ne 'SCALAR' ) {
+        Marpa::R2::exception(
+            q{$slr->parse(): first argument must be a ref to string});
+    }
+    my @recce_args = ( { grammar => $slg } );
+    my @semantics_package_arg = ();
+    DO_ARG1: {
+        last if not defined $arg1;
+        my $reftype = ref $arg1;
+        if ( $reftype eq 'HASH' ) {
+
+            # if second arg is ref to hash, it is the first set
+            # of named args for
+            # the recognizer
+            push @recce_args, $arg1;
+            last DO_ARG1;
+        } ## end if ( $reftype eq 'HASH' )
+        if ( $reftype eq q{} ) {
+
+            # if second arg is a string, it is the semantic package
+            push @semantics_package_arg, { semantics_package => $arg1 };
+        }
+        if ( ref $arg1 and ref $input_ref ne 'HASH' ) {
+            Marpa::R2::exception(
+                q{$slr->parse(): second argument must be a package name or a ref to HASH}
+            );
+        }
+    } ## end DO_ARG1:
+    if ( grep { ref $_ ne 'HASH' } @more_args ) {
+        Marpa::R2::exception(
+            q{$slr->parse(): third and later arguments must be ref to HASH});
+    }
+    my $slr = Marpa::R2::Scanless::R->new( @recce_args, @more_args,
+        @semantics_package_arg );
+    my $input_length = ${$input_ref};
+    my $length_read  = eval {$slr->read($input_ref)} || die "$@\n" . $slr->show_progress() . "\nTerminals expected:" . join(' ', @{$slr->terminals_expected}) . "\n";;
+    if ( $length_read != length $input_length ) {
+        die 'read in $slr->parse() ended prematurely', "\n",
+            "  The input length is $input_length\n",
+            "  The length read is $length_read\n",
+            "  The cause may be an event\n",
+            "  The $slr->parse() method does not allow parses to trigger events";
+    } ## end if ( $length_read != length $input_length )
+    if ( my $ambiguous_status = $slr->ambiguous() ) {
+        Marpa::R2::exception( "Parse of the input is ambiguous\n",
+            $ambiguous_status );
+    }
+
+    my $value_ref = $slr->value();
+    Marpa::R2::exception(
+        '$slr->parse() read the input, but there was no parse', "\n" )
+        if not $value_ref;
+
+    return $value_ref;
+} ## end sub Marpa::R2::Scanless::G::parse
+
 sub parse {
   my ($self, $input, %opts) = @_;
 
   my $xml = (exists($opts{xml}) && $opts{xml}) ? 1 : 0;
 
   my $basenameSemanticsPackage = $xml ? 'XML' : 'Blessed';
+  my %otherOpts = map {$_ => $opts{$_}} grep {$_ ne 'xml'} keys %opts;
 
   my $value = $G->parse(\$input,
                         join('::',__PACKAGE__, 'Actions', $basenameSemanticsPackage),
-                        {ranking_method => 'high_rule_only'});
+                        {%otherOpts,
+                         ranking_method => 'high_rule_only'});
 
   return defined($value) ? ${$value} : undef;
 }
 
 # ----------------------------------------------------------------------------------------
 
-=head2 asXML($self, $input)
+=head2 asXML($self, $input, %opts)
 
-Alias to $self->parse($input, xml => 1).
+Alias to $self->parse($input, xml => 1, %opts).
 
 =cut
 
 sub asXML {
-  my ($self, $input) = @_;
+  my ($self, $input, %opts) = @_;
 
-  return $self->parse($input, xml => 1);
+  return $self->parse($input, xml => 1, %opts);
 }
 
 # ----------------------------------------------------------------------------------------
 
-=head2 asBlessed($self, $input)
+=head2 asBlessed($self, $input, %opts)
 
-Alias to $self->parse($input, xml => 0).
+Alias to $self->parse($input, xml => 0, %opts).
 
 =cut
 
 sub asBlessed {
-  my ($self, $input) = @_;
+  my ($self, $input, %opts) = @_;
 
-  return $self->parse($input, xml => 0);
+  return $self->parse($input, xml => 0, %opts);
 }
 
 =head1 SEE ALSO
