@@ -68,103 +68,131 @@
 
 <SQL terminal character> ::= <SQL language character>
 
-<SQL language character> ::= <simple Latin letter> | <digit> | <SQL special character>
+<SQL language character L0> ~ <simple Latin letter L0> | <digit L0> | <SQL special character L0>  /* Reusable in L0 grammar */
+<SQL language character> ~ <SQL language character L0>
 
-<simple Latin letter> ::= <simple Latin upper case letter> | <simple Latin lower case letter>
+<simple Latin letter L0> ~ <simple Latin upper case letter L0> | <simple Latin lower case letter L0>  /* Reusable in L0 grammar */
+<simple Latin upper case letter L0> ~ [A-Z] /* Reusable in L0 grammar */
+<simple Latin lower case letter L0> ~ [a-z] /* Reusable in L0 grammar */
 
-<simple Latin upper case letter> ::= [A-Z]
+<digit L0> ~ /*LEX*/[0-9] /* Reusable in L0 grammar */
+<digit> ~ <digit L0>
 
-<simple Latin lower case letter> ::= [a-z]
+<SQL special character L0> ~
+		<space L0>
+	|	<double quote L0>
+	|	<percent L0>
+	|	<ampersand L0>
+	|	<quote L0>
+	|	<left paren L0>
+	|	<right paren L0>
+	|	<asterisk L0>
+	|	<plus sign L0>
+	|	<comma L0>
+	|	<minus sign L0>
+	|	<period L0>
+	|	<solidus L0>
+	|	<colon L0>
+	|	<semicolon L0>
+	|	<less than operator L0>
+	|	<equals operator L0>
+	|	<greater than operator L0>
+	|	<question mark L0>
+	|	<left bracket L0>
+	|	<right bracket L0>
+	|	<circumflex L0>
+	|	<underscore L0>
+	|	<vertical bar L0>
+	|	<left brace L0>
+	|	<right brace L0>
 
-<digit> ::= [0-9]
+<SQL special character> ~ <SQL special character L0>
 
-<SQL special character> ::=
-		<space>
-	|	<double quote>
-	|	<percent>
-	|	<ampersand>
-	|	<quote>
-	|	<left paren>
-	|	<right paren>
-	|	<asterisk>
-	|	<plus sign>
-	|	<comma>
-	|	<minus sign>
-	|	<period>
-	|	<solidus>
-	|	<colon>
-	|	<semicolon>
-	|	<less than operator>
-	|	<equals operator>
-	|	<greater than operator>
-	|	<question mark>
-	|	<left bracket>
-	|	<right bracket>
-	|	<circumflex>
-	|	<underscore>
-	|	<vertical bar>
-	|	<left brace>
-	|	<right brace>
+<space L0> ~ \s
 
-<space> ~ \s
+<double quote L0> ~ '"'
 
-<double quote> ~ '"'
+<percent L0> ~ '%'
+<percent> ~ <percent L0>
 
-<percent> ~ '%'
+<ampersand L0> ~ '&'
+<ampersand> ~ <ampersand L0>
 
-<ampersand> ~ '&'
+<quote L0> ~ "'"
+<quote> ~<quote L0>
 
-<quote> ~ "'"
+<left paren L0> ~ '('
+<left paren> ~ <left paren L0>
 
-<left paren> ~ '('
+<right paren L0> ~ ')'
+<right paren> ~ <right paren L0>
 
-<right paren> ~ ')'
+<asterisk L0> ~ '*'
+<asterisk> ~<asterisk L0>
 
-<asterisk> ~ '*'
+<plus sign L0> ~ '+'
+<plus sign> ~ <plus sign L0>
 
-<plus sign> ~ '+'
+<comma L0> ~ ','
+<comma> ~ <comma L0>
 
-<comma> ~ ','
+<minus sign L0> ~ '-'
+<minus sign> ~ <minus sign L0>
 
-<minus sign> ~ '-'
+<period L0> ~ '.'
+<period> ~ <period L0>
 
-<period> ~ '.'
+<solidus L0> ~ '/'
+<solidus> ~ <solidus L0>
 
-<solidus> ~ '/'
+<colon L0> ~ ':'
+<colon> ~ <colon L0>
 
-<colon> ~ ':'
+<semicolon L0> ~ ';'
+<semicolon> ~ <semicolon L0>
 
-<semicolon> ~ ';'
+<less than operator L0> ~ '<'
+<less than operator> ~ <less than operator L0>
 
-<less than operator> ~ '<'
+<equals operator L0> ~ '='
+<equals operator> ~ <equals operator L0>
 
-<equals operator> ~ '='
+<greater than operator L0> ~ '>'
+<greater than operator> ~ <greater than operator L0>
 
-<greater than operator> ~ '>'
-
-<question mark> ~ '?'
+<question mark L0> ~ '?'
+<question mark> ~ <question mark L0>
 
 <left bracket or trigraph> ::= <left bracket> | <left bracket trigraph>
 
 <right bracket or trigraph> ::= <right bracket> | <right bracket trigraph>
 
-<left bracket> ~ '['
+<left bracket L0> ~ '['
+<left bracket> ~ <left bracket L0>
 
-<left bracket trigraph> ~ '??('
+<left bracket trigraph L0> ~ '??('
+<left bracket trigraph> ~ <left bracket trigraph L0>
 
-<right bracket> ~ ']'
+<right bracket L0> ~ ']'
+<right bracket> ~ <right bracket L0>
 
-<right bracket trigraph> ~ '??)'
+<right bracket trigraph L0> ~ '??)'
+<right bracket trigraph> ~ <right bracket trigraph L0>
 
-<circumflex> ~ '^'
+<circumflex L0> ~ '^'
+<circumflex> ~ <circumflex L0>
 
-<underscore> ~ '_'
+<underscore L0> ~ '_'
+<underscore> ~ <underscore L0>
 
-<vertical bar> ~ '|'
+<vertical bar L0> ~ '|'
+<vertical bar> ~ <vertical bar L0>
 
-<left brace> ~ '{'
+<left brace L0> ~ '{'
+<left brace> ~ <left brace L0>
 
-<right brace> ~ '}'
+<right brace L0> ~ '}'
+<right brace> ~ <right brace L0>
 
 <token> ::= <nondelimiter token> | <delimiter token>
 
@@ -180,49 +208,53 @@
 
 <regular identifier> ::= <SQL language identifier>
 
-<large object length token> ::= <digit>+ <multiplier>
+<large object length token> ~ /*LEX*/(<digit L0>)+ <multiplier L0>
 
-<multiplier> ::= K | M | G
+<multiplier L0> ~ /*LEX*/K | /*LEX*/M | /*LEX*/G
+<multiplier> ~ <multiplier L0>
 
-<delimited identifier> ~ /*LEX*/'"' <delimited identifier body> /*LEX*/'"'
+<delimited identifier L0> ~ /*LEX*/'"' <delimited identifier body L0> /*LEX*/'"'
+<delimited identifier> ~ <delimited identifier L0>
 
-<delimited identifier body> ~ ((<delimited identifier part>))+
+<delimited identifier body L0> ~ /*LEX*/(<delimited identifier part L0>)+
 
-<delimited identifier part> ~ <nondoublequote character> | <doublequote symbol>
+<delimited identifier part L0> ~ <nondoublequote character L0> | <doublequote symbol L0>
 
-<Unicode delimited identifier> ~
-		/*LEX*/U /*LEX*/'&' /*LEX*/'"' <Unicode delimiter body> /*LEX*/'"'
-		<Unicode escape specifier>
+<Unicode delimited identifier L0> ~
+		/*LEX*/U /*LEX*/'&' /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"'
+		<Unicode escape specifier L0>
 
+<Unicode delimited identifier> ~ <Unicode delimited identifier L0>
 
-<Unicode escape specifier> ~ (( /*LEX*/UESCAPE /*LEX*/"'" <Unicode escape character> /*LEX*/"'" ))?
+<Unicode escape specifier L0> ~ /*LEX*/( /*LEX*/UESCAPE /*LEX*/"'" <Unicode escape character L0> /*LEX*/"'" )?
 
-<Unicode delimiter body> ~ ((<Unicode identifier part>))+
+<Unicode delimiter body L0> ~ /*LEX*/(<Unicode identifier part L0>)+
 
-<Unicode identifier part> ~ <Unicode delimited identifier part> | <Unicode escape value internal>
+<Unicode identifier part L0> ~ <Unicode delimited identifier part L0> | <Unicode escape value internal L0>
 
-<Unicode delimited identifier part> ~ <nondoublequote character> | <doublequote symbol>
+<Unicode delimited identifier part L0> ~ <nondoublequote character L0> | <doublequote symbol L0>
 
-<Unicode escape value internal> ~
-		<Unicode 4 digit escape value>
-	|	<Unicode 6 digit escape value>
-	|	<Unicode character escape value>
+<Unicode escape value internal L0> ~
+		<Unicode 4 digit escape value L0>
+	|	<Unicode 6 digit escape value L0>
+	|	<Unicode character escape value L0>
 
-<Unicode escape value> ~ <Unicode escape value internal>
+<Unicode escape value L0> ~ <Unicode escape value internal L0>
+<Unicode escape value> ~ <Unicode escape value L0>
 
-<Unicode hexit> ~ /*LEX*/[a-fA-f0-9]
+<Unicode hexit L0> ~ /*LEX*/[a-fA-f0-9]
 
-<Unicode 4 digit escape value> ~ <Unicode escape character><Unicode hexit><Unicode hexit><Unicode hexit><Unicode hexit>
+<Unicode 4 digit escape value L0> ~ <Unicode escape character L0> <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0>
 
-<Unicode 6 digit escape value> ~ <Unicode escape character>/*LEX*/'+'<Unicode hexit><Unicode hexit><Unicode hexit><Unicode hexit><Unicode hexit><Unicode hexit>
+<Unicode 6 digit escape value L0> ~ <Unicode escape character L0> /*LEX*/'+' <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0> <Unicode hexit L0>
 
-<Unicode character escape value> ~ <Unicode escape character><Unicode escape character>
+<Unicode character escape value L0> ~ <Unicode escape character L0 ><Unicode escape character L0>
 
-<Unicode escape character> ~ /*LEX*/#x1b
+<Unicode escape character L0> ~ /*LEX*/#x1b
 
-<nondoublequote character> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
+<nondoublequote character L0> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
 
-<doublequote symbol> ~ /*LEX*/'""'
+<doublequote symbol L0> ~ /*LEX*/'""'
 
 <delimiter token> ::=
 		<character string literal>
@@ -243,19 +275,26 @@
 	|	<double colon>
 	|	<double period>
 
-<not equals operator> ::= <less than operator> <greater than operator>
+<not equals operator L0> ~ <less than operator L0> <greater than operator L0>
+<not equals operator> ~ <not equals operator L0>
 
-<greater than or equals operator> ::= <greater than operator> <equals operator>
+<greater than or equals operator L0> ~ <greater than operator L0> <equals operator L0>
+<greater than or equals operator> ~ <greater than or equals operator L0>
 
-<less than or equals operator> ::= <less than operator> <equals operator>
+<less than or equals operator L0> ~ <less than operator L0> <equals operator L0>
+<less than or equals operator> ~ <less than or equals operator L0>
 
-<concatenation operator> ::= <vertical bar> <vertical bar>
+<concatenation operator L0> ~ <vertical bar L0> <vertical bar L0>
+<concatenation operator> ~ <concatenation operator L0>
 
-<right arrow> ::= <minus sign> <greater than operator>
+<right arrow L0> ~ <minus sign L0> <greater than operator L0>
+<right arrow> ~ <right arrow L0>
 
-<double colon> ::= <colon> <colon>
+<double colon L0> ~ <colon L0> <colon L0>
+<double colon> ~ <double colon L0>
 
-<double period> ::= <period> <period>
+<double period L0> ~ <period L0> <period L0>
+<double period> ~ <double period L0>
 
 /*
 <separator> ::= ( <comment> | <space> )+
@@ -805,15 +844,20 @@
 */
 <character string literal> ::=
 		( <introducer><character set specification> )?
-		( <quote> <character representation>* <quote> )+
+		( <character string literal unit> )+
+
+<character string literal unit> ~ <character string literal L0>
+<character string literal L0> ~ <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
 
 <introducer> ::= <underscore>
 
-<character representation> ::= <nonquote character> | <quote symbol>
+<character representation L0> ~ <nonquote character L0> | <quote symbol L0>
 
-<nonquote character> ~ /*LEX*/[^'] | /*LEX*/#x5c /*LEX*/[']
+<character representation> ~ <character representation L0>
 
-<quote symbol> ~ /*LEX*/"'" /*LEX*/"'"
+<nonquote character L0> ~ /*LEX*/[^'] | /*LEX*/#x5c /*LEX*/[']
+
+<quote symbol L0> ~ /*LEX*/"'" /*LEX*/"'"
 
 /* Rewriten because explicit <separator> in the rule causes trouble */
 /*
@@ -822,7 +866,14 @@
 		( <separator> <quote> <character representation>* <quote> )*
 */
 <national character string literal> ::=
-		N ( <quote> <character representation>* <quote> )+
+                <national character string literal start>
+                <national character string literal unit>*
+
+<national character string literal unit L0> ~ <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
+<national character string literal unit> ~ <national character string literal unit L0>
+
+<national character string literal start L0> ~ /*LEX*/'N' <national character string literal unit L0>
+<national character string literal start> ~ <national character string literal start L0>
 
 /* Rewriten because explicit <separator> in the rule causes trouble */
 /*
@@ -854,23 +905,26 @@
 
 <signed numeric literal> ::= <sign>? <unsigned numeric literal>
 
-<unsigned numeric literal> ::= <exact numeric literal> | <approximate numeric literal>
+<unsigned numeric literal L0> ~ <exact numeric literal L0> | <approximate numeric literal L0>
+<unsigned numeric literal> ~ <unsigned numeric literal L0>
 
-<unsigned integer> ::= \d+
+<unsigned integer L0> ~ \d+
+<unsigned integer> ~ <unsigned integer L0>
 
-<exact numeric literal> ::=
-		<unsigned integer> ( <period> <unsigned integer>? )?
-	|	<period> <unsigned integer>
+<exact numeric literal L0> ~
+		<unsigned integer L0> /*LEX*/( <period L0> /*LEX*/(<unsigned integer L0>)? )?
+	|	<period L0> <unsigned integer L0>
 
-<sign> ::= <plus sign> | <minus sign>
+<sign L0> ~ <plus sign L0> | <minus sign L0>
+<sign> ~ <sign L0>
 
-<approximate numeric literal> ::= <mantissa> E <exponent>
+<approximate numeric literal L0> ~ <mantissa L0> /*LEX*/E <exponent L0>
 
-<mantissa> ::= <exact numeric literal>
+<mantissa L0> ~ <exact numeric literal L0>
 
-<exponent> ::= <signed integer>
+<exponent L0> ~ <signed integer L0>
 
-<signed integer> ::= <sign>? <unsigned integer>
+<signed integer L0> ~ /*LEX*/(<sign L0>)? <unsigned integer L0>
 
 <datetime literal> ::= <date literal> | <time literal> | <timestamp literal>
 
@@ -880,59 +934,63 @@
 
 <timestamp literal> ::= TIMESTAMP <timestamp string>
 
-<date string> ::= <quote> <unquoted date string> <quote>
+<date string L0> ~ <quote L0> <unquoted date string L0> <quote L0>
+<date string> ~ <date string L0>
 
-<time string> ::= <quote> <unquoted time string> <quote>
+<time string L0> ~ <quote L0> <unquoted time string L0> <quote L0>
+<time string> ~ <time string L0>
 
-<timestamp string> ::= <quote> <unquoted timestamp string> <quote>
+<timestamp string L0> ~ <quote L0> <unquoted timestamp string L0> <quote L0>
+<timestamp string> ~ <timestamp string L0>
 
-<time zone interval> ::= <sign> <hours value> <colon> <minutes value>
+<time zone interval L0> ~ <sign L0> <hours value L0> <colon L0> <minutes value L0>
 
-<date value> ::= <years value> <minus sign> <months value> <minus sign> <days value>
+<date value L0> ~ <years value L0> <minus sign L0> <months value L0> <minus sign L0> <days value L0>
 
-<time value> ::= <hours value> <colon> <minutes value> <colon> <seconds value>
+<time value L0> ~ <hours value L0> <colon L0> <minutes value L0> <colon L0> <seconds value L0>
 
 <interval literal> ::= INTERVAL <sign>? <interval string> <interval qualifier>
 
-<interval string> ::= <quote> <unquoted interval string> <quote>
+<interval string L0> ~ <quote L0> <unquoted interval string L0> <quote L0>
+<interval string> ~ <interval string L0>
 
-<unquoted date string> ::= <date value>
+<unquoted date string L0> ~ <date value L0>
 
-<unquoted time string> ::= <time value> <time zone interval>?
+<unquoted time string L0> ~ <time value L0> /*LEX*/(<time zone interval L0>)?
 
-<unquoted timestamp string> ::= <unquoted date string> <space> <unquoted time string>
+<unquoted timestamp string L0> ~ <unquoted date string L0> <space L0> <unquoted time string L0>
 
-<unquoted interval string> ::= <sign>? ( <year_month literal> | <day_time literal> )
+<unquoted interval string L0> ~ /*LEX*/(<sign L0>)? /*LEX*/( <year_month literal L0> | <day_time literal L0> )
 
-<year_month literal> ::= <years value> | ( <years value> <minus sign> )? <months value>
+<year_month literal L0> ~ <years value L0> | /*LEX*/( <years value L0> <minus sign L0> )? <months value L0>
 
-<day_time literal> ::= <day_time interval> | <time interval>
+<day_time literal L0> ~ <day_time interval L0> | <time interval L0>
 
-<day_time interval> ::=
-		<days value> ( <space> <hours value> ( <colon> <minutes value> ( <colon> <seconds value> )? )? )?
+<day_time interval L0> ~
+		<days value L0> /*LEX*/( <space L0> <hours value L0> /*LEX*/( <colon L0> <minutes value L0> /*LEX*/( <colon L0> <seconds value L0> )? )? )?
 
-<time interval> ::=
-		<hours value> ( <colon> <minutes value> ( <colon> <seconds value> )? )?
-	|	<minutes value> ( <colon> <seconds value> )?
-	|	<seconds value>
+<time interval L0> ~
+		<hours value L0> /*LEX*/( <colon L0> <minutes value L0> /*LEX*/( <colon L0> <seconds value L0> )? )?
+	|	<minutes value L0> /*LEX*/( <colon L0> <seconds value L0> )?
+	|	<seconds value L0>
 
-<years value> ::= <datetime value>
+<years value L0> ~ <datetime value L0>
 
-<months value> ::= <datetime value>
+<months value L0> ~ <datetime value L0>
 
-<days value> ::= <datetime value>
+<days value L0> ~ <datetime value L0>
 
-<hours value> ::= <datetime value>
+<hours value L0> ~ <datetime value L0>
 
-<minutes value> ::= <datetime value>
+<minutes value L0> ~ <datetime value L0>
 
-<seconds value> ::= <seconds integer value> ( <period> <seconds fraction>? )?
+<seconds value L0> ~ <seconds integer value L0> /*LEX*/( <period L0> /*LEX*/(<seconds fraction L0>)? )?
 
-<seconds integer value> ::= <unsigned integer>
+<seconds integer value L0> ~ <unsigned integer L0>
 
-<seconds fraction> ::= <unsigned integer>
+<seconds fraction L0> ~ <unsigned integer L0>
 
-<datetime value> ::= <unsigned integer>
+<datetime value L0> ~ <unsigned integer L0>
 
 <boolean literal> ::= TRUE | FALSE | UNKNOWN
 
@@ -940,13 +998,13 @@
 
 <actual identifier> ::= <regular identifier> | <delimited identifier>
 
-/* Forced to be a lexeme */
-/*
-<SQL language identifier> ::=
-		<SQL language identifier start> ( <underscore> | <SQL language identifier part> )*
-*/
+<SQL language identifier L0> ~ <SQL language identifier start L0> /*LEX*/( <underscore L0> | <SQL language identifier part L0> )*
 
-<SQL language identifier> ~ /*LEX*/ [a-zA-Z] (( /*LEX*/ [a-zA-Z0-9_] ))*
+<SQL language identifier start L0> ~  <simple Latin letter L0>
+
+<SQL language identifier part L0> ~  <simple Latin letter L0> | <digit L0>
+
+<SQL language identifier> ~ <SQL language identifier L0>
 
 <authorization identifier> ::= <role name> | <user identifier>
 
@@ -3891,7 +3949,8 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <SQLSTATE subclass value> ::= <SQLSTATE char><SQLSTATE char><SQLSTATE char> /* !! See the Syntax Rules. */
 
-<SQLSTATE char> ::= <simple Latin upper case letter> | <digit>
+<SQLSTATE char L0> ~ <simple Latin upper case letter L0> | <digit L0>
+<SQLSTATE char> ~ <SQLSTATE char L0>
 
 <condition action> ::= CONTINUE | <go to>
 

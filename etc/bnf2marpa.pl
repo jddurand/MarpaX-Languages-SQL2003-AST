@@ -23,6 +23,7 @@ sub new() {
               lexemes => {},
               lexemesExact => {},
               unCopiableLexemes => {},
+              forgottenSymbols => {},
               lexemePriorities => {},
 	      symbols => {},
               start => {number => undef, rule => ''},
@@ -94,22 +95,27 @@ sub _pushG1 {
     my %rank = ();
     my $previous = '';
     foreach (@{$self->{rules}}) {
-      if (! (defined($_->{rhs}))) {
-        print STDERR "[WARN] Internal error: undefined RHS list for symbol $_->{lhs}\n";
+      my $rule = $_;
+      if (! (defined($rule->{rhs}))) {
+        print STDERR "[WARN] Internal error: undefined RHS list for symbol $rule->{lhs}\n";
         exit(EXIT_FAILURE);
       }
-      my $lhs = $_->{lhs} eq ':start' ? ':start' : "<$_->{lhs}>";
-      my $rulesep = $_->{rulesep};
+      my $lhs = $rule->{lhs} eq ':start' ? ':start' : "<$rule->{lhs}>";
+      my $rulesep = $rule->{rulesep};
       my $content;
-      if (@{$_->{rhs}}) {
-	my $rhs = '<' . join('> <', @{$_->{rhs}}) . '>' . $_->{quantifier};
+      if (@{$rule->{rhs}}) {
+        my @rhs = ();
+        foreach (@{$rule->{rhs}}) {
+          push(@rhs, $self->{forgottenSymbols}->{$_} ? "(<$_>)" : "<$_>");
+        }
+	my $rhs = join(' ', @rhs) . $rule->{quantifier};
 	if ($previous ne $lhs) {
-	  $content = join(' ', $lhs, $_->{rulesep}, $rhs);
+	  $content = join(' ', $lhs, $rule->{rulesep}, $rhs);
 	} else {
 	  $content = (' ' x length("$lhs  ")) . ' | ' . $rhs;
 	}
       } else {
-	$content = join(' ', $lhs, $_->{rulesep});
+	$content = join(' ', $lhs, $rule->{rulesep});
       }
       if ($rulesep eq '::=') {
         $rank{$lhs} //= 0;
@@ -118,7 +124,7 @@ sub _pushG1 {
         }
       }
       push(@{$rcp}, $content);
-      $self->{symbols}->{$_->{lhs}} = {terminal => 0, content => $content};
+      $self->{symbols}->{$rule->{lhs}} = {terminal => 0, content => $content};
       $previous = $lhs;
     }
 
@@ -183,13 +189,13 @@ sub _symbol {
   if (! exists($UNALTERABLED_SYMBOLS{$symbol})) {
     $symbol =~ s/[^[:alnum:]]/ /g;
     #
-    # Break symbol in words, ucfirst(lc()) on all but the first one that is lc()
+    # Break symbol in words, ucfirst(lc()) on all words except if it is originally SQL
     #
     pos($symbol) = undef;
     my @words = ();
     while ($symbol =~ m/(\w+)/sxmg) {
       my $match = substr($symbol, $-[1], $+[1] - $-[1]);
-      push(@words, ($match eq 'SQL' ? $match : (@words ? ucfirst(lc($match)) : lc($match))));
+      push(@words, ($match eq 'SQL' ? $match : ucfirst(lc($match))));
     }
     $symbol = join('_', @words);
   }
@@ -325,6 +331,15 @@ sub _LexemeExpressions {
   my $symbol = sprintf('GenLex%03d', 1 + (scalar @{$self->{rules}}));
   $self->{unCopiableLexemes}->{$symbol} = 1;
   $self->{lexemePriorities}->{$symbol} = $priority;
+  $self->_rule($symbol, '~', $expressions);
+  return $symbol;
+}
+
+sub _factorForgotten {
+  my ($self, $lparen3, $expressions, $rparen3) = @_;
+
+  my $symbol = sprintf('GenLex%03d', 1 + (scalar @{$self->{rules}}));
+  $self->{forgottenSymbols}->{$symbol} = 1;
   $self->_rule($symbol, '~', $expressions);
   return $symbol;
 }
@@ -588,6 +603,7 @@ factor         ::= forceUncopiableLexeme hex                             LexemeP
                |   forceUncopiableLexeme METACHAR                        LexemePriority action => _factorMetachar
                |   forceUncopiableLexeme LPAREN expressions RPAREN       LexemePriority action => _factorExpressions
                |   LPAREN2 expressions RPAREN2                           LexemePriority action => _LexemeExpressions
+               |   LPAREN3 expressions RPAREN3                                          action => _factorForgotten
                |   symbol
 ranges         ::= range+                                               action => _ranges
 range          ::= CHAR                                                 action => _range1
@@ -604,6 +620,8 @@ LPAREN        ~ '('
 LPAREN2       ~ '(('
 RPAREN        ~ ')'
 RPAREN2       ~ '))'
+LPAREN3       ~ '!('
+RPAREN3       ~ ')!'
 CARET         ~ '^'
 DQUOTE        ~ '"'
 SQUOTE        ~ [']
