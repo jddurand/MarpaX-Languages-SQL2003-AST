@@ -1,5 +1,7 @@
 /*
 ############################################################################
+# Comments:                                                                #
+############################################################################
 # <host identifier> is approximated to [^\s]+ for any language             #
 # <regular identifier> is supposed to match <SQL language identifier>      #
 # <direct implementation-defined statement> is skipped.                    #
@@ -9,14 +11,21 @@
 # <host label identifier> is skipped                                       #
 # <host PL/I label variable> is skipped                                    #
 # <COBOL dbcs> is not implemented                                          #
-# In unicode strings ESCAPE 'x' is supported but IGNORED                   #
+# In unicode strings ESCAPE sentence is supported but IGNORED              #
 #                                                                          #
+# Take care that in SQL-2003 string are single quoted, Unicode strings are #
+# double quoted!                                                           #
+#                                                                          #
+############################################################################
 # Marpa specific constraints:                                              #
+############################################################################
 # * <ref cast option> has been made non nullable                           #
 # * <cast option> has been made non nullable                               #
 # These two modifications upper had no impact IMHO on the grammar.         #
 #                                                                          #
-# Fatal errors in the grammar:                                             #
+############################################################################
+# Fatal errors in the grammar found on the internet:                       #
+############################################################################
 # * Typo <multset value expression>                                        #
 #   => Replaced by <multiset value expression>                             #
 # * Typo <module collation>                                                #
@@ -54,7 +63,8 @@
 # * Lexemes can have priorities a in Marpa's BNF                           #
 #                                                                          #
 # Marpa's :discard is handling all spaces, simple and bracketed comments   #
-# This mean that <separator>, <comment> and its subrules are removed.      #
+# This mean that <separator>, <comment> and its subrules are removed,      #
+# except when explicitely stated, e.g. in String rules.                    #
 ############################################################################
 */
 
