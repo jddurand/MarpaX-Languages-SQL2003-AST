@@ -14,7 +14,8 @@
 # In unicode strings ESCAPE sentence is supported but IGNORED              #
 #                                                                          #
 # Take care that in SQL-2003 string are single quoted, Unicode strings are #
-# double quoted!                                                           #
+# double quoted! Ok... I extended the grammar to allow single quote for    #
+# Unicode Strings -;                                                       #
 #                                                                          #
 ############################################################################
 # Marpa specific constraints:                                              #
@@ -235,7 +236,12 @@
 <delimited identifier part L0> ~ <nondoublequote character L0> | <doublequote symbol L0>
 
 <Unicode delimited identifier value> ~
-		/*LEX*/U /*LEX*/'&' /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"'
+		/*LEX*/U /*LEX*/'&'
+                /*LEX*/(
+                  /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"'
+                  |
+                  /*LEX*/['] <Unicode delimiter body L0> /*LEX*/[']
+                  )
 
 <Unicode delimited identifier> ::=
 		<Unicode delimited identifier value>
