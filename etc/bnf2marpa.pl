@@ -22,8 +22,8 @@ sub new() {
               rules => [],
               lexemes => {},
               lexemesExact => {},
+              separator => {},
               unCopiableLexemes => {},
-              forgottenSymbols => {},
               lexemePriorities => {},
 	      symbols => {},
               start => {number => undef, rule => ''},
@@ -36,21 +36,22 @@ sub _pushLexemes {
   my ($self, $rcp) = @_;
 
   foreach (sort {$a cmp $b} keys %{$self->{lexemes}}) {
-    if ($self->{lexemes}->{$_} eq '\'') {
-      $self->{lexemes}->{$_} = '[\']';
+    my $symbol = $_;
+    if ($self->{lexemes}->{$symbol} eq '\'') {
+      $self->{lexemes}->{$symbol} = '[\']';
     }
     my $content;
-    my $priority = $self->{lexemePriorities}->{$_};
-    if ($self->{lexemes}->{$_} =~ /^\[.+/) {
-      $content = join(' ', "<$_>", '~', $self->{lexemes}->{$_});
-    } elsif ($self->{lexemes}->{$_} =~ /^\\x\{/) {
-      my $thisContent = $self->{lexemes}->{$_};
+    my $priority = $self->{lexemePriorities}->{$symbol};
+    if ($self->{lexemes}->{$symbol} =~ /^\[.+/) {
+      $content = join(' ', "<$symbol>", '~', $self->{lexemes}->{$symbol});
+    } elsif ($self->{lexemes}->{$symbol} =~ /^\\x\{/) {
+      my $thisContent = $self->{lexemes}->{$symbol};
       my $lastCharacter = substr($thisContent, -1, 1);
       if ($lastCharacter eq '+' || $lastCharacter eq '*') {
         substr($thisContent, -1, 1, '');
-        $content = join(' ', "<$_>", '~', '[' . $thisContent . "]$lastCharacter");
+        $content = join(' ', "<$symbol>", '~', '[' . $thisContent . "]$lastCharacter");
       } else {
-        $content = join(' ', "<$_>", '~', '[' . $thisContent . ']');
+        $content = join(' ', "<$symbol>", '~', '[' . $thisContent . ']');
       }
     } else {
       #
@@ -60,27 +61,27 @@ sub _pushLexemes {
       # lexeme but another G1, and associate an action that will concatenate
       # all individual characters -;
       #
-      if (0 && length($self->{lexemes}->{$_}) > 1 && 0) {
-	my @rhs = map {($_ eq '\'') ? "[']" : "'$_':i"} (split(//, $self->{lexemes}->{$_}));
-        my $rulesep = $self->{unCopiableLexemes}->{$_} ? '~' : '::=';
-	$content = join(' ', "<$_>", '::=', @rhs, 'action', '=>', 'fakedLexeme', '# Faked lexeme - LATM handling the ambiguities');
+      if (0 && length($self->{lexemes}->{$symbol}) > 1 && 0) {
+	my @rhs = map {($_ eq '\'') ? "[']" : "'$_':i"} (split(//, $self->{lexemes}->{$symbol}));
+        my $rulesep = $self->{unCopiableLexemes}->{$symbol} ? '~' : '::=';
+	$content = join(' ', "<$symbol>", '::=', @rhs, 'action', '=>', 'fakedLexeme', '# Faked lexeme - LATM handling the ambiguities');
       } else {
         #
         # If this string is composed only of uppercase letters, it is assumed that the
         # token is in reality case insensitive
         #
-	my $rhs = join(' ', '\'' . $self->{lexemes}->{$_} . '\'');
-        if ($self->{lexemes}->{$_} =~ /^[A-Z_]+$/) {
+	my $rhs = join(' ', '\'' . $self->{lexemes}->{$symbol} . '\'');
+        if ($self->{lexemes}->{$symbol} =~ /^[A-Z_]+$/) {
           $rhs .= ':i';
         }
-	$content = join(' ', "<$_>", '~', $rhs);
+	$content = join(' ', "<$symbol>", '~', $rhs);
       }
     }
-    if ($self->{lexemePriorities}->{$_}) {
-      push(@{$rcp}, ":lexeme ~ <$_>  priority => $self->{lexemePriorities}->{$_}");
+    if ($self->{lexemePriorities}->{$symbol}) {
+      push(@{$rcp}, ":lexeme ~ <$symbol>  priority => $self->{lexemePriorities}->{$symbol}");
     }
     push(@{$rcp}, $content);
-    $self->{symbols}->{$_} = {terminal => 1, content => $content};
+    $self->{symbols}->{$symbol} = {terminal => 1, content => $content};
   }
 }
 
@@ -104,10 +105,7 @@ sub _pushG1 {
       my $rulesep = $rule->{rulesep};
       my $content;
       if (@{$rule->{rhs}}) {
-        my @rhs = ();
-        foreach (@{$rule->{rhs}}) {
-          push(@rhs, $self->{forgottenSymbols}->{$_} ? "(<$_>)" : "<$_>");
-        }
+        my @rhs = map {"<$_>"} @{$rule->{rhs}};
 	my $rhs = join(' ', @rhs) . $rule->{quantifier};
 	if ($previous ne $lhs) {
 	  $content = join(' ', $lhs, $rule->{rulesep}, $rhs);
@@ -123,7 +121,19 @@ sub _pushG1 {
           $content .= " rank => " . $rank{$lhs}--;
         }
       }
+      if ($self->{separator}->{$rule->{lhs}}) {
+        $content .= " separator => <$self->{separator}->{$rule->{lhs}}> proper => 0";
+      }
       push(@{$rcp}, $content);
+      if ($rulesep eq '~') {
+        #
+        # When we force the lexeme context, i.e. GenLex%d, it is in the rules area but truely is
+        # a lexeme. There is the special of priority, then.
+        #
+        if ($self->{lexemePriorities}->{$rule->{lhs}}) {
+          push(@{$rcp}, ":lexeme ~ <$rule->{lhs}> priority => $self->{lexemePriorities}->{$rule->{lhs}}");
+        }
+      }
       $self->{symbols}->{$rule->{lhs}} = {terminal => 0, content => $content};
       $previous = $lhs;
     }
@@ -148,17 +158,19 @@ sub _rules {
   push(@rc, <<DISCARD
 
 _WS ~ [\\s]+
-:discard ~ _WS
+<space any L0> ~ _WS
+<Discard_L0> ~ <space any L0>
 
 _COMMENT_EVERYYHERE_START ~ '--'
 _COMMENT_EVERYYHERE_END ~ [^\\n]*
 _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
-:discard ~ _COMMENT
+<SQL style comment L0> ~ _COMMENT
+<Discard_L0> ~ <SQL style comment L0>
 
 ############################################################################
 # Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
 ############################################################################
-<C style comment> ~ '/*' <comment interior> '*/'
+<C style comment L0> ~ '/*' <comment interior> '*/'
 <comment interior> ~
     <optional non stars>
     <optional star prefixed segments>
@@ -169,7 +181,10 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 <stars> ~ [*]+
 <optional star free text> ~ [^*]*
 <optional pre final stars> ~ [*]*
-:discard ~ <C style comment>
+<Discard_L0> ~ <C style comment L0>
+
+<discard> ~ <Discard_L0>
+:discard ~ <discard>
 DISCARD
       );
   $self->{grammar} = join("\n", @rc) . "\n";
@@ -201,6 +216,14 @@ sub _symbol {
   }
 
   return $symbol;
+}
+
+sub _lexeme {
+  my ($self, $symbol, $rulesep, $expressions, $priority) = @_;
+
+  $self->{lexemePriorities}->{$symbol} = $priority;
+
+  return $self->_rule($symbol, $rulesep, $expressions);
 }
 
 sub _rule {
@@ -328,19 +351,11 @@ sub _factorExpressions {
 sub _LexemeExpressions {
   my ($self, $lparen2, $expressions, $rparen2, $priority) = @_;
 
-  my $symbol = sprintf('GenLex%03d', 1 + (scalar @{$self->{rules}}));
+  my $symbol = $self->_symbol(sprintf('GenLex%03d', 1 + (scalar @{$self->{rules}})));
   $self->{unCopiableLexemes}->{$symbol} = 1;
   $self->{lexemePriorities}->{$symbol} = $priority;
   $self->_rule($symbol, '~', $expressions);
-  return $symbol;
-}
 
-sub _factorForgotten {
-  my ($self, $lparen3, $expressions, $rparen3) = @_;
-
-  my $symbol = sprintf('GenLex%03d', 1 + (scalar @{$self->{rules}}));
-  $self->{forgottenSymbols}->{$symbol} = 1;
-  $self->_rule($symbol, '~', $expressions);
   return $symbol;
 }
 
@@ -421,11 +436,11 @@ sub _factorStringSquote {
 }
 
 sub _termFactorQuantifier {
-  my ($self, $factor, $quantifier, $forcedSymbol, $optimizationMode) = @_;
+  my ($self, $factor, $quantifier, $separator) = @_;
 
   my $symbol;
   if ($quantifier eq '*' || $quantifier eq '+') {
-      $symbol = $forcedSymbol || $self->_symbol(sprintf('%s_%s', $factor, ($quantifier eq '*') ? 'any' : 'many'));
+      $symbol = $self->_symbol(sprintf('%s_%s', $factor, ($quantifier eq '*') ? 'any' : 'many'));
       if (! exists($self->{quantifiedSymbols}->{$symbol})) {
 	  $self->{quantifiedSymbols}->{$symbol}++;
 	  if (exists($self->{lexemesExact}->{$factor}) &&
@@ -452,14 +467,8 @@ sub _termFactorQuantifier {
                   my $rulesep = $self->{unCopiableLexemes}->{$factor} ? '~' : '::=';
                   print STDERR "[INFO] Transformation to a lexeme: $thisSymbol $rulesep $factor$thisQuantifier\n";
                   $self->_factor($self->{unCopiableLexemes}->{$factor}, $self->{lexemePriorities}->{$factor}, $thisContent, $self->{lexemesExact}->{$factor}->{type}, $self->{lexemesExact}->{$factor}->{value}, $thisQuantifier, $thisSymbol);
-		  if ($optimizationMode) {
-		      #
-		      # We are not in the lexer phase but in the optimization mode
-		      #
-		      $self->{symbols}->{$thisSymbol} = {terminal => 1, content => $thisContent};
-		  }
                   if ($quantifier eq '*') {
-                    my $newSymbol = $forcedSymbol || ($self->{unCopiableLexemes}->{$factor} ? sprintf('Lex%03d', 1 + (scalar @{$self->{lexemes}})) : sprintf('Gen%03d', 1 + (scalar @{$self->{rules}})));
+                    my $newSymbol = $self->{unCopiableLexemes}->{$factor} ? sprintf('Lex%03d', 1 + (scalar @{$self->{lexemes}})) : sprintf('Gen%03d', 1 + (scalar @{$self->{rules}}));
                     print STDERR "[INFO] Using a nullable symbol for: $symbol $rulesep $factor$quantifier, i.e. $newSymbol $rulesep $thisSymbol; $newSymbol ::= ;\n";
                     $self->_rule($newSymbol, $rulesep, [ [ [ $thisSymbol ] , {} ] ]);
                     $self->_rule($newSymbol, $rulesep, [ [ [] , {} ] ]);
@@ -468,12 +477,6 @@ sub _termFactorQuantifier {
                     #
 		    my $content = "$thisSymbol || ;";
                     $symbol = $newSymbol;
-		    if ($optimizationMode) {
-			#
-			# We are not in the lexer phase but in the optimization mode
-			#
-			$self->{symbols}->{$symbol} = {terminal => 0, content => $content};
-		    }
                   }
 		  if (--$self->{lexemesExact}->{$factor}->{usage} == 0) {
 		      delete($self->{lexemes}->{$factor});
@@ -496,6 +499,7 @@ sub _termFactorQuantifier {
       die "Unsupported quantifier '$quantifier'";
   }
 
+  $self->{separator}->{$symbol} = $separator;
 
   return $symbol;
 }
@@ -582,17 +586,22 @@ lexeme default = latm => 1
 symbol         ::= SYMBOL                                               action => _symbol
 rules          ::= rule+                                                action => _rules
 rule           ::= symbol RULESEP expressions                           action => _rule
+rule           ::= symbol RULESEP expressions LexemeOnlyPriority        action => _lexeme
 expressions    ::= concatenation+ separator => PIPE                     action => [values]
 concatenation  ::= exceptions                                           action => [values]
 exceptions     ::= exception+                                           action => [values]
 exception      ::= term
 priority       ~ [\d]+
+lexPriority    ~ [-+\d]+
 LexemePriority ::= ('priority' '=>') priority
 LexemePriority ::=                                                       action => _lexemeWithoutPriority
+LexemeOnlyPriority ::= ('lexPriority' '=>') lexPriority
 forceUncopiableLexeme ::= '/*LEX*/'                                      action => _isUncopiableLexeme
 forceUncopiableLexeme ::=                                                action => _isCopiableLexeme
+separator      ::= ('separator' '=>') symbol
 term           ::= factor
                |   factor QUANTIFIER                                     action => _termFactorQuantifier
+               |   factor QUANTIFIER separator                           action => _termFactorQuantifier
 hex            ::= HEX
 factor         ::= forceUncopiableLexeme hex                             LexemePriority action => _factorHex
                |   forceUncopiableLexeme LBRACKET       ranges RBRACKET  LexemePriority action => _factorRange
@@ -603,7 +612,6 @@ factor         ::= forceUncopiableLexeme hex                             LexemeP
                |   forceUncopiableLexeme METACHAR                        LexemePriority action => _factorMetachar
                |   forceUncopiableLexeme LPAREN expressions RPAREN       LexemePriority action => _factorExpressions
                |   LPAREN2 expressions RPAREN2                           LexemePriority action => _LexemeExpressions
-               |   LPAREN3 expressions RPAREN3                                          action => _factorForgotten
                |   symbol
 ranges         ::= range+                                               action => _ranges
 range          ::= CHAR                                                 action => _range1
@@ -620,8 +628,6 @@ LPAREN        ~ '('
 LPAREN2       ~ '(('
 RPAREN        ~ ')'
 RPAREN2       ~ '))'
-LPAREN3       ~ '!('
-RPAREN3       ~ ')!'
 CARET         ~ '^'
 DQUOTE        ~ '"'
 SQUOTE        ~ [']
@@ -670,7 +676,7 @@ METACHAR             ~ __METACHAR
 ############################################################################
 # Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
 ############################################################################
-<C style comment> ~ '/*' <comment interior> '*/'
+<C style comment L0> ~ '/*' <comment interior> '*/'
 <comment interior> ~
     <optional non stars>
     <optional star prefixed segments>
@@ -681,10 +687,12 @@ METACHAR             ~ __METACHAR
 <stars> ~ [*]+
 <optional star free text> ~ [^*]*
 <optional pre final stars> ~ [*]*
+<C style comment> ~ <C style comment L0>
 :discard ~ <C style comment>
 
 #################
 # Generic discard
 #################
-__SPACE_ANY ~ [\s]+
-:discard ~ __SPACE_ANY
+<space any L0> ~ [\s]+
+<space any> ~ <space any L0>
+:discard ~ <space any>

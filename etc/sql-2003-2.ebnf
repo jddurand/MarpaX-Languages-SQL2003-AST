@@ -9,6 +9,7 @@
 # <host label identifier> is skipped                                       #
 # <host PL/I label variable> is skipped                                    #
 # <COBOL dbcs> is not implemented                                          #
+# In unicode strings ESCAPE 'x' is supported but IGNORED                   #
 #                                                                          #
 # Marpa specific constraints:                                              #
 # * <ref cast option> has been made non nullable                           #
@@ -78,6 +79,7 @@
 <digit L0> ~ /*LEX*/[0-9] /* Reusable in L0 grammar */
 <digit> ~ <digit L0>
 
+/* SQL special character L0 contains space that is ALSO part of the :discard: we subprioritize it */
 <SQL special character L0> ~
 		<space L0>
 	|	<double quote L0>
@@ -206,8 +208,9 @@
 	|	<large object length token>
 	|	<multiplier>
 
-<regular identifier L0> ~ <SQL language identifier L0>
-<regular identifier> ::= <regular identifier L0>
+<regular identifier L0 internal> ~ <SQL language identifier L0 internal>
+<regular identifier L0> ~ <regular identifier L0 internal>
+<regular identifier> ~ <regular identifier L0>
 
 <large object length token> ~ /*LEX*/(<digit L0>)+ <multiplier L0>
 
@@ -221,13 +224,14 @@
 
 <delimited identifier part L0> ~ <nondoublequote character L0> | <doublequote symbol L0>
 
-<Unicode delimited identifier L0> ~
+<Unicode delimited identifier value> ~
 		/*LEX*/U /*LEX*/'&' /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"'
-		<Unicode escape specifier L0>
 
-<Unicode delimited identifier> ~ <Unicode delimited identifier L0>
+<Unicode delimited identifier> ::=
+		<Unicode delimited identifier value>
+		<Unicode escape specifier>
 
-<Unicode escape specifier L0> ~ /*LEX*/( /*LEX*/UESCAPE /*LEX*/"'" <Unicode escape character L0> /*LEX*/"'" )?
+<Unicode escape specifier> ::= ( UESCAPE /*LEX*/(/*LEX*/"'" <Unicode escape character L0> /*LEX*/"'") )?
 
 <Unicode delimiter body L0> ~ /*LEX*/(<Unicode identifier part L0>)+
 
@@ -241,7 +245,6 @@
 	|	<Unicode character escape value L0>
 
 <Unicode escape value L0> ~ <Unicode escape value internal L0>
-<Unicode escape value> ~ <Unicode escape value L0>
 
 <Unicode hexit L0> ~ /*LEX*/[a-fA-f0-9]
 
@@ -251,7 +254,7 @@
 
 <Unicode character escape value L0> ~ <Unicode escape character L0 ><Unicode escape character L0>
 
-<Unicode escape character L0> ~ /*LEX*/#x1b
+<Unicode escape character L0> ~ /*LEX*/#x5c
 
 <nondoublequote character L0> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
 
@@ -296,6 +299,8 @@
 
 <double period L0> ~ <period L0> <period L0>
 <double period> ~ <double period L0>
+
+<separator L0> ~ <discard L0>
 
 /*
 <separator> ::= ( <comment> | <space> )+
@@ -836,21 +841,17 @@
 	|	<interval literal>
 	|	<boolean literal>
 
-/* Rewriten because explicit <separator> in the rule causes trouble */
 /*
 <character string literal> ::=
 		( <introducer><character set specification> )?
 		<quote> <character representation>* <quote>
-		( <separator> <quote> <character representation>* <quote> )*
+		( <separator>* <quote> <character representation>* <quote> )*
 */
-<character string literal introducer L0> ~ <introducer L0> <character set specification L0>
-<character string literal introducer> ::= <character string literal introducer L0>
 
-<character string literal> ::=
-		<character string literal introducer>?
-		( <character string literal unit> )+
+<character string literal> ~
+                /*LEX*/(<introducer L0> <character set specification L0 internal>)?
+		<character string literal unit L0> /*LEX*/( /*LEX*/(<separator L0>)* <character string literal unit L0> )*
 
-<character string literal unit> ::= <character string literal unit L0>
 <character string literal unit L0> ~ <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
 
 <introducer L0> ~ <underscore L0>
@@ -863,21 +864,9 @@
 
 <quote symbol L0> ~ /*LEX*/"'" /*LEX*/"'"
 
-/* Rewriten because explicit <separator> in the rule causes trouble */
-/*
-<national character string literal> ::=
-		N <quote> <character representation>* <quote>
-		( <separator> <quote> <character representation>* <quote> )*
-*/
-<national character string literal> ::=
-                <national character string literal start>
-                <national character string literal unit>*
-
-<national character string literal unit L0> ~ <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
-<national character string literal unit> ~ <national character string literal unit L0>
-
-<national character string literal start L0> ~ /*LEX*/'N' <national character string literal unit L0>
-<national character string literal start> ~ <national character string literal start L0>
+<national character string literal> ~
+                /*LEX*/'N' <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
+                /*LEX*/( /*LEX*/(<separator L0>)* <quote L0> /*LEX*/(<character representation L0>)* <quote L0>)*
 
 /* Rewriten because explicit <separator> in the rule causes trouble */
 /*
@@ -887,12 +876,15 @@
 		( <separator> <quote> <Unicode representation>* <quote> )*
 		( ESCAPE <escape character> )?
 */
-<Unicode character string literal> ::=
-		( <introducer><character set specification> )?
-		U<ampersand>(<quote> <Unicode representation>* <quote>)+
-		( ESCAPE <escape character> )?
+<Unicode character string literal> ::= <Unicode character string literal value>
+   		                       ( ESCAPE <escape character> )?
 
-<Unicode representation> ::= <character representation> | <Unicode escape value>
+<Unicode character string literal value> ~
+		/*LEX*/( <introducer L0> <character set specification L0 internal> )?
+		/*LEX*/'U' <ampersand L0> <quote L0> /*LEX*/(<Unicode representation L0>)* <quote L0>
+		/*LEX*/( <separator L0> <quote L0> /*LEX*/(<Unicode representation L0>)* <quote L0> )*
+
+<Unicode representation L0> ~ <character representation L0> | <Unicode escape value L0>
 
 /* Rewriten because explicit <separator> in the rule causes trouble */
 /*
@@ -1002,9 +994,9 @@
 <identifier L0> ~ <identifier L0 internal>
 <identifier> ::= <identifier L0>
 
-<actual identifier L0> ~ <regular identifier L0> | <delimited identifier L0>
+<actual identifier L0> ~ <regular identifier L0 internal> | <delimited identifier L0>
 
-<SQL language identifier L0> ~ <SQL language identifier start L0> /*LEX*/( <underscore L0> | <SQL language identifier part L0> )*
+<SQL language identifier L0 internal> ~ <SQL language identifier start L0> /*LEX*/( <underscore L0> | <SQL language identifier part L0> )*
 
 <SQL language identifier start L0> ~  <simple Latin letter L0>
 
@@ -1070,7 +1062,7 @@
 
 <collation name> ::= <schema qualified name>
 
-<character set name L0 internal> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <SQL language identifier L0>
+<character set name L0 internal> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <SQL language identifier L0 internal>
 <character set name L0> ~ <character set name L0 internal>
 <character set name> ::= <character set name L0>
 
@@ -2364,21 +2356,21 @@
 
 <generalized expression> ::= <value expression> AS <path_resolved user_defined type name>
 
-<character set specification L0> ~
-		<standard character set name L0>
-	|	<implementation_defined character set name L0>
-	|	<user_defined character set name L0>
+<character set specification L0 internal> ~
+		<standard character set name L0 internal>
+	|	<implementation_defined character set name L0 internal>
+	|	<user_defined character set name L0 internal>
 
+<character set specification L0> ~ <character set specification L0 internal>
 <character set specification> ::= <character set specification L0>
 
 <standard character set name L0 internal> ~ <character set name L0 internal>
 <standard character set name L0> ~ <standard character set name L0 internal>
 <standard character set name> ::= <standard character set name L0>
 
-<implementation_defined character set name L0> ~ <character set name L0>
-<implementation_defined character set name> ::= <<implementation_defined character set name L0>
+<implementation_defined character set name L0 internal> ~ <character set name L0 internal>
 
-<user_defined character set name L0> ~ <character set name L0>
+<user_defined character set name L0 internal> ~ <character set name L0 internal>
 
 <specific routine designator> ::=
 		SPECIFIC <routine type> <specific name>

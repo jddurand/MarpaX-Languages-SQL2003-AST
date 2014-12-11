@@ -335,31 +335,33 @@ lexeme default = action => [start,length,value] latm => 1
                        | <National_Character_String_Literal> rank => -3
                        | <Large_Object_Length_Token> rank => -4
                        | <Multiplier> rank => -5
-<Regular_Identifier_L0> ~ <SQL_Language_Identifier_L0>
-<Regular_Identifier> ::= <Regular_Identifier_L0> rank => 0
-<GenLex116> ~ <Digit_L0>
-<Genlex116_Many> ~ <GenLex116>+
-<Large_Object_Length_Token> ~ <Genlex116_Many> <Multiplier_L0>
+<Regular_Identifier_L0_Internal> ~ <SQL_Language_Identifier_L0_Internal>
+<Regular_Identifier_L0> ~ <Regular_Identifier_L0_Internal>
+<Regular_Identifier> ~ <Regular_Identifier_L0>
+<Genlex117> ~ <Digit_L0>
+<Genlex117_Many> ~ <Genlex117>+
+<Large_Object_Length_Token> ~ <Genlex117_Many> <Multiplier_L0>
 <Multiplier_L0> ~ <Lex032>
                   | <Lex033>
                   | <Lex034>
 <Multiplier> ~ <Multiplier_L0>
 <Delimited_Identifier_L0> ~ <Lex035> <Delimited_Identifier_Body_L0> <Lex036>
 <Delimited_Identifier> ~ <Delimited_Identifier_L0>
-<GenLex125> ~ <Delimited_Identifier_Part_L0>
-<Genlex125_Many> ~ <GenLex125>+
-<Delimited_Identifier_Body_L0> ~ <Genlex125_Many>
+<Genlex126> ~ <Delimited_Identifier_Part_L0>
+<Genlex126_Many> ~ <Genlex126>+
+<Delimited_Identifier_Body_L0> ~ <Genlex126_Many>
 <Delimited_Identifier_Part_L0> ~ <Nondoublequote_Character_L0>
                                  | <Doublequote_Symbol_L0>
-<Unicode_Delimited_Identifier_L0> ~ <Lex037> <Lex038> <Lex039> <Unicode_Delimiter_Body_L0> <Lex040> <Unicode_Escape_Specifier_L0>
-<Unicode_Delimited_Identifier> ~ <Unicode_Delimited_Identifier_L0>
-<GenLex132> ~ <Lex041> <Lex042> <Unicode_Escape_Character_L0> <Lex043>
-<Genlex132_Maybe> ~ <GenLex132>
-<Genlex132_Maybe> ~
-<Unicode_Escape_Specifier_L0> ~ <Genlex132_Maybe>
-<GenLex136> ~ <Unicode_Identifier_Part_L0>
-<Genlex136_Many> ~ <GenLex136>+
-<Unicode_Delimiter_Body_L0> ~ <Genlex136_Many>
+<Unicode_Delimited_Identifier_Value> ~ <Lex037> <Lex038> <Lex039> <Unicode_Delimiter_Body_L0> <Lex040>
+<Unicode_Delimited_Identifier> ::= <Unicode_Delimited_Identifier_Value> <Unicode_Escape_Specifier> rank => 0
+<Genlex133> ~ <Lex042> <Unicode_Escape_Character_L0> <Lex043>
+<Gen134> ::= <UESCAPE> <Genlex133> rank => 0
+<Gen134_Maybe> ::= <Gen134> rank => 0
+<Gen134_Maybe> ::= rank => -1
+<Unicode_Escape_Specifier> ::= <Gen134_Maybe> rank => 0
+<Genlex138> ~ <Unicode_Identifier_Part_L0>
+<Genlex138_Many> ~ <Genlex138>+
+<Unicode_Delimiter_Body_L0> ~ <Genlex138_Many>
 <Unicode_Identifier_Part_L0> ~ <Unicode_Delimited_Identifier_Part_L0>
                                | <Unicode_Escape_Value_Internal_L0>
 <Unicode_Delimited_Identifier_Part_L0> ~ <Nondoublequote_Character_L0>
@@ -368,7 +370,6 @@ lexeme default = action => [start,length,value] latm => 1
                                      | <Unicode_6_Digit_Escape_Value_L0>
                                      | <Unicode_Character_Escape_Value_L0>
 <Unicode_Escape_Value_L0> ~ <Unicode_Escape_Value_Internal_L0>
-<Unicode_Escape_Value> ~ <Unicode_Escape_Value_L0>
 <Unicode_Hexit_L0> ~ <Lex044>
 <Unicode_4_Digit_Escape_Value_L0> ~ <Unicode_Escape_Character_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0>
 <Unicode_6_Digit_Escape_Value_L0> ~ <Unicode_Escape_Character_L0> <Lex045> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0> <Unicode_Hexit_L0>
@@ -408,6 +409,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Double_Colon> ~ <Double_Colon_L0>
 <Double_Period_L0> ~ <Period_L0> <Period_L0>
 <Double_Period> ~ <Double_Period_L0>
+<Separator_L0> ~ <Discard_L0>
 <Key_Word> ::= <Reserved_Word> rank => 0
              | <Non_Reserved_Word> rank => -1
 <Non_Reserved_Word> ::= <A> rank => 0
@@ -918,52 +920,57 @@ lexeme default = action => [start,length,value] latm => 1
                     | <Datetime_Literal> rank => -4
                     | <Interval_Literal> rank => -5
                     | <Boolean_Literal> rank => -6
-<Character_String_Literal_Introducer_L0> ~ <Introducer_L0> <Character_Set_Specification_L0>
-<Character_String_Literal_Introducer> ::= <Character_String_Literal_Introducer_L0> rank => 0
-<Character_String_Literal_Introducer_Maybe> ::= <Character_String_Literal_Introducer> rank => 0
-<Character_String_Literal_Introducer_Maybe> ::= rank => -1
-<Gen701> ::= <Character_String_Literal_Unit> rank => 0
-<Gen701_Many> ::= <Gen701>+ rank => 0
-<Character_String_Literal> ::= <Character_String_Literal_Introducer_Maybe> <Gen701_Many> rank => 0
-<Character_String_Literal_Unit> ::= <Character_String_Literal_Unit_L0> rank => 0
-<GenLex705> ~ <Character_Representation_L0>
-<Genlex705_Any> ~ <GenLex705>*
-<Character_String_Literal_Unit_L0> ~ <Quote_L0> <Genlex705_Any> <Quote_L0>
+<Genlex699> ~ <Introducer_L0> <Character_Set_Specification_L0_Internal>
+<Genlex699_Maybe> ~ <Genlex699>
+<Genlex699_Maybe> ~
+<Genlex702> ~ <Separator_L0>
+<Genlex702_Any> ~ <Genlex702>*
+<Genlex704> ~ <Genlex702_Any> <Character_String_Literal_Unit_L0>
+<Genlex704_Any> ~ <Genlex704>*
+<Character_String_Literal> ~ <Genlex699_Maybe> <Character_String_Literal_Unit_L0> <Genlex704_Any>
+<Genlex707> ~ <Character_Representation_L0>
+<Genlex707_Any> ~ <Genlex707>*
+<Character_String_Literal_Unit_L0> ~ <Quote_L0> <Genlex707_Any> <Quote_L0>
 <Introducer_L0> ~ <Underscore_L0>
 <Character_Representation_L0> ~ <Nonquote_Character_L0>
                                 | <Quote_Symbol_L0>
 <Character_Representation> ~ <Character_Representation_L0>
-<Nonquote_Character_L0> ~ <Lex547>
-                          | <Lex548> <Lex549>
-<Quote_Symbol_L0> ~ <Lex550> <Lex551>
-<National_Character_String_Literal_Unit_Any> ::= <National_Character_String_Literal_Unit>* rank => 0
-<National_Character_String_Literal> ::= <National_Character_String_Literal_Start> <National_Character_String_Literal_Unit_Any> rank => 0
-<GenLex717> ~ <Character_Representation_L0>
-<Genlex717_Any> ~ <GenLex717>*
-<National_Character_String_Literal_Unit_L0> ~ <Quote_L0> <Genlex717_Any> <Quote_L0>
-<National_Character_String_Literal_Unit> ~ <National_Character_String_Literal_Unit_L0>
-<National_Character_String_Literal_Start_L0> ~ <Lex552> <National_Character_String_Literal_Unit_L0>
-<National_Character_String_Literal_Start> ~ <National_Character_String_Literal_Start_L0>
-<Gen723> ::= <Introducer> <Character_Set_Specification> rank => 0
-<Gen723_Maybe> ::= <Gen723> rank => 0
-<Gen723_Maybe> ::= rank => -1
-<Unicode_Representation_Any> ::= <Unicode_Representation>* rank => 0
-<Gen727> ::= <Quote> <Unicode_Representation_Any> <Quote> rank => 0
-<Gen727_Many> ::= <Gen727>+ rank => 0
-<Gen729> ::= <ESCAPE> <Escape_Character> rank => 0
-<Gen729_Maybe> ::= <Gen729> rank => 0
-<Gen729_Maybe> ::= rank => -1
-<Unicode_Character_String_Literal> ::= <Gen723_Maybe> <U> <Ampersand> <Gen727_Many> <Gen729_Maybe> rank => 0
-<Unicode_Representation> ::= <Character_Representation> rank => 0
-                           | <Unicode_Escape_Value> rank => -1
-<Gen735> ::= <Hexit> <Hexit> rank => 0
-<Gen735_Any> ::= <Gen735>* rank => 0
-<Gen737> ::= <Quote> <Gen735_Any> <Quote> rank => 0
-<Gen737_Many> ::= <Gen737>+ rank => 0
-<Gen739> ::= <ESCAPE> <Escape_Character> rank => 0
-<Gen739_Maybe> ::= <Gen739> rank => 0
-<Gen739_Maybe> ::= rank => -1
-<Binary_String_Literal> ::= <X> <Gen737_Many> <Gen739_Maybe> rank => 0
+<Nonquote_Character_L0> ~ <Lex546>
+                          | <Lex547> <Lex548>
+<Quote_Symbol_L0> ~ <Lex549> <Lex550>
+<Genlex717> ~ <Character_Representation_L0>
+<Genlex717_Any> ~ <Genlex717>*
+<Genlex719> ~ <Separator_L0>
+<Genlex719_Any> ~ <Genlex719>*
+<Genlex721> ~ <Character_Representation_L0>
+<Genlex721_Any> ~ <Genlex721>*
+<Genlex723> ~ <Genlex719_Any> <Quote_L0> <Genlex721_Any> <Quote_L0>
+<Genlex723_Any> ~ <Genlex723>*
+<National_Character_String_Literal> ~ <Lex551> <Quote_L0> <Genlex717_Any> <Quote_L0> <Genlex723_Any>
+<Gen726> ::= <ESCAPE> <Escape_Character> rank => 0
+<Gen726_Maybe> ::= <Gen726> rank => 0
+<Gen726_Maybe> ::= rank => -1
+<Unicode_Character_String_Literal> ::= <Unicode_Character_String_Literal_Value> <Gen726_Maybe> rank => 0
+<Genlex730> ~ <Introducer_L0> <Character_Set_Specification_L0_Internal>
+<Genlex730_Maybe> ~ <Genlex730>
+<Genlex730_Maybe> ~
+<Genlex733> ~ <Unicode_Representation_L0>
+<Genlex733_Any> ~ <Genlex733>*
+<Genlex735> ~ <Unicode_Representation_L0>
+<Genlex735_Any> ~ <Genlex735>*
+<Genlex737> ~ <Separator_L0> <Quote_L0> <Genlex735_Any> <Quote_L0>
+<Genlex737_Any> ~ <Genlex737>*
+<Unicode_Character_String_Literal_Value> ~ <Genlex730_Maybe> <Lex552> <Ampersand_L0> <Quote_L0> <Genlex733_Any> <Quote_L0> <Genlex737_Any>
+<Unicode_Representation_L0> ~ <Character_Representation_L0>
+                              | <Unicode_Escape_Value_L0>
+<Gen742> ::= <Hexit> <Hexit> rank => 0
+<Gen742_Any> ::= <Gen742>* rank => 0
+<Gen744> ::= <Quote> <Gen742_Any> <Quote> rank => 0
+<Gen744_Many> ::= <Gen744>+ rank => 0
+<Gen746> ::= <ESCAPE> <Escape_Character> rank => 0
+<Gen746_Maybe> ::= <Gen746> rank => 0
+<Gen746_Maybe> ::= rank => -1
+<Binary_String_Literal> ::= <X> <Gen744_Many> <Gen746_Maybe> rank => 0
 <Hexit> ::= <Digit> rank => 0
           | <A> rank => -1
           | <B> rank => -2
@@ -983,26 +990,26 @@ lexeme default = action => [start,length,value] latm => 1
 <Unsigned_Numeric_Literal_L0> ~ <Exact_Numeric_Literal_L0>
                                 | <Approximate_Numeric_Literal_L0>
 <Unsigned_Numeric_Literal> ~ <Unsigned_Numeric_Literal_L0>
-<Unsigned_Integer_L0> ~ <Lex565_Many>
+<Unsigned_Integer_L0> ~ <Lex564_Many>
 <Unsigned_Integer> ~ <Unsigned_Integer_L0>
-<GenLex764> ~ <Unsigned_Integer_L0>
-<Genlex764_Maybe> ~ <GenLex764>
-<Genlex764_Maybe> ~
-<GenLex767> ~ <Period_L0> <Genlex764_Maybe>
-<Genlex767_Maybe> ~ <GenLex767>
-<Genlex767_Maybe> ~
-<Exact_Numeric_Literal_L0> ~ <Unsigned_Integer_L0> <Genlex767_Maybe>
+<Genlex771> ~ <Unsigned_Integer_L0>
+<Genlex771_Maybe> ~ <Genlex771>
+<Genlex771_Maybe> ~
+<Genlex774> ~ <Period_L0> <Genlex771_Maybe>
+<Genlex774_Maybe> ~ <Genlex774>
+<Genlex774_Maybe> ~
+<Exact_Numeric_Literal_L0> ~ <Unsigned_Integer_L0> <Genlex774_Maybe>
                              | <Period_L0> <Unsigned_Integer_L0>
 <Sign_L0> ~ <Plus_Sign_L0>
             | <Minus_Sign_L0>
 <Sign> ~ <Sign_L0>
-<Approximate_Numeric_Literal_L0> ~ <Mantissa_L0> <Lex566> <Exponent_L0>
+<Approximate_Numeric_Literal_L0> ~ <Mantissa_L0> <Lex565> <Exponent_L0>
 <Mantissa_L0> ~ <Exact_Numeric_Literal_L0>
 <Exponent_L0> ~ <Signed_Integer_L0>
-<GenLex778> ~ <Sign_L0>
-<Genlex778_Maybe> ~ <GenLex778>
-<Genlex778_Maybe> ~
-<Signed_Integer_L0> ~ <Genlex778_Maybe> <Unsigned_Integer_L0>
+<Genlex785> ~ <Sign_L0>
+<Genlex785_Maybe> ~ <Genlex785>
+<Genlex785_Maybe> ~
+<Signed_Integer_L0> ~ <Genlex785_Maybe> <Unsigned_Integer_L0>
 <Datetime_Literal> ::= <Date_Literal> rank => 0
                      | <Time_Literal> rank => -1
                      | <Timestamp_Literal> rank => -2
@@ -1022,58 +1029,58 @@ lexeme default = action => [start,length,value] latm => 1
 <Interval_String_L0> ~ <Quote_L0> <Unquoted_Interval_String_L0> <Quote_L0>
 <Interval_String> ~ <Interval_String_L0>
 <Unquoted_Date_String_L0> ~ <Date_Value_L0>
-<GenLex801> ~ <Time_Zone_Interval_L0>
-<Genlex801_Maybe> ~ <GenLex801>
-<Genlex801_Maybe> ~
-<Unquoted_Time_String_L0> ~ <Time_Value_L0> <Genlex801_Maybe>
+<Genlex808> ~ <Time_Zone_Interval_L0>
+<Genlex808_Maybe> ~ <Genlex808>
+<Genlex808_Maybe> ~
+<Unquoted_Time_String_L0> ~ <Time_Value_L0> <Genlex808_Maybe>
 <Unquoted_Timestamp_String_L0> ~ <Unquoted_Date_String_L0> <Space_L0> <Unquoted_Time_String_L0>
-<GenLex806> ~ <Sign_L0>
-<Genlex806_Maybe> ~ <GenLex806>
-<Genlex806_Maybe> ~
-<GenLex809> ~ <Year_Month_Literal_L0>
+<Genlex813> ~ <Sign_L0>
+<Genlex813_Maybe> ~ <Genlex813>
+<Genlex813_Maybe> ~
+<Genlex816> ~ <Year_Month_Literal_L0>
               | <Day_Time_Literal_L0>
-<Unquoted_Interval_String_L0> ~ <Genlex806_Maybe> <GenLex809>
-<GenLex812> ~ <Years_Value_L0> <Minus_Sign_L0>
-<Genlex812_Maybe> ~ <GenLex812>
-<Genlex812_Maybe> ~
+<Unquoted_Interval_String_L0> ~ <Genlex813_Maybe> <Genlex816>
+<Genlex819> ~ <Years_Value_L0> <Minus_Sign_L0>
+<Genlex819_Maybe> ~ <Genlex819>
+<Genlex819_Maybe> ~
 <Year_Month_Literal_L0> ~ <Years_Value_L0>
-                          | <Genlex812_Maybe> <Months_Value_L0>
+                          | <Genlex819_Maybe> <Months_Value_L0>
 <Day_Time_Literal_L0> ~ <Day_Time_Interval_L0>
                         | <Time_Interval_L0>
-<GenLex819> ~ <Colon_L0> <Seconds_Value_L0>
-<Genlex819_Maybe> ~ <GenLex819>
-<Genlex819_Maybe> ~
-<GenLex822> ~ <Colon_L0> <Minutes_Value_L0> <Genlex819_Maybe>
-<Genlex822_Maybe> ~ <GenLex822>
-<Genlex822_Maybe> ~
-<GenLex825> ~ <Space_L0> <Hours_Value_L0> <Genlex822_Maybe>
-<Genlex825_Maybe> ~ <GenLex825>
-<Genlex825_Maybe> ~
-<Day_Time_Interval_L0> ~ <Days_Value_L0> <Genlex825_Maybe>
-<GenLex829> ~ <Colon_L0> <Seconds_Value_L0>
-<Genlex829_Maybe> ~ <GenLex829>
+<Genlex826> ~ <Colon_L0> <Seconds_Value_L0>
+<Genlex826_Maybe> ~ <Genlex826>
+<Genlex826_Maybe> ~
+<Genlex829> ~ <Colon_L0> <Minutes_Value_L0> <Genlex826_Maybe>
+<Genlex829_Maybe> ~ <Genlex829>
 <Genlex829_Maybe> ~
-<GenLex832> ~ <Colon_L0> <Minutes_Value_L0> <Genlex829_Maybe>
-<Genlex832_Maybe> ~ <GenLex832>
+<Genlex832> ~ <Space_L0> <Hours_Value_L0> <Genlex829_Maybe>
+<Genlex832_Maybe> ~ <Genlex832>
 <Genlex832_Maybe> ~
-<GenLex835> ~ <Colon_L0> <Seconds_Value_L0>
-<Genlex835_Maybe> ~ <GenLex835>
-<Genlex835_Maybe> ~
-<Time_Interval_L0> ~ <Hours_Value_L0> <Genlex832_Maybe>
-                     | <Minutes_Value_L0> <Genlex835_Maybe>
+<Day_Time_Interval_L0> ~ <Days_Value_L0> <Genlex832_Maybe>
+<Genlex836> ~ <Colon_L0> <Seconds_Value_L0>
+<Genlex836_Maybe> ~ <Genlex836>
+<Genlex836_Maybe> ~
+<Genlex839> ~ <Colon_L0> <Minutes_Value_L0> <Genlex836_Maybe>
+<Genlex839_Maybe> ~ <Genlex839>
+<Genlex839_Maybe> ~
+<Genlex842> ~ <Colon_L0> <Seconds_Value_L0>
+<Genlex842_Maybe> ~ <Genlex842>
+<Genlex842_Maybe> ~
+<Time_Interval_L0> ~ <Hours_Value_L0> <Genlex839_Maybe>
+                     | <Minutes_Value_L0> <Genlex842_Maybe>
                      | <Seconds_Value_L0>
 <Years_Value_L0> ~ <Datetime_Value_L0>
 <Months_Value_L0> ~ <Datetime_Value_L0>
 <Days_Value_L0> ~ <Datetime_Value_L0>
 <Hours_Value_L0> ~ <Datetime_Value_L0>
 <Minutes_Value_L0> ~ <Datetime_Value_L0>
-<GenLex846> ~ <Seconds_Fraction_L0>
-<Genlex846_Maybe> ~ <GenLex846>
-<Genlex846_Maybe> ~
-<GenLex849> ~ <Period_L0> <Genlex846_Maybe>
-<Genlex849_Maybe> ~ <GenLex849>
-<Genlex849_Maybe> ~
-<Seconds_Value_L0> ~ <Seconds_Integer_Value_L0> <Genlex849_Maybe>
+<Genlex853> ~ <Seconds_Fraction_L0>
+<Genlex853_Maybe> ~ <Genlex853>
+<Genlex853_Maybe> ~
+<Genlex856> ~ <Period_L0> <Genlex853_Maybe>
+<Genlex856_Maybe> ~ <Genlex856>
+<Genlex856_Maybe> ~
+<Seconds_Value_L0> ~ <Seconds_Integer_Value_L0> <Genlex856_Maybe>
 <Seconds_Integer_Value_L0> ~ <Unsigned_Integer_L0>
 <Seconds_Fraction_L0> ~ <Unsigned_Integer_L0>
 <Datetime_Value_L0> ~ <Unsigned_Integer_L0>
@@ -1083,12 +1090,12 @@ lexeme default = action => [start,length,value] latm => 1
 <Identifier_L0_Internal> ~ <Actual_Identifier_L0>
 <Identifier_L0> ~ <Identifier_L0_Internal>
 <Identifier> ::= <Identifier_L0> rank => 0
-<Actual_Identifier_L0> ~ <Regular_Identifier_L0>
+<Actual_Identifier_L0> ~ <Regular_Identifier_L0_Internal>
                          | <Delimited_Identifier_L0>
-<GenLex864> ~ <Underscore_L0>
+<Genlex871> ~ <Underscore_L0>
               | <SQL_Language_Identifier_Part_L0>
-<Genlex864_Any> ~ <GenLex864>*
-<SQL_Language_Identifier_L0> ~ <SQL_Language_Identifier_Start_L0> <Genlex864_Any>
+<Genlex871_Any> ~ <Genlex871>*
+<SQL_Language_Identifier_L0_Internal> ~ <SQL_Language_Identifier_Start_L0> <Genlex871_Any>
 <SQL_Language_Identifier_Start_L0> ~ <Simple_Latin_Letter_L0>
 <SQL_Language_Identifier_Part_L0> ~ <Simple_Latin_Letter_L0>
                                     | <Digit_L0>
@@ -1099,23 +1106,23 @@ lexeme default = action => [start,length,value] latm => 1
 <Unqualified_Schema_Name_L0_Internal> ~ <Identifier_L0_Internal>
 <Unqualified_Schema_Name_L0> ~ <Unqualified_Schema_Name_L0_Internal>
 <Unqualified_Schema_Name> ::= <Unqualified_Schema_Name_L0> rank => 0
-<GenLex878> ~ <Catalog_Name_L0_Internal> <Period_L0>
-<Genlex878_Maybe> ~ <GenLex878>
-<Genlex878_Maybe> ~
-<Schema_Name_L0_Internal> ~ <Genlex878_Maybe> <Unqualified_Schema_Name_L0_Internal>
+<Genlex885> ~ <Catalog_Name_L0_Internal> <Period_L0>
+<Genlex885_Maybe> ~ <Genlex885>
+<Genlex885_Maybe> ~
+<Schema_Name_L0_Internal> ~ <Genlex885_Maybe> <Unqualified_Schema_Name_L0_Internal>
 <Schema_Name_L0> ~ <Schema_Name_L0_Internal>
 <Schema_Name> ::= <Schema_Name_L0> rank => 0
 <Catalog_Name_L0_Internal> ~ <Identifier_L0_Internal>
 <Catalog_Name_L0> ~ <Catalog_Name_L0_Internal>
 <Catalog_Name> ::= <Catalog_Name_L0> rank => 0
-<Gen887> ::= <Schema_Name> <Period> rank => 0
-<Gen887_Maybe> ::= <Gen887> rank => 0
-<Gen887_Maybe> ::= rank => -1
-<Schema_Qualified_Name> ::= <Gen887_Maybe> <Qualified_Identifier> rank => 0
-<Gen891> ::= <Local_Or_Schema_Qualifier> <Period> rank => 0
-<Gen891_Maybe> ::= <Gen891> rank => 0
-<Gen891_Maybe> ::= rank => -1
-<Local_Or_Schema_Qualified_Name> ::= <Gen891_Maybe> <Qualified_Identifier> rank => 0
+<Gen894> ::= <Schema_Name> <Period> rank => 0
+<Gen894_Maybe> ::= <Gen894> rank => 0
+<Gen894_Maybe> ::= rank => -1
+<Schema_Qualified_Name> ::= <Gen894_Maybe> <Qualified_Identifier> rank => 0
+<Gen898> ::= <Local_Or_Schema_Qualifier> <Period> rank => 0
+<Gen898_Maybe> ::= <Gen898> rank => 0
+<Gen898_Maybe> ::= rank => -1
+<Local_Or_Schema_Qualified_Name> ::= <Gen898_Maybe> <Qualified_Identifier> rank => 0
 <Local_Or_Schema_Qualifier> ::= <Schema_Name> rank => 0
                               | <MODULE> rank => -1
 <Qualified_Identifier> ::= <Identifier> rank => 0
@@ -1128,10 +1135,10 @@ lexeme default = action => [start,length,value] latm => 1
 <Method_Name> ::= <Identifier> rank => 0
 <Specific_Name> ::= <Schema_Qualified_Name> rank => 0
 <Cursor_Name> ::= <Local_Qualified_Name> rank => 0
-<Gen907> ::= <Local_Qualifier> <Period> rank => 0
-<Gen907_Maybe> ::= <Gen907> rank => 0
-<Gen907_Maybe> ::= rank => -1
-<Local_Qualified_Name> ::= <Gen907_Maybe> <Qualified_Identifier> rank => 0
+<Gen914> ::= <Local_Qualifier> <Period> rank => 0
+<Gen914_Maybe> ::= <Gen914> rank => 0
+<Gen914_Maybe> ::= rank => -1
+<Local_Qualified_Name> ::= <Gen914_Maybe> <Qualified_Identifier> rank => 0
 <Local_Qualifier> ::= <MODULE> rank => 0
 <Host_Parameter_Name> ::= <Colon> <Identifier> rank => 0
 <SQL_Parameter_Name> ::= <Identifier> rank => 0
@@ -1140,20 +1147,20 @@ lexeme default = action => [start,length,value] latm => 1
                           | <Character_String_Literal> rank => -1
 <Trigger_Name> ::= <Schema_Qualified_Name> rank => 0
 <Collation_Name> ::= <Schema_Qualified_Name> rank => 0
-<GenLex919> ~ <Schema_Name_L0_Internal> <Period_L0>
-<Genlex919_Maybe> ~ <GenLex919>
-<Genlex919_Maybe> ~
-<Character_Set_Name_L0_Internal> ~ <Genlex919_Maybe> <SQL_Language_Identifier_L0>
+<Genlex926> ~ <Schema_Name_L0_Internal> <Period_L0>
+<Genlex926_Maybe> ~ <Genlex926>
+<Genlex926_Maybe> ~
+<Character_Set_Name_L0_Internal> ~ <Genlex926_Maybe> <SQL_Language_Identifier_L0_Internal>
 <Character_Set_Name_L0> ~ <Character_Set_Name_L0_Internal>
 <Character_Set_Name> ::= <Character_Set_Name_L0> rank => 0
 <Transliteration_Name> ::= <Schema_Qualified_Name> rank => 0
 <Transcoding_Name> ::= <Schema_Qualified_Name> rank => 0
 <User_Defined_Type_Name> ::= <Schema_Qualified_Type_Name> rank => 0
 <Schema_Resolved_User_Defined_Type_Name> ::= <User_Defined_Type_Name> rank => 0
-<Gen929> ::= <Schema_Name> <Period> rank => 0
-<Gen929_Maybe> ::= <Gen929> rank => 0
-<Gen929_Maybe> ::= rank => -1
-<Schema_Qualified_Type_Name> ::= <Gen929_Maybe> <Qualified_Identifier> rank => 0
+<Gen936> ::= <Schema_Name> <Period> rank => 0
+<Gen936_Maybe> ::= <Gen936> rank => 0
+<Gen936_Maybe> ::= rank => -1
+<Schema_Qualified_Type_Name> ::= <Gen936_Maybe> <Qualified_Identifier> rank => 0
 <Attribute_Name> ::= <Identifier> rank => 0
 <Field_Name> ::= <Identifier> rank => 0
 <Savepoint_Name> ::= <Identifier> rank => 0
@@ -1181,107 +1188,107 @@ lexeme default = action => [start,length,value] latm => 1
               | <Path_Resolved_User_Defined_Type_Name> rank => -2
               | <Reference_Type> rank => -3
               | <Collection_Type> rank => -4
-<Gen960> ::= <CHARACTER> <SET> <Character_Set_Specification> rank => 0
-<Gen960_Maybe> ::= <Gen960> rank => 0
-<Gen960_Maybe> ::= rank => -1
+<Gen967> ::= <CHARACTER> <SET> <Character_Set_Specification> rank => 0
+<Gen967_Maybe> ::= <Gen967> rank => 0
+<Gen967_Maybe> ::= rank => -1
 <Collate_Clause_Maybe> ::= <Collate_Clause> rank => 0
 <Collate_Clause_Maybe> ::= rank => -1
-<Predefined_Type> ::= <Character_String_Type> <Gen960_Maybe> <Collate_Clause_Maybe> rank => 0
+<Predefined_Type> ::= <Character_String_Type> <Gen967_Maybe> <Collate_Clause_Maybe> rank => 0
                     | <National_Character_String_Type> <Collate_Clause_Maybe> rank => -1
                     | <Binary_Large_Object_String_Type> rank => -2
                     | <Numeric_Type> rank => -3
                     | <Boolean_Type> rank => -4
                     | <Datetime_Type> rank => -5
                     | <Interval_Type> rank => -6
-<Gen972> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen972_Maybe> ::= <Gen972> rank => 0
-<Gen972_Maybe> ::= rank => -1
-<Gen975> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen975_Maybe> ::= <Gen975> rank => 0
-<Gen975_Maybe> ::= rank => -1
-<Gen978> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen978_Maybe> ::= <Gen978> rank => 0
-<Gen978_Maybe> ::= rank => -1
-<Gen981> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen981_Maybe> ::= <Gen981> rank => 0
-<Gen981_Maybe> ::= rank => -1
-<Gen984> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen984_Maybe> ::= <Gen984> rank => 0
-<Gen984_Maybe> ::= rank => -1
-<Character_String_Type> ::= <CHARACTER> <Gen972_Maybe> rank => 0
-                          | <CHAR> <Gen975_Maybe> rank => -1
+<Gen979> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen979_Maybe> ::= <Gen979> rank => 0
+<Gen979_Maybe> ::= rank => -1
+<Gen982> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen982_Maybe> ::= <Gen982> rank => 0
+<Gen982_Maybe> ::= rank => -1
+<Gen985> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen985_Maybe> ::= <Gen985> rank => 0
+<Gen985_Maybe> ::= rank => -1
+<Gen988> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen988_Maybe> ::= <Gen988> rank => 0
+<Gen988_Maybe> ::= rank => -1
+<Gen991> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen991_Maybe> ::= <Gen991> rank => 0
+<Gen991_Maybe> ::= rank => -1
+<Character_String_Type> ::= <CHARACTER> <Gen979_Maybe> rank => 0
+                          | <CHAR> <Gen982_Maybe> rank => -1
                           | <CHARACTER> <VARYING> <Left_Paren> <Length> <Right_Paren> rank => -2
                           | <CHAR> <VARYING> <Left_Paren> <Length> <Right_Paren> rank => -3
                           | <VARCHAR> <Left_Paren> <Length> <Right_Paren> rank => -4
-                          | <CHARACTER> <LARGE> <OBJECT> <Gen978_Maybe> rank => -5
-                          | <CHAR> <LARGE> <OBJECT> <Gen981_Maybe> rank => -6
-                          | <CLOB> <Gen984_Maybe> rank => -7
-<Gen995> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen995_Maybe> ::= <Gen995> rank => 0
-<Gen995_Maybe> ::= rank => -1
-<Gen998> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen998_Maybe> ::= <Gen998> rank => 0
-<Gen998_Maybe> ::= rank => -1
-<Gen1001> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen1001_Maybe> ::= <Gen1001> rank => 0
-<Gen1001_Maybe> ::= rank => -1
-<Gen1004> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen1004_Maybe> ::= <Gen1004> rank => 0
-<Gen1004_Maybe> ::= rank => -1
-<Gen1007> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen1007_Maybe> ::= <Gen1007> rank => 0
-<Gen1007_Maybe> ::= rank => -1
-<Gen1010> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen1010_Maybe> ::= <Gen1010> rank => 0
-<Gen1010_Maybe> ::= rank => -1
-<National_Character_String_Type> ::= <NATIONAL> <CHARACTER> <Gen995_Maybe> rank => 0
-                                   | <NATIONAL> <CHAR> <Gen998_Maybe> rank => -1
-                                   | <NCHAR> <Gen1001_Maybe> rank => -2
+                          | <CHARACTER> <LARGE> <OBJECT> <Gen985_Maybe> rank => -5
+                          | <CHAR> <LARGE> <OBJECT> <Gen988_Maybe> rank => -6
+                          | <CLOB> <Gen991_Maybe> rank => -7
+<Gen1002> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen1002_Maybe> ::= <Gen1002> rank => 0
+<Gen1002_Maybe> ::= rank => -1
+<Gen1005> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen1005_Maybe> ::= <Gen1005> rank => 0
+<Gen1005_Maybe> ::= rank => -1
+<Gen1008> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen1008_Maybe> ::= <Gen1008> rank => 0
+<Gen1008_Maybe> ::= rank => -1
+<Gen1011> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen1011_Maybe> ::= <Gen1011> rank => 0
+<Gen1011_Maybe> ::= rank => -1
+<Gen1014> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen1014_Maybe> ::= <Gen1014> rank => 0
+<Gen1014_Maybe> ::= rank => -1
+<Gen1017> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen1017_Maybe> ::= <Gen1017> rank => 0
+<Gen1017_Maybe> ::= rank => -1
+<National_Character_String_Type> ::= <NATIONAL> <CHARACTER> <Gen1002_Maybe> rank => 0
+                                   | <NATIONAL> <CHAR> <Gen1005_Maybe> rank => -1
+                                   | <NCHAR> <Gen1008_Maybe> rank => -2
                                    | <NATIONAL> <CHARACTER> <VARYING> <Left_Paren> <Length> <Right_Paren> rank => -3
                                    | <NATIONAL> <CHAR> <VARYING> <Left_Paren> <Length> <Right_Paren> rank => -4
                                    | <NCHAR> <VARYING> <Left_Paren> <Length> <Right_Paren> rank => -5
-                                   | <NATIONAL> <CHARACTER> <LARGE> <OBJECT> <Gen1004_Maybe> rank => -6
-                                   | <NCHAR> <LARGE> <OBJECT> <Gen1007_Maybe> rank => -7
-                                   | <NCLOB> <Gen1010_Maybe> rank => -8
-<Gen1022> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen1022_Maybe> ::= <Gen1022> rank => 0
-<Gen1022_Maybe> ::= rank => -1
-<Gen1025> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen1025_Maybe> ::= <Gen1025> rank => 0
-<Gen1025_Maybe> ::= rank => -1
-<Binary_Large_Object_String_Type> ::= <BINARY> <LARGE> <OBJECT> <Gen1022_Maybe> rank => 0
-                                    | <BLOB> <Gen1025_Maybe> rank => -1
-<Numeric_Type> ::= <Exact_Numeric_Type> rank => 0
-                 | <Approximate_Numeric_Type> rank => -1
-<Gen1032> ::= <Comma> <Scale> rank => 0
+                                   | <NATIONAL> <CHARACTER> <LARGE> <OBJECT> <Gen1011_Maybe> rank => -6
+                                   | <NCHAR> <LARGE> <OBJECT> <Gen1014_Maybe> rank => -7
+                                   | <NCLOB> <Gen1017_Maybe> rank => -8
+<Gen1029> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen1029_Maybe> ::= <Gen1029> rank => 0
+<Gen1029_Maybe> ::= rank => -1
+<Gen1032> ::= <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Gen1032_Maybe> ::= <Gen1032> rank => 0
 <Gen1032_Maybe> ::= rank => -1
-<Gen1035> ::= <Left_Paren> <Precision> <Gen1032_Maybe> <Right_Paren> rank => 0
-<Gen1035_Maybe> ::= <Gen1035> rank => 0
-<Gen1035_Maybe> ::= rank => -1
-<Gen1038> ::= <Comma> <Scale> rank => 0
-<Gen1038_Maybe> ::= <Gen1038> rank => 0
-<Gen1038_Maybe> ::= rank => -1
-<Gen1041> ::= <Left_Paren> <Precision> <Gen1038_Maybe> <Right_Paren> rank => 0
-<Gen1041_Maybe> ::= <Gen1041> rank => 0
-<Gen1041_Maybe> ::= rank => -1
-<Gen1044> ::= <Comma> <Scale> rank => 0
-<Gen1044_Maybe> ::= <Gen1044> rank => 0
-<Gen1044_Maybe> ::= rank => -1
-<Gen1047> ::= <Left_Paren> <Precision> <Gen1044_Maybe> <Right_Paren> rank => 0
-<Gen1047_Maybe> ::= <Gen1047> rank => 0
-<Gen1047_Maybe> ::= rank => -1
-<Exact_Numeric_Type> ::= <NUMERIC> <Gen1035_Maybe> rank => 0
-                       | <DECIMAL> <Gen1041_Maybe> rank => -1
-                       | <DEC> <Gen1047_Maybe> rank => -2
+<Binary_Large_Object_String_Type> ::= <BINARY> <LARGE> <OBJECT> <Gen1029_Maybe> rank => 0
+                                    | <BLOB> <Gen1032_Maybe> rank => -1
+<Numeric_Type> ::= <Exact_Numeric_Type> rank => 0
+                 | <Approximate_Numeric_Type> rank => -1
+<Gen1039> ::= <Comma> <Scale> rank => 0
+<Gen1039_Maybe> ::= <Gen1039> rank => 0
+<Gen1039_Maybe> ::= rank => -1
+<Gen1042> ::= <Left_Paren> <Precision> <Gen1039_Maybe> <Right_Paren> rank => 0
+<Gen1042_Maybe> ::= <Gen1042> rank => 0
+<Gen1042_Maybe> ::= rank => -1
+<Gen1045> ::= <Comma> <Scale> rank => 0
+<Gen1045_Maybe> ::= <Gen1045> rank => 0
+<Gen1045_Maybe> ::= rank => -1
+<Gen1048> ::= <Left_Paren> <Precision> <Gen1045_Maybe> <Right_Paren> rank => 0
+<Gen1048_Maybe> ::= <Gen1048> rank => 0
+<Gen1048_Maybe> ::= rank => -1
+<Gen1051> ::= <Comma> <Scale> rank => 0
+<Gen1051_Maybe> ::= <Gen1051> rank => 0
+<Gen1051_Maybe> ::= rank => -1
+<Gen1054> ::= <Left_Paren> <Precision> <Gen1051_Maybe> <Right_Paren> rank => 0
+<Gen1054_Maybe> ::= <Gen1054> rank => 0
+<Gen1054_Maybe> ::= rank => -1
+<Exact_Numeric_Type> ::= <NUMERIC> <Gen1042_Maybe> rank => 0
+                       | <DECIMAL> <Gen1048_Maybe> rank => -1
+                       | <DEC> <Gen1054_Maybe> rank => -2
                        | <SMALLINT> rank => -3
                        | <INTEGER> rank => -4
                        | <INT> rank => -5
                        | <BIGINT> rank => -6
-<Gen1057> ::= <Left_Paren> <Precision> <Right_Paren> rank => 0
-<Gen1057_Maybe> ::= <Gen1057> rank => 0
-<Gen1057_Maybe> ::= rank => -1
-<Approximate_Numeric_Type> ::= <FLOAT> <Gen1057_Maybe> rank => 0
+<Gen1064> ::= <Left_Paren> <Precision> <Right_Paren> rank => 0
+<Gen1064_Maybe> ::= <Gen1064> rank => 0
+<Gen1064_Maybe> ::= rank => -1
+<Approximate_Numeric_Type> ::= <FLOAT> <Gen1064_Maybe> rank => 0
                              | <REAL> rank => -1
                              | <DOUBLE> <PRECISION> rank => -2
 <Length> ::= <Unsigned_Integer> rank => 0
@@ -1297,21 +1304,21 @@ lexeme default = action => [start,length,value] latm => 1
 <Precision> ::= <Unsigned_Integer> rank => 0
 <Scale> ::= <Unsigned_Integer> rank => 0
 <Boolean_Type> ::= <BOOLEAN> rank => 0
-<Gen1076> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
-<Gen1076_Maybe> ::= <Gen1076> rank => 0
-<Gen1076_Maybe> ::= rank => -1
-<Gen1079> ::= <With_Or_Without_Time_Zone> rank => 0
-<Gen1079_Maybe> ::= <Gen1079> rank => 0
-<Gen1079_Maybe> ::= rank => -1
-<Gen1082> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
-<Gen1082_Maybe> ::= <Gen1082> rank => 0
-<Gen1082_Maybe> ::= rank => -1
-<Gen1085> ::= <With_Or_Without_Time_Zone> rank => 0
-<Gen1085_Maybe> ::= <Gen1085> rank => 0
-<Gen1085_Maybe> ::= rank => -1
+<Gen1083> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
+<Gen1083_Maybe> ::= <Gen1083> rank => 0
+<Gen1083_Maybe> ::= rank => -1
+<Gen1086> ::= <With_Or_Without_Time_Zone> rank => 0
+<Gen1086_Maybe> ::= <Gen1086> rank => 0
+<Gen1086_Maybe> ::= rank => -1
+<Gen1089> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
+<Gen1089_Maybe> ::= <Gen1089> rank => 0
+<Gen1089_Maybe> ::= rank => -1
+<Gen1092> ::= <With_Or_Without_Time_Zone> rank => 0
+<Gen1092_Maybe> ::= <Gen1092> rank => 0
+<Gen1092_Maybe> ::= rank => -1
 <Datetime_Type> ::= <DATE> rank => 0
-                  | <TIME> <Gen1076_Maybe> <Gen1079_Maybe> rank => -1
-                  | <TIMESTAMP> <Gen1082_Maybe> <Gen1085_Maybe> rank => -2
+                  | <TIME> <Gen1083_Maybe> <Gen1086_Maybe> rank => -1
+                  | <TIMESTAMP> <Gen1089_Maybe> <Gen1092_Maybe> rank => -2
 <With_Or_Without_Time_Zone> ::= <WITH> <TIME> <ZONE> rank => 0
                               | <WITHOUT> <TIME> <ZONE> rank => -1
 <Time_Precision> ::= <Time_Fractional_Seconds_Precision> rank => 0
@@ -1319,9 +1326,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Time_Fractional_Seconds_Precision> ::= <Unsigned_Integer> rank => 0
 <Interval_Type> ::= <INTERVAL> <Interval_Qualifier> rank => 0
 <Row_Type> ::= <ROW> <Row_Type_Body> rank => 0
-<Gen1098> ::= <Comma> <Field_Definition> rank => 0
-<Gen1098_Any> ::= <Gen1098>* rank => 0
-<Row_Type_Body> ::= <Left_Paren> <Field_Definition> <Gen1098_Any> <Right_Paren> rank => 0
+<Gen1105> ::= <Comma> <Field_Definition> rank => 0
+<Gen1105_Any> ::= <Gen1105>* rank => 0
+<Row_Type_Body> ::= <Left_Paren> <Field_Definition> <Gen1105_Any> <Right_Paren> rank => 0
 <Scope_Clause_Maybe> ::= <Scope_Clause> rank => 0
 <Scope_Clause_Maybe> ::= rank => -1
 <Reference_Type> ::= <REF> <Left_Paren> <Referenced_Type> <Right_Paren> <Scope_Clause_Maybe> rank => 0
@@ -1330,10 +1337,10 @@ lexeme default = action => [start,length,value] latm => 1
 <Path_Resolved_User_Defined_Type_Name> ::= <User_Defined_Type_Name> rank => 0
 <Collection_Type> ::= <Array_Type> rank => 0
                     | <Multiset_Type> rank => -1
-<Gen1109> ::= <Left_Bracket_Or_Trigraph> <Unsigned_Integer> <Right_Bracket_Or_Trigraph> rank => 0
-<Gen1109_Maybe> ::= <Gen1109> rank => 0
-<Gen1109_Maybe> ::= rank => -1
-<Array_Type> ::= <Data_Type> <ARRAY> <Gen1109_Maybe> rank => 0
+<Gen1116> ::= <Left_Bracket_Or_Trigraph> <Unsigned_Integer> <Right_Bracket_Or_Trigraph> rank => 0
+<Gen1116_Maybe> ::= <Gen1116> rank => 0
+<Gen1116_Maybe> ::= rank => -1
+<Array_Type> ::= <Data_Type> <ARRAY> <Gen1116_Maybe> rank => 0
 <Multiset_Type> ::= <Data_Type> <MULTISET> rank => 0
 <Reference_Scope_Check_Maybe> ::= <Reference_Scope_Check> rank => 0
 <Reference_Scope_Check_Maybe> ::= rank => -1
@@ -1415,18 +1422,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Empty_Specification> ::= <ARRAY> <Left_Bracket_Or_Trigraph> <Right_Bracket_Or_Trigraph> rank => 0
                         | <MULTISET> <Left_Bracket_Or_Trigraph> <Right_Bracket_Or_Trigraph> rank => -1
 <Default_Specification> ::= <DEFAULT> rank => 0
-<Gen1194> ::= <Period> <Identifier> rank => 0
-<Gen1194_Any> ::= <Gen1194>* rank => 0
-<Identifier_Chain> ::= <Identifier> <Gen1194_Any> rank => 0
+<Gen1201> ::= <Period> <Identifier> rank => 0
+<Gen1201_Any> ::= <Gen1201>* rank => 0
+<Identifier_Chain> ::= <Identifier> <Gen1201_Any> rank => 0
 <Basic_Identifier_Chain> ::= <Identifier_Chain> rank => 0
 <Column_Reference> ::= <Basic_Identifier_Chain> rank => 0
                      | <MODULE> <Period> <Qualified_Identifier> <Period> <Column_Name> rank => -1
 <SQL_Parameter_Reference> ::= <Basic_Identifier_Chain> rank => 0
 <Set_Function_Specification> ::= <Aggregate_Function> rank => 0
                                | <Grouping_Operation> rank => -1
-<Gen1203> ::= <Comma> <Column_Reference> rank => 0
-<Gen1203_Any> ::= <Gen1203>* rank => 0
-<Grouping_Operation> ::= <GROUPING> <Left_Paren> <Column_Reference> <Gen1203_Any> <Right_Paren> rank => 0
+<Gen1210> ::= <Comma> <Column_Reference> rank => 0
+<Gen1210_Any> ::= <Gen1210>* rank => 0
+<Grouping_Operation> ::= <GROUPING> <Left_Paren> <Column_Reference> <Gen1210_Any> <Right_Paren> rank => 0
 <Window_Function> ::= <Window_Function_Type> <OVER> <Window_Name_Or_Specification> rank => 0
 <Window_Function_Type> ::= <Rank_Function_Type> <Left_Paren> <Right_Paren> rank => 0
                          | <ROW_NUMBER> <Left_Paren> <Right_Paren> rank => -1
@@ -1440,10 +1447,10 @@ lexeme default = action => [start,length,value] latm => 1
 <In_Line_Window_Specification> ::= <Window_Specification> rank => 0
 <Case_Expression> ::= <Case_Abbreviation> rank => 0
                     | <Case_Specification> rank => -1
-<Gen1219> ::= <Comma> <Value_Expression> rank => 0
-<Gen1219_Many> ::= <Gen1219>+ rank => 0
+<Gen1226> ::= <Comma> <Value_Expression> rank => 0
+<Gen1226_Many> ::= <Gen1226>+ rank => 0
 <Case_Abbreviation> ::= <NULLIF> <Left_Paren> <Value_Expression> <Comma> <Value_Expression> <Right_Paren> rank => 0
-                      | <COALESCE> <Left_Paren> <Value_Expression> <Gen1219_Many> <Right_Paren> rank => -1
+                      | <COALESCE> <Left_Paren> <Value_Expression> <Gen1226_Many> <Right_Paren> rank => -1
 <Case_Specification> ::= <Simple_Case> rank => 0
                        | <Searched_Case> rank => -1
 <Simple_When_Clause_Many> ::= <Simple_When_Clause>+ rank => 0
@@ -1547,19 +1554,19 @@ lexeme default = action => [start,length,value] latm => 1
                            | <Width_Bucket_Function> rank => -12
 <Position_Expression> ::= <String_Position_Expression> rank => 0
                         | <Blob_Position_Expression> rank => -1
-<Gen1326> ::= <USING> <Char_Length_Units> rank => 0
-<Gen1326_Maybe> ::= <Gen1326> rank => 0
-<Gen1326_Maybe> ::= rank => -1
-<String_Position_Expression> ::= <POSITION> <Left_Paren> <String_Value_Expression> <IN> <String_Value_Expression> <Gen1326_Maybe> <Right_Paren> rank => 0
+<Gen1333> ::= <USING> <Char_Length_Units> rank => 0
+<Gen1333_Maybe> ::= <Gen1333> rank => 0
+<Gen1333_Maybe> ::= rank => -1
+<String_Position_Expression> ::= <POSITION> <Left_Paren> <String_Value_Expression> <IN> <String_Value_Expression> <Gen1333_Maybe> <Right_Paren> rank => 0
 <Blob_Position_Expression> ::= <POSITION> <Left_Paren> <Blob_Value_Expression> <IN> <Blob_Value_Expression> <Right_Paren> rank => 0
 <Length_Expression> ::= <Char_Length_Expression> rank => 0
                       | <Octet_Length_Expression> rank => -1
-<Gen1333> ::= <CHAR_LENGTH> rank => 0
+<Gen1340> ::= <CHAR_LENGTH> rank => 0
             | <CHARACTER_LENGTH> rank => -1
-<Gen1335> ::= <USING> <Char_Length_Units> rank => 0
-<Gen1335_Maybe> ::= <Gen1335> rank => 0
-<Gen1335_Maybe> ::= rank => -1
-<Char_Length_Expression> ::= <Gen1333> <Left_Paren> <String_Value_Expression> <Gen1335_Maybe> <Right_Paren> rank => 0
+<Gen1342> ::= <USING> <Char_Length_Units> rank => 0
+<Gen1342_Maybe> ::= <Gen1342> rank => 0
+<Gen1342_Maybe> ::= rank => -1
+<Char_Length_Expression> ::= <Gen1340> <Left_Paren> <String_Value_Expression> <Gen1342_Maybe> <Right_Paren> rank => 0
 <Octet_Length_Expression> ::= <OCTET_LENGTH> <Left_Paren> <String_Value_Expression> <Right_Paren> rank => 0
 <Extract_Expression> ::= <EXTRACT> <Left_Paren> <Extract_Field> <FROM> <Extract_Source> <Right_Paren> rank => 0
 <Extract_Field> ::= <Primary_Datetime_Field> rank => 0
@@ -1578,9 +1585,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Numeric_Value_Expression_Exponent> ::= <Numeric_Value_Expression> rank => 0
 <Square_Root> ::= <SQRT> <Left_Paren> <Numeric_Value_Expression> <Right_Paren> rank => 0
 <Floor_Function> ::= <FLOOR> <Left_Paren> <Numeric_Value_Expression> <Right_Paren> rank => 0
-<Gen1357> ::= <CEIL> rank => 0
+<Gen1364> ::= <CEIL> rank => 0
             | <CEILING> rank => -1
-<Ceiling_Function> ::= <Gen1357> <Left_Paren> <Numeric_Value_Expression> <Right_Paren> rank => 0
+<Ceiling_Function> ::= <Gen1364> <Left_Paren> <Numeric_Value_Expression> <Right_Paren> rank => 0
 <Width_Bucket_Function> ::= <WIDTH_BUCKET> <Left_Paren> <Width_Bucket_Operand> <Comma> <Width_Bucket_Bound_1> <Comma> <Width_Bucket_Bound_2> <Comma> <Width_Bucket_Count> <Right_Paren> rank => 0
 <Width_Bucket_Operand> ::= <Numeric_Value_Expression> rank => 0
 <Width_Bucket_Bound_1> ::= <Numeric_Value_Expression> rank => 0
@@ -1611,17 +1618,17 @@ lexeme default = action => [start,length,value] latm => 1
                              | <Character_Overlay_Function> rank => -6
                              | <Normalize_Function> rank => -7
                              | <Specific_Type_Method> rank => -8
-<Gen1390> ::= <FOR> <String_Length> rank => 0
-<Gen1390_Maybe> ::= <Gen1390> rank => 0
-<Gen1390_Maybe> ::= rank => -1
-<Gen1393> ::= <USING> <Char_Length_Units> rank => 0
-<Gen1393_Maybe> ::= <Gen1393> rank => 0
-<Gen1393_Maybe> ::= rank => -1
-<Character_Substring_Function> ::= <SUBSTRING> <Left_Paren> <Character_Value_Expression> <FROM> <Start_Position> <Gen1390_Maybe> <Gen1393_Maybe> <Right_Paren> rank => 0
+<Gen1397> ::= <FOR> <String_Length> rank => 0
+<Gen1397_Maybe> ::= <Gen1397> rank => 0
+<Gen1397_Maybe> ::= rank => -1
+<Gen1400> ::= <USING> <Char_Length_Units> rank => 0
+<Gen1400_Maybe> ::= <Gen1400> rank => 0
+<Gen1400_Maybe> ::= rank => -1
+<Character_Substring_Function> ::= <SUBSTRING> <Left_Paren> <Character_Value_Expression> <FROM> <Start_Position> <Gen1397_Maybe> <Gen1400_Maybe> <Right_Paren> rank => 0
 <Regular_Expression_Substring_Function> ::= <SUBSTRING> <Left_Paren> <Character_Value_Expression> <SIMILAR> <Character_Value_Expression> <ESCAPE> <Escape_Character> <Right_Paren> rank => 0
-<Gen1398> ::= <UPPER> rank => 0
+<Gen1405> ::= <UPPER> rank => 0
             | <LOWER> rank => -1
-<Fold> ::= <Gen1398> <Left_Paren> <Character_Value_Expression> <Right_Paren> rank => 0
+<Fold> ::= <Gen1405> <Left_Paren> <Character_Value_Expression> <Right_Paren> rank => 0
 <Transcoding> ::= <CONVERT> <Left_Paren> <Character_Value_Expression> <USING> <Transcoding_Name> <Right_Paren> rank => 0
 <Character_Transliteration> ::= <TRANSLATE> <Left_Paren> <Character_Value_Expression> <USING> <Transliteration_Name> <Right_Paren> rank => 0
 <Trim_Function> ::= <TRIM> <Left_Paren> <Trim_Operands> <Right_Paren> rank => 0
@@ -1629,44 +1636,44 @@ lexeme default = action => [start,length,value] latm => 1
 <Trim_Specification_Maybe> ::= rank => -1
 <Trim_Character_Maybe> ::= <Trim_Character> rank => 0
 <Trim_Character_Maybe> ::= rank => -1
-<Gen1408> ::= <Trim_Specification_Maybe> <Trim_Character_Maybe> <FROM> rank => 0
-<Gen1408_Maybe> ::= <Gen1408> rank => 0
-<Gen1408_Maybe> ::= rank => -1
-<Trim_Operands> ::= <Gen1408_Maybe> <Trim_Source> rank => 0
+<Gen1415> ::= <Trim_Specification_Maybe> <Trim_Character_Maybe> <FROM> rank => 0
+<Gen1415_Maybe> ::= <Gen1415> rank => 0
+<Gen1415_Maybe> ::= rank => -1
+<Trim_Operands> ::= <Gen1415_Maybe> <Trim_Source> rank => 0
 <Trim_Source> ::= <Character_Value_Expression> rank => 0
 <Trim_Specification> ::= <LEADING> rank => 0
                        | <TRAILING> rank => -1
                        | <BOTH> rank => -2
 <Trim_Character> ::= <Character_Value_Expression> rank => 0
-<Gen1417> ::= <FOR> <String_Length> rank => 0
-<Gen1417_Maybe> ::= <Gen1417> rank => 0
-<Gen1417_Maybe> ::= rank => -1
-<Gen1420> ::= <USING> <Char_Length_Units> rank => 0
-<Gen1420_Maybe> ::= <Gen1420> rank => 0
-<Gen1420_Maybe> ::= rank => -1
-<Character_Overlay_Function> ::= <OVERLAY> <Left_Paren> <Character_Value_Expression> <PLACING> <Character_Value_Expression> <FROM> <Start_Position> <Gen1417_Maybe> <Gen1420_Maybe> <Right_Paren> rank => 0
+<Gen1424> ::= <FOR> <String_Length> rank => 0
+<Gen1424_Maybe> ::= <Gen1424> rank => 0
+<Gen1424_Maybe> ::= rank => -1
+<Gen1427> ::= <USING> <Char_Length_Units> rank => 0
+<Gen1427_Maybe> ::= <Gen1427> rank => 0
+<Gen1427_Maybe> ::= rank => -1
+<Character_Overlay_Function> ::= <OVERLAY> <Left_Paren> <Character_Value_Expression> <PLACING> <Character_Value_Expression> <FROM> <Start_Position> <Gen1424_Maybe> <Gen1427_Maybe> <Right_Paren> rank => 0
 <Normalize_Function> ::= <NORMALIZE> <Left_Paren> <Character_Value_Expression> <Right_Paren> rank => 0
 <Specific_Type_Method> ::= <User_Defined_Type_Value_Expression> <Period> <SPECIFICTYPE> rank => 0
 <Blob_Value_Function> ::= <Blob_Substring_Function> rank => 0
                         | <Blob_Trim_Function> rank => -1
                         | <Blob_Overlay_Function> rank => -2
-<Gen1429> ::= <FOR> <String_Length> rank => 0
-<Gen1429_Maybe> ::= <Gen1429> rank => 0
-<Gen1429_Maybe> ::= rank => -1
-<Blob_Substring_Function> ::= <SUBSTRING> <Left_Paren> <Blob_Value_Expression> <FROM> <Start_Position> <Gen1429_Maybe> <Right_Paren> rank => 0
+<Gen1436> ::= <FOR> <String_Length> rank => 0
+<Gen1436_Maybe> ::= <Gen1436> rank => 0
+<Gen1436_Maybe> ::= rank => -1
+<Blob_Substring_Function> ::= <SUBSTRING> <Left_Paren> <Blob_Value_Expression> <FROM> <Start_Position> <Gen1436_Maybe> <Right_Paren> rank => 0
 <Blob_Trim_Function> ::= <TRIM> <Left_Paren> <Blob_Trim_Operands> <Right_Paren> rank => 0
 <Trim_Octet_Maybe> ::= <Trim_Octet> rank => 0
 <Trim_Octet_Maybe> ::= rank => -1
-<Gen1436> ::= <Trim_Specification_Maybe> <Trim_Octet_Maybe> <FROM> rank => 0
-<Gen1436_Maybe> ::= <Gen1436> rank => 0
-<Gen1436_Maybe> ::= rank => -1
-<Blob_Trim_Operands> ::= <Gen1436_Maybe> <Blob_Trim_Source> rank => 0
+<Gen1443> ::= <Trim_Specification_Maybe> <Trim_Octet_Maybe> <FROM> rank => 0
+<Gen1443_Maybe> ::= <Gen1443> rank => 0
+<Gen1443_Maybe> ::= rank => -1
+<Blob_Trim_Operands> ::= <Gen1443_Maybe> <Blob_Trim_Source> rank => 0
 <Blob_Trim_Source> ::= <Blob_Value_Expression> rank => 0
 <Trim_Octet> ::= <Blob_Value_Expression> rank => 0
-<Gen1442> ::= <FOR> <String_Length> rank => 0
-<Gen1442_Maybe> ::= <Gen1442> rank => 0
-<Gen1442_Maybe> ::= rank => -1
-<Blob_Overlay_Function> ::= <OVERLAY> <Left_Paren> <Blob_Value_Expression> <PLACING> <Blob_Value_Expression> <FROM> <Start_Position> <Gen1442_Maybe> <Right_Paren> rank => 0
+<Gen1449> ::= <FOR> <String_Length> rank => 0
+<Gen1449_Maybe> ::= <Gen1449> rank => 0
+<Gen1449_Maybe> ::= rank => -1
+<Blob_Overlay_Function> ::= <OVERLAY> <Left_Paren> <Blob_Value_Expression> <PLACING> <Blob_Value_Expression> <FROM> <Start_Position> <Gen1449_Maybe> <Right_Paren> rank => 0
 <Start_Position> ::= <Numeric_Value_Expression> rank => 0
 <String_Length> ::= <Numeric_Value_Expression> rank => 0
 <Datetime_Value_Expression> ::= <Datetime_Term> rank => 0
@@ -1688,22 +1695,22 @@ lexeme default = action => [start,length,value] latm => 1
                             | <Current_Local_Time_Value_Function> rank => -3
                             | <Current_Local_Timestamp_Value_Function> rank => -4
 <Current_Date_Value_Function> ::= <CURRENT_DATE> rank => 0
-<Gen1467> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
-<Gen1467_Maybe> ::= <Gen1467> rank => 0
-<Gen1467_Maybe> ::= rank => -1
-<Current_Time_Value_Function> ::= <CURRENT_TIME> <Gen1467_Maybe> rank => 0
-<Gen1471> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
-<Gen1471_Maybe> ::= <Gen1471> rank => 0
-<Gen1471_Maybe> ::= rank => -1
-<Current_Local_Time_Value_Function> ::= <LOCALTIME> <Gen1471_Maybe> rank => 0
-<Gen1475> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
-<Gen1475_Maybe> ::= <Gen1475> rank => 0
-<Gen1475_Maybe> ::= rank => -1
-<Current_Timestamp_Value_Function> ::= <CURRENT_TIMESTAMP> <Gen1475_Maybe> rank => 0
-<Gen1479> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
-<Gen1479_Maybe> ::= <Gen1479> rank => 0
-<Gen1479_Maybe> ::= rank => -1
-<Current_Local_Timestamp_Value_Function> ::= <LOCALTIMESTAMP> <Gen1479_Maybe> rank => 0
+<Gen1474> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
+<Gen1474_Maybe> ::= <Gen1474> rank => 0
+<Gen1474_Maybe> ::= rank => -1
+<Current_Time_Value_Function> ::= <CURRENT_TIME> <Gen1474_Maybe> rank => 0
+<Gen1478> ::= <Left_Paren> <Time_Precision> <Right_Paren> rank => 0
+<Gen1478_Maybe> ::= <Gen1478> rank => 0
+<Gen1478_Maybe> ::= rank => -1
+<Current_Local_Time_Value_Function> ::= <LOCALTIME> <Gen1478_Maybe> rank => 0
+<Gen1482> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
+<Gen1482_Maybe> ::= <Gen1482> rank => 0
+<Gen1482_Maybe> ::= rank => -1
+<Current_Timestamp_Value_Function> ::= <CURRENT_TIMESTAMP> <Gen1482_Maybe> rank => 0
+<Gen1486> ::= <Left_Paren> <Timestamp_Precision> <Right_Paren> rank => 0
+<Gen1486_Maybe> ::= <Gen1486> rank => 0
+<Gen1486_Maybe> ::= rank => -1
+<Current_Local_Timestamp_Value_Function> ::= <LOCALTIMESTAMP> <Gen1486_Maybe> rank => 0
 <Interval_Value_Expression> ::= <Interval_Term> rank => 0
                               | <Interval_Value_Expression_1> <Plus_Sign> <Interval_Term_1> rank => -1
                               | <Interval_Value_Expression_1> <Minus_Sign> <Interval_Term_1> rank => -2
@@ -1729,10 +1736,10 @@ lexeme default = action => [start,length,value] latm => 1
 <Not_Maybe> ::= <NOT> rank => 0
 <Not_Maybe> ::= rank => -1
 <Boolean_Factor> ::= <Not_Maybe> <Boolean_Test> rank => 0
-<Gen1508> ::= <IS> <Not_Maybe> <Truth_Value> rank => 0
-<Gen1508_Maybe> ::= <Gen1508> rank => 0
-<Gen1508_Maybe> ::= rank => -1
-<Boolean_Test> ::= <Boolean_Primary> <Gen1508_Maybe> rank => 0
+<Gen1515> ::= <IS> <Not_Maybe> <Truth_Value> rank => 0
+<Gen1515_Maybe> ::= <Gen1515> rank => 0
+<Gen1515_Maybe> ::= rank => -1
+<Boolean_Test> ::= <Boolean_Primary> <Gen1515_Maybe> rank => 0
 <Truth_Value> ::= <TRUE> rank => 0
                 | <FALSE> rank => -1
                 | <UNKNOWN> rank => -2
@@ -1749,24 +1756,24 @@ lexeme default = action => [start,length,value] latm => 1
 <Array_Value_Constructor> ::= <Array_Value_Constructor_By_Enumeration> rank => 0
                             | <Array_Value_Constructor_By_Query> rank => -1
 <Array_Value_Constructor_By_Enumeration> ::= <ARRAY> <Left_Bracket_Or_Trigraph> <Array_Element_List> <Right_Bracket_Or_Trigraph> rank => 0
-<Gen1528> ::= <Comma> <Array_Element> rank => 0
-<Gen1528_Any> ::= <Gen1528>* rank => 0
-<Array_Element_List> ::= <Array_Element> <Gen1528_Any> rank => 0
+<Gen1535> ::= <Comma> <Array_Element> rank => 0
+<Gen1535_Any> ::= <Gen1535>* rank => 0
+<Array_Element_List> ::= <Array_Element> <Gen1535_Any> rank => 0
 <Array_Element> ::= <Value_Expression> rank => 0
 <Order_By_Clause_Maybe> ::= <Order_By_Clause> rank => 0
 <Order_By_Clause_Maybe> ::= rank => -1
 <Array_Value_Constructor_By_Query> ::= <ARRAY> <Left_Paren> <Query_Expression> <Order_By_Clause_Maybe> <Right_Paren> rank => 0
-<Gen1535> ::= <ALL> rank => 0
-            | <DISTINCT> rank => -1
-<Gen1537> ::= <ALL> rank => 0
-            | <DISTINCT> rank => -1
-<Multiset_Value_Expression> ::= <Multiset_Term> rank => 0
-                              | <Multiset_Value_Expression> <MULTISET> <UNION> <Gen1535> <Multiset_Term> rank => -1
-                              | <Multiset_Value_Expression> <MULTISET> <EXCEPT> <Gen1537> <Multiset_Term> rank => -2
 <Gen1542> ::= <ALL> rank => 0
             | <DISTINCT> rank => -1
+<Gen1544> ::= <ALL> rank => 0
+            | <DISTINCT> rank => -1
+<Multiset_Value_Expression> ::= <Multiset_Term> rank => 0
+                              | <Multiset_Value_Expression> <MULTISET> <UNION> <Gen1542> <Multiset_Term> rank => -1
+                              | <Multiset_Value_Expression> <MULTISET> <EXCEPT> <Gen1544> <Multiset_Term> rank => -2
+<Gen1549> ::= <ALL> rank => 0
+            | <DISTINCT> rank => -1
 <Multiset_Term> ::= <Multiset_Primary> rank => 0
-                  | <Multiset_Term> <MULTISET> <INTERSECT> <Gen1542> <Multiset_Primary> rank => -1
+                  | <Multiset_Term> <MULTISET> <INTERSECT> <Gen1549> <Multiset_Primary> rank => -1
 <Multiset_Primary> ::= <Multiset_Value_Function> rank => 0
                      | <Value_Expression_Primary> rank => -1
 <Multiset_Value_Function> ::= <Multiset_Set_Function> rank => 0
@@ -1775,9 +1782,9 @@ lexeme default = action => [start,length,value] latm => 1
                                | <Multiset_Value_Constructor_By_Query> rank => -1
                                | <Table_Value_Constructor_By_Query> rank => -2
 <Multiset_Value_Constructor_By_Enumeration> ::= <MULTISET> <Left_Bracket_Or_Trigraph> <Multiset_Element_List> <Right_Bracket_Or_Trigraph> rank => 0
-<Gen1554> ::= <Comma> <Multiset_Element> rank => 0
-<Gen1554_Any> ::= <Gen1554>* rank => 0
-<Multiset_Element_List> ::= <Multiset_Element> <Gen1554_Any> rank => 0
+<Gen1561> ::= <Comma> <Multiset_Element> rank => 0
+<Gen1561_Any> ::= <Gen1561>* rank => 0
+<Multiset_Element_List> ::= <Multiset_Element> <Gen1561_Any> rank => 0
 <Multiset_Element> ::= <Value_Expression> rank => 0
 <Multiset_Value_Constructor_By_Query> ::= <MULTISET> <Left_Paren> <Query_Expression> <Right_Paren> rank => 0
 <Table_Value_Constructor_By_Query> ::= <TABLE> <Left_Paren> <Query_Expression> <Right_Paren> rank => 0
@@ -1787,18 +1794,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Explicit_Row_Value_Constructor> ::= <Left_Paren> <Row_Value_Constructor_Element> <Comma> <Row_Value_Constructor_Element_List> <Right_Paren> rank => 0
                                    | <ROW> <Left_Paren> <Row_Value_Constructor_Element_List> <Right_Paren> rank => -1
                                    | <Row_Subquery> rank => -2
-<Gen1566> ::= <Comma> <Row_Value_Constructor_Element> rank => 0
-<Gen1566_Any> ::= <Gen1566>* rank => 0
-<Row_Value_Constructor_Element_List> ::= <Row_Value_Constructor_Element> <Gen1566_Any> rank => 0
+<Gen1573> ::= <Comma> <Row_Value_Constructor_Element> rank => 0
+<Gen1573_Any> ::= <Gen1573>* rank => 0
+<Row_Value_Constructor_Element_List> ::= <Row_Value_Constructor_Element> <Gen1573_Any> rank => 0
 <Row_Value_Constructor_Element> ::= <Value_Expression> rank => 0
 <Contextually_Typed_Row_Value_Constructor> ::= <Common_Value_Expression> rank => 0
                                              | <Boolean_Value_Expression> rank => -1
                                              | <Contextually_Typed_Value_Specification> rank => -2
                                              | <Left_Paren> <Contextually_Typed_Row_Value_Constructor_Element> <Comma> <Contextually_Typed_Row_Value_Constructor_Element_List> <Right_Paren> rank => -3
                                              | <ROW> <Left_Paren> <Contextually_Typed_Row_Value_Constructor_Element_List> <Right_Paren> rank => -4
-<Gen1575> ::= <Comma> <Contextually_Typed_Row_Value_Constructor_Element> rank => 0
-<Gen1575_Any> ::= <Gen1575>* rank => 0
-<Contextually_Typed_Row_Value_Constructor_Element_List> ::= <Contextually_Typed_Row_Value_Constructor_Element> <Gen1575_Any> rank => 0
+<Gen1582> ::= <Comma> <Contextually_Typed_Row_Value_Constructor_Element> rank => 0
+<Gen1582_Any> ::= <Gen1582>* rank => 0
+<Contextually_Typed_Row_Value_Constructor_Element_List> ::= <Contextually_Typed_Row_Value_Constructor_Element> <Gen1582_Any> rank => 0
 <Contextually_Typed_Row_Value_Constructor_Element> ::= <Value_Expression> rank => 0
                                                      | <Contextually_Typed_Value_Specification> rank => -1
 <Row_Value_Constructor_Predicand> ::= <Common_Value_Expression> rank => 0
@@ -1814,13 +1821,13 @@ lexeme default = action => [start,length,value] latm => 1
                         | <Row_Value_Constructor_Predicand> rank => -1
 <Row_Value_Special_Case> ::= <Nonparenthesized_Value_Expression_Primary> rank => 0
 <Table_Value_Constructor> ::= <VALUES> <Row_Value_Expression_List> rank => 0
-<Gen1593> ::= <Comma> <Table_Row_Value_Expression> rank => 0
-<Gen1593_Any> ::= <Gen1593>* rank => 0
-<Row_Value_Expression_List> ::= <Table_Row_Value_Expression> <Gen1593_Any> rank => 0
+<Gen1600> ::= <Comma> <Table_Row_Value_Expression> rank => 0
+<Gen1600_Any> ::= <Gen1600>* rank => 0
+<Row_Value_Expression_List> ::= <Table_Row_Value_Expression> <Gen1600_Any> rank => 0
 <Contextually_Typed_Table_Value_Constructor> ::= <VALUES> <Contextually_Typed_Row_Value_Expression_List> rank => 0
-<Gen1597> ::= <Comma> <Contextually_Typed_Row_Value_Expression> rank => 0
-<Gen1597_Any> ::= <Gen1597>* rank => 0
-<Contextually_Typed_Row_Value_Expression_List> ::= <Contextually_Typed_Row_Value_Expression> <Gen1597_Any> rank => 0
+<Gen1604> ::= <Comma> <Contextually_Typed_Row_Value_Expression> rank => 0
+<Gen1604_Any> ::= <Gen1604>* rank => 0
+<Contextually_Typed_Row_Value_Expression_List> ::= <Contextually_Typed_Row_Value_Expression> <Gen1604_Any> rank => 0
 <Where_Clause_Maybe> ::= <Where_Clause> rank => 0
 <Where_Clause_Maybe> ::= rank => -1
 <Group_By_Clause_Maybe> ::= <Group_By_Clause> rank => 0
@@ -1831,9 +1838,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Window_Clause_Maybe> ::= rank => -1
 <Table_Expression> ::= <From_Clause> <Where_Clause_Maybe> <Group_By_Clause_Maybe> <Having_Clause_Maybe> <Window_Clause_Maybe> rank => 0
 <From_Clause> ::= <FROM> <Table_Reference_List> rank => 0
-<Gen1610> ::= <Comma> <Table_Reference> rank => 0
-<Gen1610_Any> ::= <Gen1610>* rank => 0
-<Table_Reference_List> ::= <Table_Reference> <Gen1610_Any> rank => 0
+<Gen1617> ::= <Comma> <Table_Reference> rank => 0
+<Gen1617_Any> ::= <Gen1617>* rank => 0
+<Table_Reference_List> ::= <Table_Reference> <Gen1617_Any> rank => 0
 <Sample_Clause_Maybe> ::= <Sample_Clause> rank => 0
 <Sample_Clause_Maybe> ::= rank => -1
 <Table_Reference> ::= <Table_Primary_Or_Joined_Table> <Sample_Clause_Maybe> rank => 0
@@ -1849,51 +1856,51 @@ lexeme default = action => [start,length,value] latm => 1
 <Repeat_Argument> ::= <Numeric_Value_Expression> rank => 0
 <As_Maybe> ::= <AS> rank => 0
 <As_Maybe> ::= rank => -1
-<Gen1628> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1628_Maybe> ::= <Gen1628> rank => 0
-<Gen1628_Maybe> ::= rank => -1
-<Gen1631> ::= <As_Maybe> <Correlation_Name> <Gen1628_Maybe> rank => 0
-<Gen1631_Maybe> ::= <Gen1631> rank => 0
-<Gen1631_Maybe> ::= rank => -1
-<Gen1634> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1634_Maybe> ::= <Gen1634> rank => 0
-<Gen1634_Maybe> ::= rank => -1
-<Gen1637> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1637_Maybe> ::= <Gen1637> rank => 0
-<Gen1637_Maybe> ::= rank => -1
-<Gen1640> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1640_Maybe> ::= <Gen1640> rank => 0
-<Gen1640_Maybe> ::= rank => -1
-<Gen1643> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1643_Maybe> ::= <Gen1643> rank => 0
-<Gen1643_Maybe> ::= rank => -1
-<Gen1646> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
-<Gen1646_Maybe> ::= <Gen1646> rank => 0
-<Gen1646_Maybe> ::= rank => -1
-<Gen1649> ::= <As_Maybe> <Correlation_Name> <Gen1646_Maybe> rank => 0
-<Gen1649_Maybe> ::= <Gen1649> rank => 0
-<Gen1649_Maybe> ::= rank => -1
-<Table_Primary> ::= <Table_Or_Query_Name> <Gen1631_Maybe> rank => 0
-                  | <Derived_Table> <As_Maybe> <Correlation_Name> <Gen1634_Maybe> rank => -1
-                  | <Lateral_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1637_Maybe> rank => -2
-                  | <Collection_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1640_Maybe> rank => -3
-                  | <Table_Function_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1643_Maybe> rank => -4
-                  | <Only_Spec> <Gen1649_Maybe> rank => -5
+<Gen1635> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1635_Maybe> ::= <Gen1635> rank => 0
+<Gen1635_Maybe> ::= rank => -1
+<Gen1638> ::= <As_Maybe> <Correlation_Name> <Gen1635_Maybe> rank => 0
+<Gen1638_Maybe> ::= <Gen1638> rank => 0
+<Gen1638_Maybe> ::= rank => -1
+<Gen1641> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1641_Maybe> ::= <Gen1641> rank => 0
+<Gen1641_Maybe> ::= rank => -1
+<Gen1644> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1644_Maybe> ::= <Gen1644> rank => 0
+<Gen1644_Maybe> ::= rank => -1
+<Gen1647> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1647_Maybe> ::= <Gen1647> rank => 0
+<Gen1647_Maybe> ::= rank => -1
+<Gen1650> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1650_Maybe> ::= <Gen1650> rank => 0
+<Gen1650_Maybe> ::= rank => -1
+<Gen1653> ::= <Left_Paren> <Derived_Column_List> <Right_Paren> rank => 0
+<Gen1653_Maybe> ::= <Gen1653> rank => 0
+<Gen1653_Maybe> ::= rank => -1
+<Gen1656> ::= <As_Maybe> <Correlation_Name> <Gen1653_Maybe> rank => 0
+<Gen1656_Maybe> ::= <Gen1656> rank => 0
+<Gen1656_Maybe> ::= rank => -1
+<Table_Primary> ::= <Table_Or_Query_Name> <Gen1638_Maybe> rank => 0
+                  | <Derived_Table> <As_Maybe> <Correlation_Name> <Gen1641_Maybe> rank => -1
+                  | <Lateral_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1644_Maybe> rank => -2
+                  | <Collection_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1647_Maybe> rank => -3
+                  | <Table_Function_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1650_Maybe> rank => -4
+                  | <Only_Spec> <Gen1656_Maybe> rank => -5
                   | <Left_Paren> <Joined_Table> <Right_Paren> rank => -6
 <Only_Spec> ::= <ONLY> <Left_Paren> <Table_Or_Query_Name> <Right_Paren> rank => 0
 <Lateral_Derived_Table> ::= <LATERAL> <Table_Subquery> rank => 0
-<Gen1661> ::= <WITH> <ORDINALITY> rank => 0
-<Gen1661_Maybe> ::= <Gen1661> rank => 0
-<Gen1661_Maybe> ::= rank => -1
-<Collection_Derived_Table> ::= <UNNEST> <Left_Paren> <Collection_Value_Expression> <Right_Paren> <Gen1661_Maybe> rank => 0
+<Gen1668> ::= <WITH> <ORDINALITY> rank => 0
+<Gen1668_Maybe> ::= <Gen1668> rank => 0
+<Gen1668_Maybe> ::= rank => -1
+<Collection_Derived_Table> ::= <UNNEST> <Left_Paren> <Collection_Value_Expression> <Right_Paren> <Gen1668_Maybe> rank => 0
 <Table_Function_Derived_Table> ::= <TABLE> <Left_Paren> <Collection_Value_Expression> <Right_Paren> rank => 0
 <Derived_Table> ::= <Table_Subquery> rank => 0
 <Table_Or_Query_Name> ::= <Table_Name> rank => 0
                         | <Query_Name> rank => -1
 <Derived_Column_List> ::= <Column_Name_List> rank => 0
-<Gen1670> ::= <Comma> <Column_Name> rank => 0
-<Gen1670_Any> ::= <Gen1670>* rank => 0
-<Column_Name_List> ::= <Column_Name> <Gen1670_Any> rank => 0
+<Gen1677> ::= <Comma> <Column_Name> rank => 0
+<Gen1677_Any> ::= <Gen1677>* rank => 0
+<Column_Name_List> ::= <Column_Name> <Gen1677_Any> rank => 0
 <Joined_Table> ::= <Cross_Join> rank => 0
                  | <Qualified_Join> rank => -1
                  | <Natural_Join> rank => -2
@@ -1920,9 +1927,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Set_Quantifier_Maybe> ::= <Set_Quantifier> rank => 0
 <Set_Quantifier_Maybe> ::= rank => -1
 <Group_By_Clause> ::= <GROUP> <BY> <Set_Quantifier_Maybe> <Grouping_Element_List> rank => 0
-<Gen1699> ::= <Comma> <Grouping_Element> rank => 0
-<Gen1699_Any> ::= <Gen1699>* rank => 0
-<Grouping_Element_List> ::= <Grouping_Element> <Gen1699_Any> rank => 0
+<Gen1706> ::= <Comma> <Grouping_Element> rank => 0
+<Gen1706_Any> ::= <Gen1706>* rank => 0
+<Grouping_Element_List> ::= <Grouping_Element> <Gen1706_Any> rank => 0
 <Grouping_Element> ::= <Ordinary_Grouping_Set> rank => 0
                      | <Rollup_List> rank => -1
                      | <Cube_List> rank => -2
@@ -1931,18 +1938,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Ordinary_Grouping_Set> ::= <Grouping_Column_Reference> rank => 0
                           | <Left_Paren> <Grouping_Column_Reference_List> <Right_Paren> rank => -1
 <Grouping_Column_Reference> ::= <Column_Reference> <Collate_Clause_Maybe> rank => 0
-<Gen1710> ::= <Comma> <Grouping_Column_Reference> rank => 0
-<Gen1710_Any> ::= <Gen1710>* rank => 0
-<Grouping_Column_Reference_List> ::= <Grouping_Column_Reference> <Gen1710_Any> rank => 0
+<Gen1717> ::= <Comma> <Grouping_Column_Reference> rank => 0
+<Gen1717_Any> ::= <Gen1717>* rank => 0
+<Grouping_Column_Reference_List> ::= <Grouping_Column_Reference> <Gen1717_Any> rank => 0
 <Rollup_List> ::= <ROLLUP> <Left_Paren> <Ordinary_Grouping_Set_List> <Right_Paren> rank => 0
-<Gen1714> ::= <Comma> <Ordinary_Grouping_Set> rank => 0
-<Gen1714_Any> ::= <Gen1714>* rank => 0
-<Ordinary_Grouping_Set_List> ::= <Ordinary_Grouping_Set> <Gen1714_Any> rank => 0
+<Gen1721> ::= <Comma> <Ordinary_Grouping_Set> rank => 0
+<Gen1721_Any> ::= <Gen1721>* rank => 0
+<Ordinary_Grouping_Set_List> ::= <Ordinary_Grouping_Set> <Gen1721_Any> rank => 0
 <Cube_List> ::= <CUBE> <Left_Paren> <Ordinary_Grouping_Set_List> <Right_Paren> rank => 0
 <Grouping_Sets_Specification> ::= <GROUPING> <SETS> <Left_Paren> <Grouping_Set_List> <Right_Paren> rank => 0
-<Gen1719> ::= <Comma> <Grouping_Set> rank => 0
-<Gen1719_Any> ::= <Gen1719>* rank => 0
-<Grouping_Set_List> ::= <Grouping_Set> <Gen1719_Any> rank => 0
+<Gen1726> ::= <Comma> <Grouping_Set> rank => 0
+<Gen1726_Any> ::= <Gen1726>* rank => 0
+<Grouping_Set_List> ::= <Grouping_Set> <Gen1726_Any> rank => 0
 <Grouping_Set> ::= <Ordinary_Grouping_Set> rank => 0
                  | <Rollup_List> rank => -1
                  | <Cube_List> rank => -2
@@ -1951,9 +1958,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Empty_Grouping_Set> ::= <Left_Paren> <Right_Paren> rank => 0
 <Having_Clause> ::= <HAVING> <Search_Condition> rank => 0
 <Window_Clause> ::= <WINDOW> <Window_Definition_List> rank => 0
-<Gen1730> ::= <Comma> <Window_Definition> rank => 0
-<Gen1730_Any> ::= <Gen1730>* rank => 0
-<Window_Definition_List> ::= <Window_Definition> <Gen1730_Any> rank => 0
+<Gen1737> ::= <Comma> <Window_Definition> rank => 0
+<Gen1737_Any> ::= <Gen1737>* rank => 0
+<Window_Definition_List> ::= <Window_Definition> <Gen1737_Any> rank => 0
 <Window_Definition> ::= <New_Window_Name> <AS> <Window_Specification> rank => 0
 <New_Window_Name> ::= <Window_Name> rank => 0
 <Window_Specification> ::= <Left_Paren> <Window_Specification_Details> <Right_Paren> rank => 0
@@ -1968,9 +1975,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Window_Specification_Details> ::= <Existing_Window_Name_Maybe> <Window_Partition_Clause_Maybe> <Window_Order_Clause_Maybe> <Window_Frame_Clause_Maybe> rank => 0
 <Existing_Window_Name> ::= <Window_Name> rank => 0
 <Window_Partition_Clause> ::= <PARTITION> <BY> <Window_Partition_Column_Reference_List> rank => 0
-<Gen1747> ::= <Comma> <Window_Partition_Column_Reference> rank => 0
-<Gen1747_Any> ::= <Gen1747>* rank => 0
-<Window_Partition_Column_Reference_List> ::= <Window_Partition_Column_Reference> <Gen1747_Any> rank => 0
+<Gen1754> ::= <Comma> <Window_Partition_Column_Reference> rank => 0
+<Gen1754_Any> ::= <Gen1754>* rank => 0
+<Window_Partition_Column_Reference_List> ::= <Window_Partition_Column_Reference> <Gen1754_Any> rank => 0
 <Window_Partition_Column_Reference> ::= <Column_Reference> <Collate_Clause_Maybe> rank => 0
 <Window_Order_Clause> ::= <ORDER> <BY> <Sort_Specification_List> rank => 0
 <Window_Frame_Exclusion_Maybe> ::= <Window_Frame_Exclusion> rank => 0
@@ -1996,26 +2003,26 @@ lexeme default = action => [start,length,value] latm => 1
                            | <EXCLUDE> <TIES> rank => -2
                            | <EXCLUDE> <NO> <OTHERS> rank => -3
 <Query_Specification> ::= <SELECT> <Set_Quantifier_Maybe> <Select_List> <Table_Expression> rank => 0
-<Gen1775> ::= <Comma> <Select_Sublist> rank => 0
-<Gen1775_Any> ::= <Gen1775>* rank => 0
+<Gen1782> ::= <Comma> <Select_Sublist> rank => 0
+<Gen1782_Any> ::= <Gen1782>* rank => 0
 <Select_List> ::= <Asterisk> rank => 0
-                | <Select_Sublist> <Gen1775_Any> rank => -1
+                | <Select_Sublist> <Gen1782_Any> rank => -1
 <Select_Sublist> ::= <Derived_Column> rank => 0
                    | <Qualified_Asterisk> rank => -1
 <Qualified_Asterisk> ::= <Asterisked_Identifier_Chain> <Period> <Asterisk> rank => 0
                        | <All_Fields_Reference> rank => -1
-<Gen1783> ::= <Period> <Asterisked_Identifier> rank => 0
-<Gen1783_Any> ::= <Gen1783>* rank => 0
-<Asterisked_Identifier_Chain> ::= <Asterisked_Identifier> <Gen1783_Any> rank => 0
+<Gen1790> ::= <Period> <Asterisked_Identifier> rank => 0
+<Gen1790_Any> ::= <Gen1790>* rank => 0
+<Asterisked_Identifier_Chain> ::= <Asterisked_Identifier> <Gen1790_Any> rank => 0
 <Asterisked_Identifier> ::= <Identifier> rank => 0
 <As_Clause_Maybe> ::= <As_Clause> rank => 0
 <As_Clause_Maybe> ::= rank => -1
 <Derived_Column> ::= <Value_Expression> <As_Clause_Maybe> rank => 0
 <As_Clause> ::= <As_Maybe> <Column_Name> rank => 0
-<Gen1791> ::= <AS> <Left_Paren> <All_Fields_Column_Name_List> <Right_Paren> rank => 0
-<Gen1791_Maybe> ::= <Gen1791> rank => 0
-<Gen1791_Maybe> ::= rank => -1
-<All_Fields_Reference> ::= <Value_Expression_Primary> <Period> <Asterisk> <Gen1791_Maybe> rank => 0
+<Gen1798> ::= <AS> <Left_Paren> <All_Fields_Column_Name_List> <Right_Paren> rank => 0
+<Gen1798_Maybe> ::= <Gen1798> rank => 0
+<Gen1798_Maybe> ::= rank => -1
+<All_Fields_Reference> ::= <Value_Expression_Primary> <Period> <Asterisk> <Gen1798_Maybe> rank => 0
 <All_Fields_Column_Name_List> ::= <Column_Name_List> rank => 0
 <With_Clause_Maybe> ::= <With_Clause> rank => 0
 <With_Clause_Maybe> ::= rank => -1
@@ -2023,39 +2030,39 @@ lexeme default = action => [start,length,value] latm => 1
 <Recursive_Maybe> ::= <RECURSIVE> rank => 0
 <Recursive_Maybe> ::= rank => -1
 <With_Clause> ::= <WITH> <Recursive_Maybe> <With_List> rank => 0
-<Gen1802> ::= <Comma> <With_List_Element> rank => 0
-<Gen1802_Any> ::= <Gen1802>* rank => 0
-<With_List> ::= <With_List_Element> <Gen1802_Any> rank => 0
-<Gen1805> ::= <Left_Paren> <With_Column_List> <Right_Paren> rank => 0
-<Gen1805_Maybe> ::= <Gen1805> rank => 0
-<Gen1805_Maybe> ::= rank => -1
+<Gen1809> ::= <Comma> <With_List_Element> rank => 0
+<Gen1809_Any> ::= <Gen1809>* rank => 0
+<With_List> ::= <With_List_Element> <Gen1809_Any> rank => 0
+<Gen1812> ::= <Left_Paren> <With_Column_List> <Right_Paren> rank => 0
+<Gen1812_Maybe> ::= <Gen1812> rank => 0
+<Gen1812_Maybe> ::= rank => -1
 <Search_Or_Cycle_Clause_Maybe> ::= <Search_Or_Cycle_Clause> rank => 0
 <Search_Or_Cycle_Clause_Maybe> ::= rank => -1
-<With_List_Element> ::= <Query_Name> <Gen1805_Maybe> <AS> <Left_Paren> <Query_Expression> <Right_Paren> <Search_Or_Cycle_Clause_Maybe> rank => 0
+<With_List_Element> ::= <Query_Name> <Gen1812_Maybe> <AS> <Left_Paren> <Query_Expression> <Right_Paren> <Search_Or_Cycle_Clause_Maybe> rank => 0
 <With_Column_List> ::= <Column_Name_List> rank => 0
 <Query_Expression_Body> ::= <Non_Join_Query_Expression> rank => 0
                           | <Joined_Table> rank => -1
-<Gen1814> ::= <ALL> rank => 0
+<Gen1821> ::= <ALL> rank => 0
             | <DISTINCT> rank => -1
-<Gen1814_Maybe> ::= <Gen1814> rank => 0
-<Gen1814_Maybe> ::= rank => -1
+<Gen1821_Maybe> ::= <Gen1821> rank => 0
+<Gen1821_Maybe> ::= rank => -1
 <Corresponding_Spec_Maybe> ::= <Corresponding_Spec> rank => 0
 <Corresponding_Spec_Maybe> ::= rank => -1
-<Gen1820> ::= <ALL> rank => 0
+<Gen1827> ::= <ALL> rank => 0
             | <DISTINCT> rank => -1
-<Gen1820_Maybe> ::= <Gen1820> rank => 0
-<Gen1820_Maybe> ::= rank => -1
+<Gen1827_Maybe> ::= <Gen1827> rank => 0
+<Gen1827_Maybe> ::= rank => -1
 <Non_Join_Query_Expression> ::= <Non_Join_Query_Term> rank => 0
-                              | <Query_Expression_Body> <UNION> <Gen1814_Maybe> <Corresponding_Spec_Maybe> <Query_Term> rank => -1
-                              | <Query_Expression_Body> <EXCEPT> <Gen1820_Maybe> <Corresponding_Spec_Maybe> <Query_Term> rank => -2
+                              | <Query_Expression_Body> <UNION> <Gen1821_Maybe> <Corresponding_Spec_Maybe> <Query_Term> rank => -1
+                              | <Query_Expression_Body> <EXCEPT> <Gen1827_Maybe> <Corresponding_Spec_Maybe> <Query_Term> rank => -2
 <Query_Term> ::= <Non_Join_Query_Term> rank => 0
                | <Joined_Table> rank => -1
-<Gen1829> ::= <ALL> rank => 0
+<Gen1836> ::= <ALL> rank => 0
             | <DISTINCT> rank => -1
-<Gen1829_Maybe> ::= <Gen1829> rank => 0
-<Gen1829_Maybe> ::= rank => -1
+<Gen1836_Maybe> ::= <Gen1836> rank => 0
+<Gen1836_Maybe> ::= rank => -1
 <Non_Join_Query_Term> ::= <Non_Join_Query_Primary> rank => 0
-                        | <Query_Term> <INTERSECT> <Gen1829_Maybe> <Corresponding_Spec_Maybe> <Query_Primary> rank => -1
+                        | <Query_Term> <INTERSECT> <Gen1836_Maybe> <Corresponding_Spec_Maybe> <Query_Primary> rank => -1
 <Query_Primary> ::= <Non_Join_Query_Primary> rank => 0
                   | <Joined_Table> rank => -1
 <Non_Join_Query_Primary> ::= <Simple_Table> rank => 0
@@ -2064,10 +2071,10 @@ lexeme default = action => [start,length,value] latm => 1
                  | <Table_Value_Constructor> rank => -1
                  | <Explicit_Table> rank => -2
 <Explicit_Table> ::= <TABLE> <Table_Or_Query_Name> rank => 0
-<Gen1843> ::= <BY> <Left_Paren> <Corresponding_Column_List> <Right_Paren> rank => 0
-<Gen1843_Maybe> ::= <Gen1843> rank => 0
-<Gen1843_Maybe> ::= rank => -1
-<Corresponding_Spec> ::= <CORRESPONDING> <Gen1843_Maybe> rank => 0
+<Gen1850> ::= <BY> <Left_Paren> <Corresponding_Column_List> <Right_Paren> rank => 0
+<Gen1850_Maybe> ::= <Gen1850> rank => 0
+<Gen1850_Maybe> ::= rank => -1
+<Corresponding_Spec> ::= <CORRESPONDING> <Gen1850_Maybe> rank => 0
 <Corresponding_Column_List> ::= <Column_Name_List> rank => 0
 <Search_Or_Cycle_Clause> ::= <Search_Clause> rank => 0
                            | <Cycle_Clause> rank => -1
@@ -2077,9 +2084,9 @@ lexeme default = action => [start,length,value] latm => 1
                            | <BREADTH> <FIRST> <BY> <Sort_Specification_List> rank => -1
 <Sequence_Column> ::= <Column_Name> rank => 0
 <Cycle_Clause> ::= <CYCLE> <Cycle_Column_List> <SET> <Cycle_Mark_Column> <TO> <Cycle_Mark_Value> <DEFAULT> <Non_Cycle_Mark_Value> <USING> <Path_Column> rank => 0
-<Gen1856> ::= <Comma> <Cycle_Column> rank => 0
-<Gen1856_Any> ::= <Gen1856>* rank => 0
-<Cycle_Column_List> ::= <Cycle_Column> <Gen1856_Any> rank => 0
+<Gen1863> ::= <Comma> <Cycle_Column> rank => 0
+<Gen1863_Any> ::= <Gen1863>* rank => 0
+<Cycle_Column_List> ::= <Cycle_Column> <Gen1863_Any> rank => 0
 <Cycle_Column> ::= <Column_Name> rank => 0
 <Cycle_Mark_Column> ::= <Column_Name> rank => 0
 <Path_Column> ::= <Column_Name> rank => 0
@@ -2115,39 +2122,39 @@ lexeme default = action => [start,length,value] latm => 1
             | <Less_Than_Or_Equals_Operator> rank => -4
             | <Greater_Than_Or_Equals_Operator> rank => -5
 <Between_Predicate> ::= <Row_Value_Predicand> <Between_Predicate_Part_2> rank => 0
-<Gen1894> ::= <ASYMMETRIC> rank => 0
+<Gen1901> ::= <ASYMMETRIC> rank => 0
             | <SYMMETRIC> rank => -1
-<Gen1894_Maybe> ::= <Gen1894> rank => 0
-<Gen1894_Maybe> ::= rank => -1
-<Between_Predicate_Part_2> ::= <Not_Maybe> <BETWEEN> <Gen1894_Maybe> <Row_Value_Predicand> <AND> <Row_Value_Predicand> rank => 0
+<Gen1901_Maybe> ::= <Gen1901> rank => 0
+<Gen1901_Maybe> ::= rank => -1
+<Between_Predicate_Part_2> ::= <Not_Maybe> <BETWEEN> <Gen1901_Maybe> <Row_Value_Predicand> <AND> <Row_Value_Predicand> rank => 0
 <In_Predicate> ::= <Row_Value_Predicand> <In_Predicate_Part_2> rank => 0
 <In_Predicate_Part_2> ::= <Not_Maybe> <IN> <In_Predicate_Value> rank => 0
 <In_Predicate_Value> ::= <Table_Subquery> rank => 0
                        | <Left_Paren> <In_Value_List> <Right_Paren> rank => -1
-<Gen1903> ::= <Comma> <Row_Value_Expression> rank => 0
-<Gen1903_Any> ::= <Gen1903>* rank => 0
-<In_Value_List> ::= <Row_Value_Expression> <Gen1903_Any> rank => 0
+<Gen1910> ::= <Comma> <Row_Value_Expression> rank => 0
+<Gen1910_Any> ::= <Gen1910>* rank => 0
+<In_Value_List> ::= <Row_Value_Expression> <Gen1910_Any> rank => 0
 <Like_Predicate> ::= <Character_Like_Predicate> rank => 0
                    | <Octet_Like_Predicate> rank => -1
 <Character_Like_Predicate> ::= <Row_Value_Predicand> <Character_Like_Predicate_Part_2> rank => 0
-<Gen1909> ::= <ESCAPE> <Escape_Character> rank => 0
-<Gen1909_Maybe> ::= <Gen1909> rank => 0
-<Gen1909_Maybe> ::= rank => -1
-<Character_Like_Predicate_Part_2> ::= <Not_Maybe> <LIKE> <Character_Pattern> <Gen1909_Maybe> rank => 0
+<Gen1916> ::= <ESCAPE> <Escape_Character> rank => 0
+<Gen1916_Maybe> ::= <Gen1916> rank => 0
+<Gen1916_Maybe> ::= rank => -1
+<Character_Like_Predicate_Part_2> ::= <Not_Maybe> <LIKE> <Character_Pattern> <Gen1916_Maybe> rank => 0
 <Character_Pattern> ::= <Character_Value_Expression> rank => 0
 <Escape_Character> ::= <Character_Value_Expression> rank => 0
 <Octet_Like_Predicate> ::= <Row_Value_Predicand> <Octet_Like_Predicate_Part_2> rank => 0
-<Gen1916> ::= <ESCAPE> <Escape_Octet> rank => 0
-<Gen1916_Maybe> ::= <Gen1916> rank => 0
-<Gen1916_Maybe> ::= rank => -1
-<Octet_Like_Predicate_Part_2> ::= <Not_Maybe> <LIKE> <Octet_Pattern> <Gen1916_Maybe> rank => 0
+<Gen1923> ::= <ESCAPE> <Escape_Octet> rank => 0
+<Gen1923_Maybe> ::= <Gen1923> rank => 0
+<Gen1923_Maybe> ::= rank => -1
+<Octet_Like_Predicate_Part_2> ::= <Not_Maybe> <LIKE> <Octet_Pattern> <Gen1923_Maybe> rank => 0
 <Octet_Pattern> ::= <Blob_Value_Expression> rank => 0
 <Escape_Octet> ::= <Blob_Value_Expression> rank => 0
 <Similar_Predicate> ::= <Row_Value_Predicand> <Similar_Predicate_Part_2> rank => 0
-<Gen1923> ::= <ESCAPE> <Escape_Character> rank => 0
-<Gen1923_Maybe> ::= <Gen1923> rank => 0
-<Gen1923_Maybe> ::= rank => -1
-<Similar_Predicate_Part_2> ::= <Not_Maybe> <SIMILAR> <TO> <Similar_Pattern> <Gen1923_Maybe> rank => 0
+<Gen1930> ::= <ESCAPE> <Escape_Character> rank => 0
+<Gen1930_Maybe> ::= <Gen1930> rank => 0
+<Gen1930_Maybe> ::= rank => -1
+<Similar_Predicate_Part_2> ::= <Not_Maybe> <SIMILAR> <TO> <Similar_Pattern> <Gen1930_Maybe> rank => 0
 <Similar_Pattern> ::= <Character_Value_Expression> rank => 0
 <Regular_Expression> ::= <Regular_Term> rank => 0
                        | <Regular_Expression> <Vertical_Bar> <Regular_Term> rank => -1
@@ -2172,8 +2179,8 @@ lexeme default = action => [start,length,value] latm => 1
                     | <Left_Paren> <Regular_Expression> <Right_Paren> rank => -3
 <Character_Specifier> ::= <Non_Escaped_Character> rank => 0
                         | <Escaped_Character> rank => -1
-<Non_Escaped_Character> ~ <Lex568>
-<Escaped_Character> ~ <Lex569> <Lex570>
+<Non_Escaped_Character> ~ <Lex567>
+<Escaped_Character> ~ <Lex568> <Lex569>
 <Character_Enumeration_Many> ::= <Character_Enumeration>+ rank => 0
 <Character_Enumeration_Include_Many> ::= <Character_Enumeration_Include>+ rank => 0
 <Character_Enumeration_Exclude_Many> ::= <Character_Enumeration_Exclude>+ rank => 0
@@ -2202,12 +2209,12 @@ lexeme default = action => [start,length,value] latm => 1
 <Match_Predicate> ::= <Row_Value_Predicand> <Match_Predicate_Part_2> rank => 0
 <Unique_Maybe> ::= <UNIQUE> rank => 0
 <Unique_Maybe> ::= rank => -1
-<Gen1981> ::= <SIMPLE> rank => 0
+<Gen1988> ::= <SIMPLE> rank => 0
             | <PARTIAL> rank => -1
             | <FULL> rank => -2
-<Gen1981_Maybe> ::= <Gen1981> rank => 0
-<Gen1981_Maybe> ::= rank => -1
-<Match_Predicate_Part_2> ::= <MATCH> <Unique_Maybe> <Gen1981_Maybe> <Table_Subquery> rank => 0
+<Gen1988_Maybe> ::= <Gen1988> rank => 0
+<Gen1988_Maybe> ::= rank => -1
+<Match_Predicate_Part_2> ::= <MATCH> <Unique_Maybe> <Gen1988_Maybe> <Table_Subquery> rank => 0
 <Overlaps_Predicate> ::= <Overlaps_Predicate_Part_1> <Overlaps_Predicate_Part_2> rank => 0
 <Overlaps_Predicate_Part_1> ::= <Row_Value_Predicand_1> rank => 0
 <Overlaps_Predicate_Part_2> ::= <OVERLAPS> <Row_Value_Predicand_2> rank => 0
@@ -2227,9 +2234,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Set_Predicate_Part_2> ::= <IS> <Not_Maybe> <A> <SET> rank => 0
 <Type_Predicate> ::= <Row_Value_Predicand> <Type_Predicate_Part_2> rank => 0
 <Type_Predicate_Part_2> ::= <IS> <Not_Maybe> <OF> <Left_Paren> <Type_List> <Right_Paren> rank => 0
-<Gen2006> ::= <Comma> <User_Defined_Type_Specification> rank => 0
-<Gen2006_Any> ::= <Gen2006>* rank => 0
-<Type_List> ::= <User_Defined_Type_Specification> <Gen2006_Any> rank => 0
+<Gen2013> ::= <Comma> <User_Defined_Type_Specification> rank => 0
+<Gen2013_Any> ::= <Gen2013>* rank => 0
+<Type_List> ::= <User_Defined_Type_Specification> <Gen2013_Any> rank => 0
 <User_Defined_Type_Specification> ::= <Inclusive_User_Defined_Type_Specification> rank => 0
                                     | <Exclusive_User_Defined_Type_Specification> rank => -1
 <Inclusive_User_Defined_Type_Specification> ::= <Path_Resolved_User_Defined_Type_Name> rank => 0
@@ -2237,26 +2244,26 @@ lexeme default = action => [start,length,value] latm => 1
 <Search_Condition> ::= <Boolean_Value_Expression> rank => 0
 <Interval_Qualifier> ::= <Start_Field> <TO> <End_Field> rank => 0
                        | <Single_Datetime_Field> rank => -1
-<Gen2016> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Right_Paren> rank => 0
-<Gen2016_Maybe> ::= <Gen2016> rank => 0
-<Gen2016_Maybe> ::= rank => -1
-<Start_Field> ::= <Non_Second_Primary_Datetime_Field> <Gen2016_Maybe> rank => 0
-<Gen2020> ::= <Left_Paren> <Interval_Fractional_Seconds_Precision> <Right_Paren> rank => 0
-<Gen2020_Maybe> ::= <Gen2020> rank => 0
-<Gen2020_Maybe> ::= rank => -1
+<Gen2023> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Right_Paren> rank => 0
+<Gen2023_Maybe> ::= <Gen2023> rank => 0
+<Gen2023_Maybe> ::= rank => -1
+<Start_Field> ::= <Non_Second_Primary_Datetime_Field> <Gen2023_Maybe> rank => 0
+<Gen2027> ::= <Left_Paren> <Interval_Fractional_Seconds_Precision> <Right_Paren> rank => 0
+<Gen2027_Maybe> ::= <Gen2027> rank => 0
+<Gen2027_Maybe> ::= rank => -1
 <End_Field> ::= <Non_Second_Primary_Datetime_Field> rank => 0
-              | <SECOND> <Gen2020_Maybe> rank => -1
-<Gen2025> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Right_Paren> rank => 0
-<Gen2025_Maybe> ::= <Gen2025> rank => 0
-<Gen2025_Maybe> ::= rank => -1
-<Gen2028> ::= <Comma> <Interval_Fractional_Seconds_Precision> rank => 0
-<Gen2028_Maybe> ::= <Gen2028> rank => 0
-<Gen2028_Maybe> ::= rank => -1
-<Gen2031> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Gen2028_Maybe> <Right_Paren> rank => 0
-<Gen2031_Maybe> ::= <Gen2031> rank => 0
-<Gen2031_Maybe> ::= rank => -1
-<Single_Datetime_Field> ::= <Non_Second_Primary_Datetime_Field> <Gen2025_Maybe> rank => 0
-                          | <SECOND> <Gen2031_Maybe> rank => -1
+              | <SECOND> <Gen2027_Maybe> rank => -1
+<Gen2032> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Right_Paren> rank => 0
+<Gen2032_Maybe> ::= <Gen2032> rank => 0
+<Gen2032_Maybe> ::= rank => -1
+<Gen2035> ::= <Comma> <Interval_Fractional_Seconds_Precision> rank => 0
+<Gen2035_Maybe> ::= <Gen2035> rank => 0
+<Gen2035_Maybe> ::= rank => -1
+<Gen2038> ::= <Left_Paren> <Interval_Leading_Field_Precision> <Gen2035_Maybe> <Right_Paren> rank => 0
+<Gen2038_Maybe> ::= <Gen2038> rank => 0
+<Gen2038_Maybe> ::= rank => -1
+<Single_Datetime_Field> ::= <Non_Second_Primary_Datetime_Field> <Gen2032_Maybe> rank => 0
+                          | <SECOND> <Gen2038_Maybe> rank => -1
 <Primary_Datetime_Field> ::= <Non_Second_Primary_Datetime_Field> rank => 0
                            | <SECOND> rank => -1
 <Non_Second_Primary_Datetime_Field> ::= <YEAR> rank => 0
@@ -2276,67 +2283,67 @@ lexeme default = action => [start,length,value] latm => 1
                   | <PLI> rank => -6
                   | <SQL> rank => -7
 <Path_Specification> ::= <PATH> <Schema_Name_List> rank => 0
-<Gen2055> ::= <Comma> <Schema_Name> rank => 0
-<Gen2055_Any> ::= <Gen2055>* rank => 0
-<Schema_Name_List> ::= <Schema_Name> <Gen2055_Any> rank => 0
+<Gen2062> ::= <Comma> <Schema_Name> rank => 0
+<Gen2062_Any> ::= <Gen2062>* rank => 0
+<Schema_Name_List> ::= <Schema_Name> <Gen2062_Any> rank => 0
 <Routine_Invocation> ::= <Routine_Name> <SQL_Argument_List> rank => 0
-<Gen2059> ::= <Schema_Name> <Period> rank => 0
-<Gen2059_Maybe> ::= <Gen2059> rank => 0
-<Gen2059_Maybe> ::= rank => -1
-<Routine_Name> ::= <Gen2059_Maybe> <Qualified_Identifier> rank => 0
-<Gen2063> ::= <Comma> <SQL_Argument> rank => 0
-<Gen2063_Any> ::= <Gen2063>* rank => 0
-<Gen2065> ::= <SQL_Argument> <Gen2063_Any> rank => 0
-<Gen2065_Maybe> ::= <Gen2065> rank => 0
-<Gen2065_Maybe> ::= rank => -1
-<SQL_Argument_List> ::= <Left_Paren> <Gen2065_Maybe> <Right_Paren> rank => 0
+<Gen2066> ::= <Schema_Name> <Period> rank => 0
+<Gen2066_Maybe> ::= <Gen2066> rank => 0
+<Gen2066_Maybe> ::= rank => -1
+<Routine_Name> ::= <Gen2066_Maybe> <Qualified_Identifier> rank => 0
+<Gen2070> ::= <Comma> <SQL_Argument> rank => 0
+<Gen2070_Any> ::= <Gen2070>* rank => 0
+<Gen2072> ::= <SQL_Argument> <Gen2070_Any> rank => 0
+<Gen2072_Maybe> ::= <Gen2072> rank => 0
+<Gen2072_Maybe> ::= rank => -1
+<SQL_Argument_List> ::= <Left_Paren> <Gen2072_Maybe> <Right_Paren> rank => 0
 <SQL_Argument> ::= <Value_Expression> rank => 0
                  | <Generalized_Expression> rank => -1
                  | <Target_Specification> rank => -2
 <Generalized_Expression> ::= <Value_Expression> <AS> <Path_Resolved_User_Defined_Type_Name> rank => 0
-<Character_Set_Specification_L0> ~ <Standard_Character_Set_Name_L0>
-                                   | <Implementation_Defined_Character_Set_Name_L0>
-                                   | <User_Defined_Character_Set_Name_L0>
+<Character_Set_Specification_L0_Internal> ~ <Standard_Character_Set_Name_L0_Internal>
+                                            | <Implementation_Defined_Character_Set_Name_L0_Internal>
+                                            | <User_Defined_Character_Set_Name_L0_Internal>
+<Character_Set_Specification_L0> ~ <Character_Set_Specification_L0_Internal>
 <Character_Set_Specification> ::= <Character_Set_Specification_L0> rank => 0
 <Standard_Character_Set_Name_L0_Internal> ~ <Character_Set_Name_L0_Internal>
 <Standard_Character_Set_Name_L0> ~ <Standard_Character_Set_Name_L0_Internal>
 <Standard_Character_Set_Name> ::= <Standard_Character_Set_Name_L0> rank => 0
-<Implementation_Defined_Character_Set_Name_L0> ~ <Character_Set_Name_L0>
-<Implementation_Defined_Character_Set_Name> ::= <Implementation_Defined_Character_Set_Name_L0> rank => 0
-<User_Defined_Character_Set_Name_L0> ~ <Character_Set_Name_L0>
-<Gen2083> ::= <FOR> <Schema_Resolved_User_Defined_Type_Name> rank => 0
-<Gen2083_Maybe> ::= <Gen2083> rank => 0
-<Gen2083_Maybe> ::= rank => -1
+<Implementation_Defined_Character_Set_Name_L0_Internal> ~ <Character_Set_Name_L0_Internal>
+<User_Defined_Character_Set_Name_L0_Internal> ~ <Character_Set_Name_L0_Internal>
+<Gen2090> ::= <FOR> <Schema_Resolved_User_Defined_Type_Name> rank => 0
+<Gen2090_Maybe> ::= <Gen2090> rank => 0
+<Gen2090_Maybe> ::= rank => -1
 <Specific_Routine_Designator> ::= <SPECIFIC> <Routine_Type> <Specific_Name> rank => 0
-                                | <Routine_Type> <Member_Name> <Gen2083_Maybe> rank => -1
-<Gen2088> ::= <INSTANCE> rank => 0
+                                | <Routine_Type> <Member_Name> <Gen2090_Maybe> rank => -1
+<Gen2095> ::= <INSTANCE> rank => 0
             | <STATIC> rank => -1
             | <CONSTRUCTOR> rank => -2
-<Gen2088_Maybe> ::= <Gen2088> rank => 0
-<Gen2088_Maybe> ::= rank => -1
+<Gen2095_Maybe> ::= <Gen2095> rank => 0
+<Gen2095_Maybe> ::= rank => -1
 <Routine_Type> ::= <ROUTINE> rank => 0
                  | <FUNCTION> rank => -1
                  | <PROCEDURE> rank => -2
-                 | <Gen2088_Maybe> <METHOD> rank => -3
+                 | <Gen2095_Maybe> <METHOD> rank => -3
 <Data_Type_List_Maybe> ::= <Data_Type_List> rank => 0
 <Data_Type_List_Maybe> ::= rank => -1
 <Member_Name> ::= <Member_Name_Alternatives> <Data_Type_List_Maybe> rank => 0
 <Member_Name_Alternatives> ::= <Schema_Qualified_Routine_Name> rank => 0
                              | <Method_Name> rank => -1
-<Gen2102> ::= <Comma> <Data_Type> rank => 0
-<Gen2102_Any> ::= <Gen2102>* rank => 0
-<Gen2104> ::= <Data_Type> <Gen2102_Any> rank => 0
-<Gen2104_Maybe> ::= <Gen2104> rank => 0
-<Gen2104_Maybe> ::= rank => -1
-<Data_Type_List> ::= <Left_Paren> <Gen2104_Maybe> <Right_Paren> rank => 0
+<Gen2109> ::= <Comma> <Data_Type> rank => 0
+<Gen2109_Any> ::= <Gen2109>* rank => 0
+<Gen2111> ::= <Data_Type> <Gen2109_Any> rank => 0
+<Gen2111_Maybe> ::= <Gen2111> rank => 0
+<Gen2111_Maybe> ::= rank => -1
+<Data_Type_List> ::= <Left_Paren> <Gen2111_Maybe> <Right_Paren> rank => 0
 <Collate_Clause> ::= <COLLATE> <Collation_Name> rank => 0
 <Constraint_Name_Definition> ::= <CONSTRAINT> <Constraint_Name> rank => 0
-<Gen2110> ::= <Not_Maybe> <DEFERRABLE> rank => 0
-<Gen2110_Maybe> ::= <Gen2110> rank => 0
-<Gen2110_Maybe> ::= rank => -1
+<Gen2117> ::= <Not_Maybe> <DEFERRABLE> rank => 0
+<Gen2117_Maybe> ::= <Gen2117> rank => 0
+<Gen2117_Maybe> ::= rank => -1
 <Constraint_Check_Time_Maybe> ::= <Constraint_Check_Time> rank => 0
 <Constraint_Check_Time_Maybe> ::= rank => -1
-<Constraint_Characteristics> ::= <Constraint_Check_Time> <Gen2110_Maybe> rank => 0
+<Constraint_Characteristics> ::= <Constraint_Check_Time> <Gen2117_Maybe> rank => 0
                                | <Not_Maybe> <DEFERRABLE> <Constraint_Check_Time_Maybe> rank => -1
 <Constraint_Check_Time> ::= <INITIALLY> <DEFERRED> rank => 0
                           | <INITIALLY> <IMMEDIATE> rank => -1
@@ -2385,16 +2392,16 @@ lexeme default = action => [start,length,value] latm => 1
                          | <Inverse_Distribution_Function> rank => -1
 <Hypothetical_Set_Function> ::= <Rank_Function_Type> <Left_Paren> <Hypothetical_Set_Function_Value_Expression_List> <Right_Paren> <Within_Group_Specification> rank => 0
 <Within_Group_Specification> ::= <WITHIN> <GROUP> <Left_Paren> <ORDER> <BY> <Sort_Specification_List> <Right_Paren> rank => 0
-<Gen2164> ::= <Comma> <Value_Expression> rank => 0
-<Gen2164_Any> ::= <Gen2164>* rank => 0
-<Hypothetical_Set_Function_Value_Expression_List> ::= <Value_Expression> <Gen2164_Any> rank => 0
+<Gen2171> ::= <Comma> <Value_Expression> rank => 0
+<Gen2171_Any> ::= <Gen2171>* rank => 0
+<Hypothetical_Set_Function_Value_Expression_List> ::= <Value_Expression> <Gen2171_Any> rank => 0
 <Inverse_Distribution_Function> ::= <Inverse_Distribution_Function_Type> <Left_Paren> <Inverse_Distribution_Function_Argument> <Right_Paren> <Within_Group_Specification> rank => 0
 <Inverse_Distribution_Function_Argument> ::= <Numeric_Value_Expression> rank => 0
 <Inverse_Distribution_Function_Type> ::= <PERCENTILE_CONT> rank => 0
                                        | <PERCENTILE_DISC> rank => -1
-<Gen2171> ::= <Comma> <Sort_Specification> rank => 0
-<Gen2171_Any> ::= <Gen2171>* rank => 0
-<Sort_Specification_List> ::= <Sort_Specification> <Gen2171_Any> rank => 0
+<Gen2178> ::= <Comma> <Sort_Specification> rank => 0
+<Gen2178_Any> ::= <Gen2178>* rank => 0
+<Sort_Specification_List> ::= <Sort_Specification> <Gen2178_Any> rank => 0
 <Ordering_Specification_Maybe> ::= <Ordering_Specification> rank => 0
 <Ordering_Specification_Maybe> ::= rank => -1
 <Null_Ordering_Maybe> ::= <Null_Ordering> rank => 0
@@ -2440,10 +2447,10 @@ lexeme default = action => [start,length,value] latm => 1
                   | <RESTRICT> rank => -1
 <Table_Scope_Maybe> ::= <Table_Scope> rank => 0
 <Table_Scope_Maybe> ::= rank => -1
-<Gen2219> ::= <ON> <COMMIT> <Table_Commit_Action> <ROWS> rank => 0
-<Gen2219_Maybe> ::= <Gen2219> rank => 0
-<Gen2219_Maybe> ::= rank => -1
-<Table_Definition> ::= <CREATE> <Table_Scope_Maybe> <TABLE> <Table_Name> <Table_Contents_Source> <Gen2219_Maybe> rank => 0
+<Gen2226> ::= <ON> <COMMIT> <Table_Commit_Action> <ROWS> rank => 0
+<Gen2226_Maybe> ::= <Gen2226> rank => 0
+<Gen2226_Maybe> ::= rank => -1
+<Table_Definition> ::= <CREATE> <Table_Scope_Maybe> <TABLE> <Table_Name> <Table_Contents_Source> <Gen2226_Maybe> rank => 0
 <Subtable_Clause_Maybe> ::= <Subtable_Clause> rank => 0
 <Subtable_Clause_Maybe> ::= rank => -1
 <Table_Element_List_Maybe> ::= <Table_Element_List> rank => 0
@@ -2456,9 +2463,9 @@ lexeme default = action => [start,length,value] latm => 1
                     | <LOCAL> rank => -1
 <Table_Commit_Action> ::= <PRESERVE> rank => 0
                         | <DELETE> rank => -1
-<Gen2235> ::= <Comma> <Table_Element> rank => 0
-<Gen2235_Any> ::= <Gen2235>* rank => 0
-<Table_Element_List> ::= <Left_Paren> <Table_Element> <Gen2235_Any> <Right_Paren> rank => 0
+<Gen2242> ::= <Comma> <Table_Element> rank => 0
+<Gen2242_Any> ::= <Gen2242>* rank => 0
+<Table_Element_List> ::= <Left_Paren> <Table_Element> <Gen2242_Any> <Right_Paren> rank => 0
 <Table_Element> ::= <Column_Definition> rank => 0
                   | <Table_Constraint_Definition> rank => -1
                   | <Like_Clause> rank => -2
@@ -2486,22 +2493,22 @@ lexeme default = action => [start,length,value] latm => 1
                     | <EXCLUDING> <IDENTITY> rank => -1
 <Column_Default_Option> ::= <INCLUDING> <DEFAULTS> rank => 0
                           | <EXCLUDING> <DEFAULTS> rank => -1
-<Gen2265> ::= <Left_Paren> <Column_Name_List> <Right_Paren> rank => 0
-<Gen2265_Maybe> ::= <Gen2265> rank => 0
-<Gen2265_Maybe> ::= rank => -1
-<As_Subquery_Clause> ::= <Gen2265_Maybe> <AS> <Subquery> <With_Or_Without_Data> rank => 0
+<Gen2272> ::= <Left_Paren> <Column_Name_List> <Right_Paren> rank => 0
+<Gen2272_Maybe> ::= <Gen2272> rank => 0
+<Gen2272_Maybe> ::= rank => -1
+<As_Subquery_Clause> ::= <Gen2272_Maybe> <AS> <Subquery> <With_Or_Without_Data> rank => 0
 <With_Or_Without_Data> ::= <WITH> <NO> <DATA> rank => 0
                          | <WITH> <DATA> rank => -1
-<Gen2271> ::= <Data_Type> rank => 0
+<Gen2278> ::= <Data_Type> rank => 0
             | <Domain_Name> rank => -1
-<Gen2271_Maybe> ::= <Gen2271> rank => 0
-<Gen2271_Maybe> ::= rank => -1
-<Gen2275> ::= <Default_Clause> rank => 0
+<Gen2278_Maybe> ::= <Gen2278> rank => 0
+<Gen2278_Maybe> ::= rank => -1
+<Gen2282> ::= <Default_Clause> rank => 0
             | <Identity_Column_Specification> rank => -1
             | <Generation_Clause> rank => -2
-<Gen2275_Maybe> ::= <Gen2275> rank => 0
-<Gen2275_Maybe> ::= rank => -1
-<Column_Definition> ::= <Column_Name> <Gen2271_Maybe> <Reference_Scope_Check_Maybe> <Gen2275_Maybe> <Column_Constraint_Definition_Any> <Collate_Clause_Maybe> rank => 0
+<Gen2282_Maybe> ::= <Gen2282> rank => 0
+<Gen2282_Maybe> ::= rank => -1
+<Column_Definition> ::= <Column_Name> <Gen2278_Maybe> <Reference_Scope_Check_Maybe> <Gen2282_Maybe> <Column_Constraint_Definition_Any> <Collate_Clause_Maybe> rank => 0
 <Constraint_Name_Definition_Maybe> ::= <Constraint_Name_Definition> rank => 0
 <Constraint_Name_Definition_Maybe> ::= rank => -1
 <Constraint_Characteristics_Maybe> ::= <Constraint_Characteristics> rank => 0
@@ -2511,17 +2518,17 @@ lexeme default = action => [start,length,value] latm => 1
                       | <Unique_Specification> rank => -1
                       | <References_Specification> rank => -2
                       | <Check_Constraint_Definition> rank => -3
-<Gen2290> ::= <ON> <DELETE> <Reference_Scope_Check_Action> rank => 0
-<Gen2290_Maybe> ::= <Gen2290> rank => 0
-<Gen2290_Maybe> ::= rank => -1
-<Reference_Scope_Check> ::= <REFERENCES> <ARE> <Not_Maybe> <CHECKED> <Gen2290_Maybe> rank => 0
-<Reference_Scope_Check_Action> ::= <Referential_Action> rank => 0
-<Gen2295> ::= <ALWAYS> rank => 0
-            | <BY> <DEFAULT> rank => -1
-<Gen2297> ::= <Left_Paren> <Common_Sequence_Generator_Options> <Right_Paren> rank => 0
+<Gen2297> ::= <ON> <DELETE> <Reference_Scope_Check_Action> rank => 0
 <Gen2297_Maybe> ::= <Gen2297> rank => 0
 <Gen2297_Maybe> ::= rank => -1
-<Identity_Column_Specification> ::= <GENERATED> <Gen2295> <AS> <IDENTITY> <Gen2297_Maybe> rank => 0
+<Reference_Scope_Check> ::= <REFERENCES> <ARE> <Not_Maybe> <CHECKED> <Gen2297_Maybe> rank => 0
+<Reference_Scope_Check_Action> ::= <Referential_Action> rank => 0
+<Gen2302> ::= <ALWAYS> rank => 0
+            | <BY> <DEFAULT> rank => -1
+<Gen2304> ::= <Left_Paren> <Common_Sequence_Generator_Options> <Right_Paren> rank => 0
+<Gen2304_Maybe> ::= <Gen2304> rank => 0
+<Gen2304_Maybe> ::= rank => -1
+<Identity_Column_Specification> ::= <GENERATED> <Gen2302> <AS> <IDENTITY> <Gen2304_Maybe> rank => 0
 <Generation_Clause> ::= <Generation_Rule> <AS> <Generation_Expression> rank => 0
 <Generation_Rule> ::= <GENERATED> <ALWAYS> rank => 0
 <Generation_Expression> ::= <Left_Paren> <Value_Expression> <Right_Paren> rank => 0
@@ -2539,27 +2546,27 @@ lexeme default = action => [start,length,value] latm => 1
 <Table_Constraint> ::= <Unique_Constraint_Definition> rank => 0
                      | <Referential_Constraint_Definition> rank => -1
                      | <Check_Constraint_Definition> rank => -2
-<Gen2318> ::= <VALUE> rank => 0
+<Gen2325> ::= <VALUE> rank => 0
 <Unique_Constraint_Definition> ::= <Unique_Specification> <Left_Paren> <Unique_Column_List> <Right_Paren> rank => 0
-                                 | <UNIQUE> <Gen2318> rank => -1
+                                 | <UNIQUE> <Gen2325> rank => -1
 <Unique_Specification> ::= <UNIQUE> rank => 0
                          | <PRIMARY> <KEY> rank => -1
 <Unique_Column_List> ::= <Column_Name_List> rank => 0
 <Referential_Constraint_Definition> ::= <FOREIGN> <KEY> <Left_Paren> <Referencing_Columns> <Right_Paren> <References_Specification> rank => 0
-<Gen2325> ::= <MATCH> <Match_Type> rank => 0
-<Gen2325_Maybe> ::= <Gen2325> rank => 0
-<Gen2325_Maybe> ::= rank => -1
+<Gen2332> ::= <MATCH> <Match_Type> rank => 0
+<Gen2332_Maybe> ::= <Gen2332> rank => 0
+<Gen2332_Maybe> ::= rank => -1
 <Referential_Triggered_Action_Maybe> ::= <Referential_Triggered_Action> rank => 0
 <Referential_Triggered_Action_Maybe> ::= rank => -1
-<References_Specification> ::= <REFERENCES> <Referenced_Table_And_Columns> <Gen2325_Maybe> <Referential_Triggered_Action_Maybe> rank => 0
+<References_Specification> ::= <REFERENCES> <Referenced_Table_And_Columns> <Gen2332_Maybe> <Referential_Triggered_Action_Maybe> rank => 0
 <Match_Type> ::= <FULL> rank => 0
                | <PARTIAL> rank => -1
                | <SIMPLE> rank => -2
 <Referencing_Columns> ::= <Reference_Column_List> rank => 0
-<Gen2335> ::= <Left_Paren> <Reference_Column_List> <Right_Paren> rank => 0
-<Gen2335_Maybe> ::= <Gen2335> rank => 0
-<Gen2335_Maybe> ::= rank => -1
-<Referenced_Table_And_Columns> ::= <Table_Name> <Gen2335_Maybe> rank => 0
+<Gen2342> ::= <Left_Paren> <Reference_Column_List> <Right_Paren> rank => 0
+<Gen2342_Maybe> ::= <Gen2342> rank => 0
+<Gen2342_Maybe> ::= rank => -1
+<Referenced_Table_And_Columns> ::= <Table_Name> <Gen2342_Maybe> rank => 0
 <Reference_Column_List> ::= <Column_Name_List> rank => 0
 <Delete_Rule_Maybe> ::= <Delete_Rule> rank => 0
 <Delete_Rule_Maybe> ::= rank => -1
@@ -2604,25 +2611,25 @@ lexeme default = action => [start,length,value] latm => 1
 <Drop_Table_Statement> ::= <DROP> <TABLE> <Table_Name> <Drop_Behavior> rank => 0
 <Levels_Clause_Maybe> ::= <Levels_Clause> rank => 0
 <Levels_Clause_Maybe> ::= rank => -1
-<Gen2383> ::= <WITH> <Levels_Clause_Maybe> <CHECK> <OPTION> rank => 0
-<Gen2383_Maybe> ::= <Gen2383> rank => 0
-<Gen2383_Maybe> ::= rank => -1
-<View_Definition> ::= <CREATE> <Recursive_Maybe> <VIEW> <Table_Name> <View_Specification> <AS> <Query_Expression> <Gen2383_Maybe> rank => 0
+<Gen2390> ::= <WITH> <Levels_Clause_Maybe> <CHECK> <OPTION> rank => 0
+<Gen2390_Maybe> ::= <Gen2390> rank => 0
+<Gen2390_Maybe> ::= rank => -1
+<View_Definition> ::= <CREATE> <Recursive_Maybe> <VIEW> <Table_Name> <View_Specification> <AS> <Query_Expression> <Gen2390_Maybe> rank => 0
 <View_Specification> ::= <Regular_View_Specification> rank => 0
                        | <Referenceable_View_Specification> rank => -1
-<Gen2389> ::= <Left_Paren> <View_Column_List> <Right_Paren> rank => 0
-<Gen2389_Maybe> ::= <Gen2389> rank => 0
-<Gen2389_Maybe> ::= rank => -1
-<Regular_View_Specification> ::= <Gen2389_Maybe> rank => 0
+<Gen2396> ::= <Left_Paren> <View_Column_List> <Right_Paren> rank => 0
+<Gen2396_Maybe> ::= <Gen2396> rank => 0
+<Gen2396_Maybe> ::= rank => -1
+<Regular_View_Specification> ::= <Gen2396_Maybe> rank => 0
 <Subview_Clause_Maybe> ::= <Subview_Clause> rank => 0
 <Subview_Clause_Maybe> ::= rank => -1
 <View_Element_List_Maybe> ::= <View_Element_List> rank => 0
 <View_Element_List_Maybe> ::= rank => -1
 <Referenceable_View_Specification> ::= <OF> <Path_Resolved_User_Defined_Type_Name> <Subview_Clause_Maybe> <View_Element_List_Maybe> rank => 0
 <Subview_Clause> ::= <UNDER> <Table_Name> rank => 0
-<Gen2399> ::= <Comma> <View_Element> rank => 0
-<Gen2399_Any> ::= <Gen2399>* rank => 0
-<View_Element_List> ::= <Left_Paren> <View_Element> <Gen2399_Any> <Right_Paren> rank => 0
+<Gen2406> ::= <Comma> <View_Element> rank => 0
+<Gen2406_Any> ::= <Gen2406>* rank => 0
+<View_Element_List> ::= <Left_Paren> <View_Element> <Gen2406_Any> <Right_Paren> rank => 0
 <View_Element> ::= <Self_Referencing_Column_Specification> rank => 0
                  | <View_Column_Option> rank => -1
 <View_Column_Option> ::= <Column_Name> <WITH> <OPTIONS> <Scope_Clause> rank => 0
@@ -2663,32 +2670,32 @@ lexeme default = action => [start,length,value] latm => 1
 <Drop_Transliteration_Statement> ::= <DROP> <TRANSLATION> <Transliteration_Name> rank => 0
 <Assertion_Definition> ::= <CREATE> <ASSERTION> <Constraint_Name> <CHECK> <Left_Paren> <Search_Condition> <Right_Paren> <Constraint_Characteristics_Maybe> rank => 0
 <Drop_Assertion_Statement> ::= <DROP> <ASSERTION> <Constraint_Name> rank => 0
-<Gen2442> ::= <REFERENCING> <Old_Or_New_Values_Alias_List> rank => 0
-<Gen2442_Maybe> ::= <Gen2442> rank => 0
-<Gen2442_Maybe> ::= rank => -1
-<Trigger_Definition> ::= <CREATE> <TRIGGER> <Trigger_Name> <Trigger_Action_Time> <Trigger_Event> <ON> <Table_Name> <Gen2442_Maybe> <Triggered_Action> rank => 0
+<Gen2449> ::= <REFERENCING> <Old_Or_New_Values_Alias_List> rank => 0
+<Gen2449_Maybe> ::= <Gen2449> rank => 0
+<Gen2449_Maybe> ::= rank => -1
+<Trigger_Definition> ::= <CREATE> <TRIGGER> <Trigger_Name> <Trigger_Action_Time> <Trigger_Event> <ON> <Table_Name> <Gen2449_Maybe> <Triggered_Action> rank => 0
 <Trigger_Action_Time> ::= <BEFORE> rank => 0
                         | <AFTER> rank => -1
-<Gen2448> ::= <OF> <Trigger_Column_List> rank => 0
-<Gen2448_Maybe> ::= <Gen2448> rank => 0
-<Gen2448_Maybe> ::= rank => -1
+<Gen2455> ::= <OF> <Trigger_Column_List> rank => 0
+<Gen2455_Maybe> ::= <Gen2455> rank => 0
+<Gen2455_Maybe> ::= rank => -1
 <Trigger_Event> ::= <INSERT> rank => 0
                   | <DELETE> rank => -1
-                  | <UPDATE> <Gen2448_Maybe> rank => -2
+                  | <UPDATE> <Gen2455_Maybe> rank => -2
 <Trigger_Column_List> ::= <Column_Name_List> rank => 0
-<Gen2455> ::= <ROW> rank => 0
+<Gen2462> ::= <ROW> rank => 0
             | <STATEMENT> rank => -1
-<Gen2457> ::= <FOR> <EACH> <Gen2455> rank => 0
-<Gen2457_Maybe> ::= <Gen2457> rank => 0
-<Gen2457_Maybe> ::= rank => -1
-<Gen2460> ::= <WHEN> <Left_Paren> <Search_Condition> <Right_Paren> rank => 0
-<Gen2460_Maybe> ::= <Gen2460> rank => 0
-<Gen2460_Maybe> ::= rank => -1
-<Triggered_Action> ::= <Gen2457_Maybe> <Gen2460_Maybe> <Triggered_SQL_Statement> rank => 0
-<Gen2464> ::= <SQL_Procedure_Statement> <Semicolon> rank => 0
-<Gen2464_Many> ::= <Gen2464>+ rank => 0
+<Gen2464> ::= <FOR> <EACH> <Gen2462> rank => 0
+<Gen2464_Maybe> ::= <Gen2464> rank => 0
+<Gen2464_Maybe> ::= rank => -1
+<Gen2467> ::= <WHEN> <Left_Paren> <Search_Condition> <Right_Paren> rank => 0
+<Gen2467_Maybe> ::= <Gen2467> rank => 0
+<Gen2467_Maybe> ::= rank => -1
+<Triggered_Action> ::= <Gen2464_Maybe> <Gen2467_Maybe> <Triggered_SQL_Statement> rank => 0
+<Gen2471> ::= <SQL_Procedure_Statement> <Semicolon> rank => 0
+<Gen2471_Many> ::= <Gen2471>+ rank => 0
 <Triggered_SQL_Statement> ::= <SQL_Procedure_Statement> rank => 0
-                            | <BEGIN> <ATOMIC> <Gen2464_Many> <END> rank => -1
+                            | <BEGIN> <ATOMIC> <Gen2471_Many> <END> rank => -1
 <Old_Or_New_Values_Alias_Many> ::= <Old_Or_New_Values_Alias>+ rank => 0
 <Old_Or_New_Values_Alias_List> ::= <Old_Or_New_Values_Alias_Many> rank => 0
 <Row_Maybe> ::= <ROW> rank => 0
@@ -2705,14 +2712,14 @@ lexeme default = action => [start,length,value] latm => 1
 <User_Defined_Type_Definition> ::= <CREATE> <TYPE> <User_Defined_Type_Body> rank => 0
 <Subtype_Clause_Maybe> ::= <Subtype_Clause> rank => 0
 <Subtype_Clause_Maybe> ::= rank => -1
-<Gen2484> ::= <AS> <Representation> rank => 0
-<Gen2484_Maybe> ::= <Gen2484> rank => 0
-<Gen2484_Maybe> ::= rank => -1
+<Gen2491> ::= <AS> <Representation> rank => 0
+<Gen2491_Maybe> ::= <Gen2491> rank => 0
+<Gen2491_Maybe> ::= rank => -1
 <User_Defined_Type_Option_List_Maybe> ::= <User_Defined_Type_Option_List> rank => 0
 <User_Defined_Type_Option_List_Maybe> ::= rank => -1
 <Method_Specification_List_Maybe> ::= <Method_Specification_List> rank => 0
 <Method_Specification_List_Maybe> ::= rank => -1
-<User_Defined_Type_Body> ::= <Schema_Resolved_User_Defined_Type_Name> <Subtype_Clause_Maybe> <Gen2484_Maybe> <User_Defined_Type_Option_List_Maybe> <Method_Specification_List_Maybe> rank => 0
+<User_Defined_Type_Body> ::= <Schema_Resolved_User_Defined_Type_Name> <Subtype_Clause_Maybe> <Gen2491_Maybe> <User_Defined_Type_Option_List_Maybe> <Method_Specification_List_Maybe> rank => 0
 <User_Defined_Type_Option_Any> ::= <User_Defined_Type_Option>* rank => 0
 <User_Defined_Type_Option_List> ::= <User_Defined_Type_Option> <User_Defined_Type_Option_Any> rank => 0
 <User_Defined_Type_Option> ::= <Instantiable_Clause> rank => 0
@@ -2724,9 +2731,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Supertype_Name> ::= <Path_Resolved_User_Defined_Type_Name> rank => 0
 <Representation> ::= <Predefined_Type> rank => 0
                    | <Member_List> rank => -1
-<Gen2503> ::= <Comma> <Member> rank => 0
-<Gen2503_Any> ::= <Gen2503>* rank => 0
-<Member_List> ::= <Left_Paren> <Member> <Gen2503_Any> <Right_Paren> rank => 0
+<Gen2510> ::= <Comma> <Member> rank => 0
+<Gen2510_Any> ::= <Gen2510>* rank => 0
+<Member_List> ::= <Left_Paren> <Member> <Gen2510_Any> <Right_Paren> rank => 0
 <Member> ::= <Attribute_Definition> rank => 0
 <Instantiable_Clause> ::= <INSTANTIABLE> rank => 0
                         | <NOT> <INSTANTIABLE> rank => -1
@@ -2746,9 +2753,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Cast_To_Ref_Identifier> ::= <Identifier> rank => 0
 <Cast_To_Type> ::= <CAST> <Left_Paren> <REF> <AS> <SOURCE> <Right_Paren> <WITH> <Cast_To_Type_Identifier> rank => 0
 <Cast_To_Type_Identifier> ::= <Identifier> rank => 0
-<Gen2525> ::= <Comma> <Attribute_Name> rank => 0
-<Gen2525_Any> ::= <Gen2525>* rank => 0
-<List_Of_Attributes> ::= <Left_Paren> <Attribute_Name> <Gen2525_Any> <Right_Paren> rank => 0
+<Gen2532> ::= <Comma> <Attribute_Name> rank => 0
+<Gen2532_Any> ::= <Gen2532>* rank => 0
+<List_Of_Attributes> ::= <Left_Paren> <Attribute_Name> <Gen2532_Any> <Right_Paren> rank => 0
 <Cast_To_Distinct_Maybe> ::= <Cast_To_Distinct> rank => 0
 <Cast_To_Distinct_Maybe> ::= rank => -1
 <Cast_Option> ::= <Cast_To_Distinct_Maybe> <Cast_To_Source> rank => 0
@@ -2757,34 +2764,34 @@ lexeme default = action => [start,length,value] latm => 1
 <Cast_To_Distinct_Identifier> ::= <Identifier> rank => 0
 <Cast_To_Source> ::= <CAST> <Left_Paren> <DISTINCT> <AS> <SOURCE> <Right_Paren> <WITH> <Cast_To_Source_Identifier> rank => 0
 <Cast_To_Source_Identifier> ::= <Identifier> rank => 0
-<Gen2536> ::= <Comma> <Method_Specification> rank => 0
-<Gen2536_Any> ::= <Gen2536>* rank => 0
-<Method_Specification_List> ::= <Method_Specification> <Gen2536_Any> rank => 0
+<Gen2543> ::= <Comma> <Method_Specification> rank => 0
+<Gen2543_Any> ::= <Gen2543>* rank => 0
+<Method_Specification_List> ::= <Method_Specification> <Gen2543_Any> rank => 0
 <Method_Specification> ::= <Original_Method_Specification> rank => 0
                          | <Overriding_Method_Specification> rank => -1
-<Gen2541> ::= <SELF> <AS> <RESULT> rank => 0
-<Gen2541_Maybe> ::= <Gen2541> rank => 0
-<Gen2541_Maybe> ::= rank => -1
-<Gen2544> ::= <SELF> <AS> <LOCATOR> rank => 0
-<Gen2544_Maybe> ::= <Gen2544> rank => 0
-<Gen2544_Maybe> ::= rank => -1
-<Method_Characteristics_Maybe> ::= <Method_Characteristics> rank => 0
-<Method_Characteristics_Maybe> ::= rank => -1
-<Original_Method_Specification> ::= <Partial_Method_Specification> <Gen2541_Maybe> <Gen2544_Maybe> <Method_Characteristics_Maybe> rank => 0
-<Overriding_Method_Specification> ::= <OVERRIDING> <Partial_Method_Specification> rank => 0
-<Gen2551> ::= <INSTANCE> rank => 0
-            | <STATIC> rank => -1
-            | <CONSTRUCTOR> rank => -2
+<Gen2548> ::= <SELF> <AS> <RESULT> rank => 0
+<Gen2548_Maybe> ::= <Gen2548> rank => 0
+<Gen2548_Maybe> ::= rank => -1
+<Gen2551> ::= <SELF> <AS> <LOCATOR> rank => 0
 <Gen2551_Maybe> ::= <Gen2551> rank => 0
 <Gen2551_Maybe> ::= rank => -1
-<Gen2556> ::= <SPECIFIC> <Specific_Method_Name> rank => 0
-<Gen2556_Maybe> ::= <Gen2556> rank => 0
-<Gen2556_Maybe> ::= rank => -1
-<Partial_Method_Specification> ::= <Gen2551_Maybe> <METHOD> <Method_Name> <SQL_Parameter_Declaration_List> <Returns_Clause> <Gen2556_Maybe> rank => 0
-<Gen2560> ::= <Schema_Name> <Period> rank => 0
-<Gen2560_Maybe> ::= <Gen2560> rank => 0
-<Gen2560_Maybe> ::= rank => -1
-<Specific_Method_Name> ::= <Gen2560_Maybe> <Qualified_Identifier> rank => 0
+<Method_Characteristics_Maybe> ::= <Method_Characteristics> rank => 0
+<Method_Characteristics_Maybe> ::= rank => -1
+<Original_Method_Specification> ::= <Partial_Method_Specification> <Gen2548_Maybe> <Gen2551_Maybe> <Method_Characteristics_Maybe> rank => 0
+<Overriding_Method_Specification> ::= <OVERRIDING> <Partial_Method_Specification> rank => 0
+<Gen2558> ::= <INSTANCE> rank => 0
+            | <STATIC> rank => -1
+            | <CONSTRUCTOR> rank => -2
+<Gen2558_Maybe> ::= <Gen2558> rank => 0
+<Gen2558_Maybe> ::= rank => -1
+<Gen2563> ::= <SPECIFIC> <Specific_Method_Name> rank => 0
+<Gen2563_Maybe> ::= <Gen2563> rank => 0
+<Gen2563_Maybe> ::= rank => -1
+<Partial_Method_Specification> ::= <Gen2558_Maybe> <METHOD> <Method_Name> <SQL_Parameter_Declaration_List> <Returns_Clause> <Gen2563_Maybe> rank => 0
+<Gen2567> ::= <Schema_Name> <Period> rank => 0
+<Gen2567_Maybe> ::= <Gen2567> rank => 0
+<Gen2567_Maybe> ::= rank => -1
+<Specific_Method_Name> ::= <Gen2567_Maybe> <Qualified_Identifier> rank => 0
 <Method_Characteristic_Many> ::= <Method_Characteristic>+ rank => 0
 <Method_Characteristics> ::= <Method_Characteristic_Many> rank => 0
 <Method_Characteristic> ::= <Language_Clause> rank => 0
@@ -2807,12 +2814,12 @@ lexeme default = action => [start,length,value] latm => 1
 <Add_Original_Method_Specification> ::= <ADD> <Original_Method_Specification> rank => 0
 <Add_Overriding_Method_Specification> ::= <ADD> <Overriding_Method_Specification> rank => 0
 <Drop_Method_Specification> ::= <DROP> <Specific_Method_Specification_Designator> <RESTRICT> rank => 0
-<Gen2586> ::= <INSTANCE> rank => 0
+<Gen2593> ::= <INSTANCE> rank => 0
             | <STATIC> rank => -1
             | <CONSTRUCTOR> rank => -2
-<Gen2586_Maybe> ::= <Gen2586> rank => 0
-<Gen2586_Maybe> ::= rank => -1
-<Specific_Method_Specification_Designator> ::= <Gen2586_Maybe> <METHOD> <Method_Name> <Data_Type_List> rank => 0
+<Gen2593_Maybe> ::= <Gen2593> rank => 0
+<Gen2593_Maybe> ::= rank => -1
+<Specific_Method_Specification_Designator> ::= <Gen2593_Maybe> <METHOD> <Method_Name> <Data_Type_List> rank => 0
 <Drop_Data_Type_Statement> ::= <DROP> <TYPE> <Schema_Resolved_User_Defined_Type_Name> <Drop_Behavior> rank => 0
 <SQL_Invoked_Routine> ::= <Schema_Routine> rank => 0
 <Schema_Routine> ::= <Schema_Procedure> rank => 0
@@ -2820,15 +2827,15 @@ lexeme default = action => [start,length,value] latm => 1
 <Schema_Procedure> ::= <CREATE> <SQL_Invoked_Procedure> rank => 0
 <Schema_Function> ::= <CREATE> <SQL_Invoked_Function> rank => 0
 <SQL_Invoked_Procedure> ::= <PROCEDURE> <Schema_Qualified_Routine_Name> <SQL_Parameter_Declaration_List> <Routine_Characteristics> <Routine_Body> rank => 0
-<Gen2599> ::= <Function_Specification> rank => 0
+<Gen2606> ::= <Function_Specification> rank => 0
             | <Method_Specification_Designator> rank => -1
-<SQL_Invoked_Function> ::= <Gen2599> <Routine_Body> rank => 0
-<Gen2602> ::= <Comma> <SQL_Parameter_Declaration> rank => 0
-<Gen2602_Any> ::= <Gen2602>* rank => 0
-<Gen2604> ::= <SQL_Parameter_Declaration> <Gen2602_Any> rank => 0
-<Gen2604_Maybe> ::= <Gen2604> rank => 0
-<Gen2604_Maybe> ::= rank => -1
-<SQL_Parameter_Declaration_List> ::= <Left_Paren> <Gen2604_Maybe> <Right_Paren> rank => 0
+<SQL_Invoked_Function> ::= <Gen2606> <Routine_Body> rank => 0
+<Gen2609> ::= <Comma> <SQL_Parameter_Declaration> rank => 0
+<Gen2609_Any> ::= <Gen2609>* rank => 0
+<Gen2611> ::= <SQL_Parameter_Declaration> <Gen2609_Any> rank => 0
+<Gen2611_Maybe> ::= <Gen2611> rank => 0
+<Gen2611_Maybe> ::= rank => -1
+<SQL_Parameter_Declaration_List> ::= <Left_Paren> <Gen2611_Maybe> <Right_Paren> rank => 0
 <Parameter_Mode_Maybe> ::= <Parameter_Mode> rank => 0
 <Parameter_Mode_Maybe> ::= rank => -1
 <SQL_Parameter_Name_Maybe> ::= <SQL_Parameter_Name> rank => 0
@@ -2846,15 +2853,15 @@ lexeme default = action => [start,length,value] latm => 1
 <Dispatch_Clause_Maybe> ::= <Dispatch_Clause> rank => 0
 <Dispatch_Clause_Maybe> ::= rank => -1
 <Function_Specification> ::= <FUNCTION> <Schema_Qualified_Routine_Name> <SQL_Parameter_Declaration_List> <Returns_Clause> <Routine_Characteristics> <Dispatch_Clause_Maybe> rank => 0
-<Gen2625> ::= <INSTANCE> rank => 0
+<Gen2632> ::= <INSTANCE> rank => 0
             | <STATIC> rank => -1
             | <CONSTRUCTOR> rank => -2
-<Gen2625_Maybe> ::= <Gen2625> rank => 0
-<Gen2625_Maybe> ::= rank => -1
+<Gen2632_Maybe> ::= <Gen2632> rank => 0
+<Gen2632_Maybe> ::= rank => -1
 <Returns_Clause_Maybe> ::= <Returns_Clause> rank => 0
 <Returns_Clause_Maybe> ::= rank => -1
 <Method_Specification_Designator> ::= <SPECIFIC> <METHOD> <Specific_Method_Name> rank => 0
-                                    | <Gen2625_Maybe> <METHOD> <Method_Name> <SQL_Parameter_Declaration_List> <Returns_Clause_Maybe> <FOR> <Schema_Resolved_User_Defined_Type_Name> rank => -1
+                                    | <Gen2632_Maybe> <METHOD> <Method_Name> <SQL_Parameter_Declaration_List> <Returns_Clause_Maybe> <FOR> <Schema_Resolved_User_Defined_Type_Name> rank => -1
 <Routine_Characteristic_Any> ::= <Routine_Characteristic>* rank => 0
 <Routine_Characteristics> ::= <Routine_Characteristic_Any> rank => 0
 <Routine_Characteristic> ::= <Language_Clause> rank => 0
@@ -2876,9 +2883,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Returns_Type> ::= <Returns_Data_Type> <Result_Cast_Maybe> rank => 0
                  | <Returns_Table_Type> rank => -1
 <Returns_Table_Type> ::= <TABLE> <Table_Function_Column_List> rank => 0
-<Gen2655> ::= <Comma> <Table_Function_Column_List_Element> rank => 0
-<Gen2655_Any> ::= <Gen2655>* rank => 0
-<Table_Function_Column_List> ::= <Left_Paren> <Table_Function_Column_List_Element> <Gen2655_Any> <Right_Paren> rank => 0
+<Gen2662> ::= <Comma> <Table_Function_Column_List_Element> rank => 0
+<Gen2662_Any> ::= <Gen2662>* rank => 0
+<Table_Function_Column_List> ::= <Left_Paren> <Table_Function_Column_List_Element> <Gen2662_Any> <Right_Paren> rank => 0
 <Table_Function_Column_List_Element> ::= <Column_Name> <Data_Type> rank => 0
 <Result_Cast> ::= <CAST> <FROM> <Result_Cast_From_Type> rank => 0
 <Result_Cast_From_Type> ::= <Data_Type> <Locator_Indication_Maybe> rank => 0
@@ -2891,16 +2898,16 @@ lexeme default = action => [start,length,value] latm => 1
 <Rights_Clause> ::= <SQL> <SECURITY> <INVOKER> rank => 0
                   | <SQL> <SECURITY> <DEFINER> rank => -1
 <SQL_Routine_Body> ::= <SQL_Procedure_Statement> rank => 0
-<Gen2670> ::= <NAME> <External_Routine_Name> rank => 0
-<Gen2670_Maybe> ::= <Gen2670> rank => 0
-<Gen2670_Maybe> ::= rank => -1
+<Gen2677> ::= <NAME> <External_Routine_Name> rank => 0
+<Gen2677_Maybe> ::= <Gen2677> rank => 0
+<Gen2677_Maybe> ::= rank => -1
 <Parameter_Style_Clause_Maybe> ::= <Parameter_Style_Clause> rank => 0
 <Parameter_Style_Clause_Maybe> ::= rank => -1
 <Transform_Group_Specification_Maybe> ::= <Transform_Group_Specification> rank => 0
 <Transform_Group_Specification_Maybe> ::= rank => -1
 <External_Security_Clause_Maybe> ::= <External_Security_Clause> rank => 0
 <External_Security_Clause_Maybe> ::= rank => -1
-<External_Body_Reference> ::= <EXTERNAL> <Gen2670_Maybe> <Parameter_Style_Clause_Maybe> <Transform_Group_Specification_Maybe> <External_Security_Clause_Maybe> rank => 0
+<External_Body_Reference> ::= <EXTERNAL> <Gen2677_Maybe> <Parameter_Style_Clause_Maybe> <Transform_Group_Specification_Maybe> <External_Security_Clause_Maybe> rank => 0
 <External_Security_Clause> ::= <EXTERNAL> <SECURITY> <DEFINER> rank => 0
                              | <EXTERNAL> <SECURITY> <INVOKER> rank => -1
                              | <EXTERNAL> <SECURITY> <IMPLEMENTATION> <DEFINED> rank => -2
@@ -2915,13 +2922,13 @@ lexeme default = action => [start,length,value] latm => 1
 <Null_Call_Clause> ::= <RETURNS> <NULL> <ON> <NULL> <INPUT> rank => 0
                      | <CALLED> <ON> <NULL> <INPUT> rank => -1
 <Maximum_Dynamic_Result_Sets> ::= <Unsigned_Integer> rank => 0
-<Gen2694> ::= <Single_Group_Specification> rank => 0
+<Gen2701> ::= <Single_Group_Specification> rank => 0
             | <Multiple_Group_Specification> rank => -1
-<Transform_Group_Specification> ::= <TRANSFORM> <GROUP> <Gen2694> rank => 0
+<Transform_Group_Specification> ::= <TRANSFORM> <GROUP> <Gen2701> rank => 0
 <Single_Group_Specification> ::= <Group_Name> rank => 0
-<Gen2698> ::= <Comma> <Group_Specification> rank => 0
-<Gen2698_Any> ::= <Gen2698>* rank => 0
-<Multiple_Group_Specification> ::= <Group_Specification> <Gen2698_Any> rank => 0
+<Gen2705> ::= <Comma> <Group_Specification> rank => 0
+<Gen2705_Any> ::= <Gen2705>* rank => 0
+<Multiple_Group_Specification> ::= <Group_Specification> <Gen2705_Any> rank => 0
 <Group_Specification> ::= <Group_Name> <FOR> <TYPE> <Path_Resolved_User_Defined_Type_Name> rank => 0
 <Alter_Routine_Statement> ::= <ALTER> <Specific_Routine_Designator> <Alter_Routine_Characteristics> <Alter_Routine_Behavior> rank => 0
 <Alter_Routine_Characteristic_Many> ::= <Alter_Routine_Characteristic>+ rank => 0
@@ -2934,10 +2941,10 @@ lexeme default = action => [start,length,value] latm => 1
                                  | <NAME> <External_Routine_Name> rank => -5
 <Alter_Routine_Behavior> ::= <RESTRICT> rank => 0
 <Drop_Routine_Statement> ::= <DROP> <Specific_Routine_Designator> <Drop_Behavior> rank => 0
-<Gen2713> ::= <AS> <ASSIGNMENT> rank => 0
-<Gen2713_Maybe> ::= <Gen2713> rank => 0
-<Gen2713_Maybe> ::= rank => -1
-<User_Defined_Cast_Definition> ::= <CREATE> <CAST> <Left_Paren> <Source_Data_Type> <AS> <Target_Data_Type> <Right_Paren> <WITH> <Cast_Function> <Gen2713_Maybe> rank => 0
+<Gen2720> ::= <AS> <ASSIGNMENT> rank => 0
+<Gen2720_Maybe> ::= <Gen2720> rank => 0
+<Gen2720_Maybe> ::= rank => -1
+<User_Defined_Cast_Definition> ::= <CREATE> <CAST> <Left_Paren> <Source_Data_Type> <AS> <Target_Data_Type> <Right_Paren> <WITH> <Cast_Function> <Gen2720_Maybe> rank => 0
 <Cast_Function> ::= <Specific_Routine_Designator> rank => 0
 <Source_Data_Type> ::= <Data_Type> rank => 0
 <Target_Data_Type> ::= <Data_Type> rank => 0
@@ -2958,42 +2965,42 @@ lexeme default = action => [start,length,value] latm => 1
 <Relative_Function_Specification> ::= <Specific_Routine_Designator> rank => 0
 <Map_Function_Specification> ::= <Specific_Routine_Designator> rank => 0
 <Drop_User_Defined_Ordering_Statement> ::= <DROP> <ORDERING> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Drop_Behavior> rank => 0
-<Gen2737> ::= <TRANSFORM> rank => 0
+<Gen2744> ::= <TRANSFORM> rank => 0
             | <TRANSFORMS> rank => -1
 <Transform_Group_Many> ::= <Transform_Group>+ rank => 0
-<Transform_Definition> ::= <CREATE> <Gen2737> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Transform_Group_Many> rank => 0
+<Transform_Definition> ::= <CREATE> <Gen2744> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Transform_Group_Many> rank => 0
 <Transform_Group> ::= <Group_Name> <Left_Paren> <Transform_Element_List> <Right_Paren> rank => 0
 <Group_Name> ::= <Identifier> rank => 0
-<Gen2743> ::= <Comma> <Transform_Element> rank => 0
-<Gen2743_Maybe> ::= <Gen2743> rank => 0
-<Gen2743_Maybe> ::= rank => -1
-<Transform_Element_List> ::= <Transform_Element> <Gen2743_Maybe> rank => 0
+<Gen2750> ::= <Comma> <Transform_Element> rank => 0
+<Gen2750_Maybe> ::= <Gen2750> rank => 0
+<Gen2750_Maybe> ::= rank => -1
+<Transform_Element_List> ::= <Transform_Element> <Gen2750_Maybe> rank => 0
 <Transform_Element> ::= <To_Sql> rank => 0
                       | <From_Sql> rank => -1
 <To_Sql> ::= <TO> <SQL> <WITH> <To_Sql_Function> rank => 0
 <From_Sql> ::= <FROM> <SQL> <WITH> <From_Sql_Function> rank => 0
 <To_Sql_Function> ::= <Specific_Routine_Designator> rank => 0
 <From_Sql_Function> ::= <Specific_Routine_Designator> rank => 0
-<Gen2753> ::= <TRANSFORM> rank => 0
+<Gen2760> ::= <TRANSFORM> rank => 0
             | <TRANSFORMS> rank => -1
 <Alter_Group_Many> ::= <Alter_Group>+ rank => 0
-<Alter_Transform_Statement> ::= <ALTER> <Gen2753> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Alter_Group_Many> rank => 0
+<Alter_Transform_Statement> ::= <ALTER> <Gen2760> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Alter_Group_Many> rank => 0
 <Alter_Group> ::= <Group_Name> <Left_Paren> <Alter_Transform_Action_List> <Right_Paren> rank => 0
-<Gen2758> ::= <Comma> <Alter_Transform_Action> rank => 0
-<Gen2758_Any> ::= <Gen2758>* rank => 0
-<Alter_Transform_Action_List> ::= <Alter_Transform_Action> <Gen2758_Any> rank => 0
+<Gen2765> ::= <Comma> <Alter_Transform_Action> rank => 0
+<Gen2765_Any> ::= <Gen2765>* rank => 0
+<Alter_Transform_Action_List> ::= <Alter_Transform_Action> <Gen2765_Any> rank => 0
 <Alter_Transform_Action> ::= <Add_Transform_Element_List> rank => 0
                            | <Drop_Transform_Element_List> rank => -1
 <Add_Transform_Element_List> ::= <ADD> <Left_Paren> <Transform_Element_List> <Right_Paren> rank => 0
-<Gen2764> ::= <Comma> <Transform_Kind> rank => 0
-<Gen2764_Maybe> ::= <Gen2764> rank => 0
-<Gen2764_Maybe> ::= rank => -1
-<Drop_Transform_Element_List> ::= <DROP> <Left_Paren> <Transform_Kind> <Gen2764_Maybe> <Drop_Behavior> <Right_Paren> rank => 0
+<Gen2771> ::= <Comma> <Transform_Kind> rank => 0
+<Gen2771_Maybe> ::= <Gen2771> rank => 0
+<Gen2771_Maybe> ::= rank => -1
+<Drop_Transform_Element_List> ::= <DROP> <Left_Paren> <Transform_Kind> <Gen2771_Maybe> <Drop_Behavior> <Right_Paren> rank => 0
 <Transform_Kind> ::= <TO> <SQL> rank => 0
                    | <FROM> <SQL> rank => -1
-<Gen2770> ::= <TRANSFORM> rank => 0
+<Gen2777> ::= <TRANSFORM> rank => 0
             | <TRANSFORMS> rank => -1
-<Drop_Transform_Statement> ::= <DROP> <Gen2770> <Transforms_To_Be_Dropped> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Drop_Behavior> rank => 0
+<Drop_Transform_Statement> ::= <DROP> <Gen2777> <Transforms_To_Be_Dropped> <FOR> <Schema_Resolved_User_Defined_Type_Name> <Drop_Behavior> rank => 0
 <Transforms_To_Be_Dropped> ::= <ALL> rank => 0
                              | <Transform_Group_Element> rank => -1
 <Transform_Group_Element> ::= <Group_Name> rank => 0
@@ -3035,18 +3042,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Drop_Sequence_Generator_Statement> ::= <DROP> <SEQUENCE> <Sequence_Generator_Name> <Drop_Behavior> rank => 0
 <Grant_Statement> ::= <Grant_Privilege_Statement> rank => 0
                     | <Grant_Role_Statement> rank => -1
-<Gen2814> ::= <Comma> <Grantee> rank => 0
-<Gen2814_Any> ::= <Gen2814>* rank => 0
-<Gen2816> ::= <WITH> <HIERARCHY> <OPTION> rank => 0
-<Gen2816_Maybe> ::= <Gen2816> rank => 0
-<Gen2816_Maybe> ::= rank => -1
-<Gen2819> ::= <WITH> <GRANT> <OPTION> rank => 0
-<Gen2819_Maybe> ::= <Gen2819> rank => 0
-<Gen2819_Maybe> ::= rank => -1
-<Gen2822> ::= <GRANTED> <BY> <Grantor> rank => 0
-<Gen2822_Maybe> ::= <Gen2822> rank => 0
-<Gen2822_Maybe> ::= rank => -1
-<Grant_Privilege_Statement> ::= <GRANT> <Privileges> <TO> <Grantee> <Gen2814_Any> <Gen2816_Maybe> <Gen2819_Maybe> <Gen2822_Maybe> rank => 0
+<Gen2821> ::= <Comma> <Grantee> rank => 0
+<Gen2821_Any> ::= <Gen2821>* rank => 0
+<Gen2823> ::= <WITH> <HIERARCHY> <OPTION> rank => 0
+<Gen2823_Maybe> ::= <Gen2823> rank => 0
+<Gen2823_Maybe> ::= rank => -1
+<Gen2826> ::= <WITH> <GRANT> <OPTION> rank => 0
+<Gen2826_Maybe> ::= <Gen2826> rank => 0
+<Gen2826_Maybe> ::= rank => -1
+<Gen2829> ::= <GRANTED> <BY> <Grantor> rank => 0
+<Gen2829_Maybe> ::= <Gen2829> rank => 0
+<Gen2829_Maybe> ::= rank => -1
+<Grant_Privilege_Statement> ::= <GRANT> <Privileges> <TO> <Grantee> <Gen2821_Any> <Gen2823_Maybe> <Gen2826_Maybe> <Gen2829_Maybe> rank => 0
 <Privileges> ::= <Object_Privileges> <ON> <Object_Name> rank => 0
 <Table_Maybe> ::= <TABLE> rank => 0
 <Table_Maybe> ::= rank => -1
@@ -3058,78 +3065,78 @@ lexeme default = action => [start,length,value] latm => 1
                 | <TYPE> <Schema_Resolved_User_Defined_Type_Name> rank => -5
                 | <SEQUENCE> <Sequence_Generator_Name> rank => -6
                 | <Specific_Routine_Designator> rank => -7
-<Gen2837> ::= <Comma> <Action> rank => 0
-<Gen2837_Any> ::= <Gen2837>* rank => 0
+<Gen2844> ::= <Comma> <Action> rank => 0
+<Gen2844_Any> ::= <Gen2844>* rank => 0
 <Object_Privileges> ::= <ALL> <PRIVILEGES> rank => 0
-                      | <Action> <Gen2837_Any> rank => -1
-<Gen2841> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
-<Gen2841_Maybe> ::= <Gen2841> rank => 0
-<Gen2841_Maybe> ::= rank => -1
-<Gen2844> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
-<Gen2844_Maybe> ::= <Gen2844> rank => 0
-<Gen2844_Maybe> ::= rank => -1
-<Gen2847> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
-<Gen2847_Maybe> ::= <Gen2847> rank => 0
-<Gen2847_Maybe> ::= rank => -1
+                      | <Action> <Gen2844_Any> rank => -1
+<Gen2848> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
+<Gen2848_Maybe> ::= <Gen2848> rank => 0
+<Gen2848_Maybe> ::= rank => -1
+<Gen2851> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
+<Gen2851_Maybe> ::= <Gen2851> rank => 0
+<Gen2851_Maybe> ::= rank => -1
+<Gen2854> ::= <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => 0
+<Gen2854_Maybe> ::= <Gen2854> rank => 0
+<Gen2854_Maybe> ::= rank => -1
 <Action> ::= <SELECT> rank => 0
            | <SELECT> <Left_Paren> <Privilege_Column_List> <Right_Paren> rank => -1
            | <SELECT> <Left_Paren> <Privilege_Method_List> <Right_Paren> rank => -2
            | <DELETE> rank => -3
-           | <INSERT> <Gen2841_Maybe> rank => -4
-           | <UPDATE> <Gen2844_Maybe> rank => -5
-           | <REFERENCES> <Gen2847_Maybe> rank => -6
+           | <INSERT> <Gen2848_Maybe> rank => -4
+           | <UPDATE> <Gen2851_Maybe> rank => -5
+           | <REFERENCES> <Gen2854_Maybe> rank => -6
            | <USAGE> rank => -7
            | <TRIGGER> rank => -8
            | <UNDER> rank => -9
            | <EXECUTE> rank => -10
-<Gen2861> ::= <Comma> <Specific_Routine_Designator> rank => 0
-<Gen2861_Any> ::= <Gen2861>* rank => 0
-<Privilege_Method_List> ::= <Specific_Routine_Designator> <Gen2861_Any> rank => 0
+<Gen2868> ::= <Comma> <Specific_Routine_Designator> rank => 0
+<Gen2868_Any> ::= <Gen2868>* rank => 0
+<Privilege_Method_List> ::= <Specific_Routine_Designator> <Gen2868_Any> rank => 0
 <Privilege_Column_List> ::= <Column_Name_List> rank => 0
 <Grantee> ::= <PUBLIC> rank => 0
             | <Authorization_Identifier> rank => -1
 <Grantor> ::= <CURRENT_USER> rank => 0
             | <CURRENT_ROLE> rank => -1
-<Gen2869> ::= <WITH> <ADMIN> <Grantor> rank => 0
-<Gen2869_Maybe> ::= <Gen2869> rank => 0
-<Gen2869_Maybe> ::= rank => -1
-<Role_Definition> ::= <CREATE> <ROLE> <Role_Name> <Gen2869_Maybe> rank => 0
-<Gen2873> ::= <Comma> <Role_Granted> rank => 0
-<Gen2873_Any> ::= <Gen2873>* rank => 0
-<Gen2875> ::= <Comma> <Grantee> rank => 0
-<Gen2875_Any> ::= <Gen2875>* rank => 0
-<Gen2877> ::= <WITH> <ADMIN> <OPTION> rank => 0
-<Gen2877_Maybe> ::= <Gen2877> rank => 0
-<Gen2877_Maybe> ::= rank => -1
-<Gen2880> ::= <GRANTED> <BY> <Grantor> rank => 0
-<Gen2880_Maybe> ::= <Gen2880> rank => 0
-<Gen2880_Maybe> ::= rank => -1
-<Grant_Role_Statement> ::= <GRANT> <Role_Granted> <Gen2873_Any> <TO> <Grantee> <Gen2875_Any> <Gen2877_Maybe> <Gen2880_Maybe> rank => 0
+<Gen2876> ::= <WITH> <ADMIN> <Grantor> rank => 0
+<Gen2876_Maybe> ::= <Gen2876> rank => 0
+<Gen2876_Maybe> ::= rank => -1
+<Role_Definition> ::= <CREATE> <ROLE> <Role_Name> <Gen2876_Maybe> rank => 0
+<Gen2880> ::= <Comma> <Role_Granted> rank => 0
+<Gen2880_Any> ::= <Gen2880>* rank => 0
+<Gen2882> ::= <Comma> <Grantee> rank => 0
+<Gen2882_Any> ::= <Gen2882>* rank => 0
+<Gen2884> ::= <WITH> <ADMIN> <OPTION> rank => 0
+<Gen2884_Maybe> ::= <Gen2884> rank => 0
+<Gen2884_Maybe> ::= rank => -1
+<Gen2887> ::= <GRANTED> <BY> <Grantor> rank => 0
+<Gen2887_Maybe> ::= <Gen2887> rank => 0
+<Gen2887_Maybe> ::= rank => -1
+<Grant_Role_Statement> ::= <GRANT> <Role_Granted> <Gen2880_Any> <TO> <Grantee> <Gen2882_Any> <Gen2884_Maybe> <Gen2887_Maybe> rank => 0
 <Role_Granted> ::= <Role_Name> rank => 0
 <Drop_Role_Statement> ::= <DROP> <ROLE> <Role_Name> rank => 0
 <Revoke_Statement> ::= <Revoke_Privilege_Statement> rank => 0
                      | <Revoke_Role_Statement> rank => -1
 <Revoke_Option_Extension_Maybe> ::= <Revoke_Option_Extension> rank => 0
 <Revoke_Option_Extension_Maybe> ::= rank => -1
-<Gen2890> ::= <Comma> <Grantee> rank => 0
-<Gen2890_Any> ::= <Gen2890>* rank => 0
-<Gen2892> ::= <GRANTED> <BY> <Grantor> rank => 0
-<Gen2892_Maybe> ::= <Gen2892> rank => 0
-<Gen2892_Maybe> ::= rank => -1
-<Revoke_Privilege_Statement> ::= <REVOKE> <Revoke_Option_Extension_Maybe> <Privileges> <FROM> <Grantee> <Gen2890_Any> <Gen2892_Maybe> <Drop_Behavior> rank => 0
+<Gen2897> ::= <Comma> <Grantee> rank => 0
+<Gen2897_Any> ::= <Gen2897>* rank => 0
+<Gen2899> ::= <GRANTED> <BY> <Grantor> rank => 0
+<Gen2899_Maybe> ::= <Gen2899> rank => 0
+<Gen2899_Maybe> ::= rank => -1
+<Revoke_Privilege_Statement> ::= <REVOKE> <Revoke_Option_Extension_Maybe> <Privileges> <FROM> <Grantee> <Gen2897_Any> <Gen2899_Maybe> <Drop_Behavior> rank => 0
 <Revoke_Option_Extension> ::= <GRANT> <OPTION> <FOR> rank => 0
                             | <HIERARCHY> <OPTION> <FOR> rank => -1
-<Gen2898> ::= <ADMIN> <OPTION> <FOR> rank => 0
-<Gen2898_Maybe> ::= <Gen2898> rank => 0
-<Gen2898_Maybe> ::= rank => -1
-<Gen2901> ::= <Comma> <Role_Revoked> rank => 0
-<Gen2901_Any> ::= <Gen2901>* rank => 0
-<Gen2903> ::= <Comma> <Grantee> rank => 0
-<Gen2903_Any> ::= <Gen2903>* rank => 0
-<Gen2905> ::= <GRANTED> <BY> <Grantor> rank => 0
+<Gen2905> ::= <ADMIN> <OPTION> <FOR> rank => 0
 <Gen2905_Maybe> ::= <Gen2905> rank => 0
 <Gen2905_Maybe> ::= rank => -1
-<Revoke_Role_Statement> ::= <REVOKE> <Gen2898_Maybe> <Role_Revoked> <Gen2901_Any> <FROM> <Grantee> <Gen2903_Any> <Gen2905_Maybe> <Drop_Behavior> rank => 0
+<Gen2908> ::= <Comma> <Role_Revoked> rank => 0
+<Gen2908_Any> ::= <Gen2908>* rank => 0
+<Gen2910> ::= <Comma> <Grantee> rank => 0
+<Gen2910_Any> ::= <Gen2910>* rank => 0
+<Gen2912> ::= <GRANTED> <BY> <Grantor> rank => 0
+<Gen2912_Maybe> ::= <Gen2912> rank => 0
+<Gen2912_Maybe> ::= rank => -1
+<Revoke_Role_Statement> ::= <REVOKE> <Gen2905_Maybe> <Role_Revoked> <Gen2908_Any> <FROM> <Grantee> <Gen2910_Any> <Gen2912_Maybe> <Drop_Behavior> rank => 0
 <Role_Revoked> ::= <Role_Name> rank => 0
 <Module_Path_Specification_Maybe> ::= <Module_Path_Specification> rank => 0
 <Module_Path_Specification_Maybe> ::= rank => -1
@@ -3140,31 +3147,31 @@ lexeme default = action => [start,length,value] latm => 1
 <Temporary_Table_Declaration_Any> ::= <Temporary_Table_Declaration>* rank => 0
 <Module_Contents_Many> ::= <Module_Contents>+ rank => 0
 <SQL_Client_Module_Definition> ::= <Module_Name_Clause> <Language_Clause> <Module_Authorization_Clause> <Module_Path_Specification_Maybe> <Module_Transform_Group_Specification_Maybe> <Module_Collations_Maybe> <Temporary_Table_Declaration_Any> <Module_Contents_Many> rank => 0
-<Gen2919> ::= <ONLY> rank => 0
+<Gen2926> ::= <ONLY> rank => 0
             | <AND> <DYNAMIC> rank => -1
-<Gen2921> ::= <FOR> <STATIC> <Gen2919> rank => 0
-<Gen2921_Maybe> ::= <Gen2921> rank => 0
-<Gen2921_Maybe> ::= rank => -1
-<Gen2924> ::= <ONLY> rank => 0
+<Gen2928> ::= <FOR> <STATIC> <Gen2926> rank => 0
+<Gen2928_Maybe> ::= <Gen2928> rank => 0
+<Gen2928_Maybe> ::= rank => -1
+<Gen2931> ::= <ONLY> rank => 0
             | <AND> <DYNAMIC> rank => -1
-<Gen2926> ::= <FOR> <STATIC> <Gen2924> rank => 0
-<Gen2926_Maybe> ::= <Gen2926> rank => 0
-<Gen2926_Maybe> ::= rank => -1
+<Gen2933> ::= <FOR> <STATIC> <Gen2931> rank => 0
+<Gen2933_Maybe> ::= <Gen2933> rank => 0
+<Gen2933_Maybe> ::= rank => -1
 <Module_Authorization_Clause> ::= <SCHEMA> <Schema_Name> rank => 0
-                                | <AUTHORIZATION> <Module_Authorization_Identifier> <Gen2921_Maybe> rank => -1
-                                | <SCHEMA> <Schema_Name> <AUTHORIZATION> <Module_Authorization_Identifier> <Gen2926_Maybe> rank => -2
+                                | <AUTHORIZATION> <Module_Authorization_Identifier> <Gen2928_Maybe> rank => -1
+                                | <SCHEMA> <Schema_Name> <AUTHORIZATION> <Module_Authorization_Identifier> <Gen2933_Maybe> rank => -2
 <Module_Authorization_Identifier> ::= <Authorization_Identifier> rank => 0
 <Module_Path_Specification> ::= <Path_Specification> rank => 0
 <Module_Transform_Group_Specification> ::= <Transform_Group_Specification> rank => 0
 <Module_Collation_Specification_Many> ::= <Module_Collation_Specification>+ rank => 0
 <Module_Collations> ::= <Module_Collation_Specification_Many> rank => 0
-<Gen2937> ::= <FOR> <Character_Set_Specification_List> rank => 0
-<Gen2937_Maybe> ::= <Gen2937> rank => 0
-<Gen2937_Maybe> ::= rank => -1
-<Module_Collation_Specification> ::= <COLLATION> <Collation_Name> <Gen2937_Maybe> rank => 0
-<Gen2941> ::= <Comma> <Character_Set_Specification> rank => 0
-<Gen2941_Any> ::= <Gen2941>* rank => 0
-<Character_Set_Specification_List> ::= <Character_Set_Specification> <Gen2941_Any> rank => 0
+<Gen2944> ::= <FOR> <Character_Set_Specification_List> rank => 0
+<Gen2944_Maybe> ::= <Gen2944> rank => 0
+<Gen2944_Maybe> ::= rank => -1
+<Module_Collation_Specification> ::= <COLLATION> <Collation_Name> <Gen2944_Maybe> rank => 0
+<Gen2948> ::= <Comma> <Character_Set_Specification> rank => 0
+<Gen2948_Any> ::= <Gen2948>* rank => 0
+<Character_Set_Specification_List> ::= <Character_Set_Specification> <Gen2948_Any> rank => 0
 <Module_Contents> ::= <Declare_Cursor> rank => 0
                     | <Dynamic_Declare_Cursor> rank => -1
                     | <Externally_Invoked_Procedure> rank => -2
@@ -3175,9 +3182,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Module_Name_Clause> ::= <MODULE> <SQL_Client_Module_Name_Maybe> <Module_Character_Set_Specification_Maybe> rank => 0
 <Module_Character_Set_Specification> ::= <NAMES> <ARE> <Character_Set_Specification> rank => 0
 <Externally_Invoked_Procedure> ::= <PROCEDURE> <Procedure_Name> <Host_Parameter_Declaration_List> <Semicolon> <SQL_Procedure_Statement> <Semicolon> rank => 0
-<Gen2954> ::= <Comma> <Host_Parameter_Declaration> rank => 0
-<Gen2954_Any> ::= <Gen2954>* rank => 0
-<Host_Parameter_Declaration_List> ::= <Left_Paren> <Host_Parameter_Declaration> <Gen2954_Any> <Right_Paren> rank => 0
+<Gen2961> ::= <Comma> <Host_Parameter_Declaration> rank => 0
+<Gen2961_Any> ::= <Gen2961>* rank => 0
+<Host_Parameter_Declaration_List> ::= <Left_Paren> <Host_Parameter_Declaration> <Gen2961_Any> <Right_Paren> rank => 0
 <Host_Parameter_Declaration> ::= <Host_Parameter_Name> <Host_Parameter_Data_Type> rank => 0
                                | <Status_Parameter> rank => -1
 <Host_Parameter_Data_Type> ::= <Data_Type> <Locator_Indication_Maybe> rank => 0
@@ -3307,65 +3314,65 @@ lexeme default = action => [start,length,value] latm => 1
 <Updatability_Clause_Maybe> ::= <Updatability_Clause> rank => 0
 <Updatability_Clause_Maybe> ::= rank => -1
 <Cursor_Specification> ::= <Query_Expression> <Order_By_Clause_Maybe> <Updatability_Clause_Maybe> rank => 0
-<Gen3086> ::= <OF> <Column_Name_List> rank => 0
-<Gen3086_Maybe> ::= <Gen3086> rank => 0
-<Gen3086_Maybe> ::= rank => -1
-<Gen3089> ::= <READ> <ONLY> rank => 0
-            | <UPDATE> <Gen3086_Maybe> rank => -1
-<Updatability_Clause> ::= <FOR> <Gen3089> rank => 0
+<Gen3093> ::= <OF> <Column_Name_List> rank => 0
+<Gen3093_Maybe> ::= <Gen3093> rank => 0
+<Gen3093_Maybe> ::= rank => -1
+<Gen3096> ::= <READ> <ONLY> rank => 0
+            | <UPDATE> <Gen3093_Maybe> rank => -1
+<Updatability_Clause> ::= <FOR> <Gen3096> rank => 0
 <Order_By_Clause> ::= <ORDER> <BY> <Sort_Specification_List> rank => 0
 <Open_Statement> ::= <OPEN> <Cursor_Name> rank => 0
 <Fetch_Orientation_Maybe> ::= <Fetch_Orientation> rank => 0
 <Fetch_Orientation_Maybe> ::= rank => -1
-<Gen3096> ::= <Fetch_Orientation_Maybe> <FROM> rank => 0
-<Gen3096_Maybe> ::= <Gen3096> rank => 0
-<Gen3096_Maybe> ::= rank => -1
-<Fetch_Statement> ::= <FETCH> <Gen3096_Maybe> <Cursor_Name> <INTO> <Fetch_Target_List> rank => 0
-<Gen3100> ::= <ABSOLUTE> rank => 0
+<Gen3103> ::= <Fetch_Orientation_Maybe> <FROM> rank => 0
+<Gen3103_Maybe> ::= <Gen3103> rank => 0
+<Gen3103_Maybe> ::= rank => -1
+<Fetch_Statement> ::= <FETCH> <Gen3103_Maybe> <Cursor_Name> <INTO> <Fetch_Target_List> rank => 0
+<Gen3107> ::= <ABSOLUTE> rank => 0
             | <RELATIVE> rank => -1
 <Fetch_Orientation> ::= <NEXT> rank => 0
                       | <PRIOR> rank => -1
                       | <FIRST> rank => -2
                       | <LAST> rank => -3
-                      | <Gen3100> <Simple_Value_Specification> rank => -4
-<Gen3107> ::= <Comma> <Target_Specification> rank => 0
-<Gen3107_Any> ::= <Gen3107>* rank => 0
-<Fetch_Target_List> ::= <Target_Specification> <Gen3107_Any> rank => 0
+                      | <Gen3107> <Simple_Value_Specification> rank => -4
+<Gen3114> ::= <Comma> <Target_Specification> rank => 0
+<Gen3114_Any> ::= <Gen3114>* rank => 0
+<Fetch_Target_List> ::= <Target_Specification> <Gen3114_Any> rank => 0
 <Close_Statement> ::= <CLOSE> <Cursor_Name> rank => 0
 <Select_Statement_Single_Row> ::= <SELECT> <Set_Quantifier_Maybe> <Select_List> <INTO> <Select_Target_List> <Table_Expression> rank => 0
-<Gen3112> ::= <Comma> <Target_Specification> rank => 0
-<Gen3112_Any> ::= <Gen3112>* rank => 0
-<Select_Target_List> ::= <Target_Specification> <Gen3112_Any> rank => 0
+<Gen3119> ::= <Comma> <Target_Specification> rank => 0
+<Gen3119_Any> ::= <Gen3119>* rank => 0
+<Select_Target_List> ::= <Target_Specification> <Gen3119_Any> rank => 0
 <Delete_Statement_Positioned> ::= <DELETE> <FROM> <Target_Table> <WHERE> <CURRENT> <OF> <Cursor_Name> rank => 0
 <Target_Table> ::= <Table_Name> rank => 0
                  | <ONLY> <Left_Paren> <Table_Name> <Right_Paren> rank => -1
-<Gen3118> ::= <WHERE> <Search_Condition> rank => 0
-<Gen3118_Maybe> ::= <Gen3118> rank => 0
-<Gen3118_Maybe> ::= rank => -1
-<Delete_Statement_Searched> ::= <DELETE> <FROM> <Target_Table> <Gen3118_Maybe> rank => 0
+<Gen3125> ::= <WHERE> <Search_Condition> rank => 0
+<Gen3125_Maybe> ::= <Gen3125> rank => 0
+<Gen3125_Maybe> ::= rank => -1
+<Delete_Statement_Searched> ::= <DELETE> <FROM> <Target_Table> <Gen3125_Maybe> rank => 0
 <Insert_Statement> ::= <INSERT> <INTO> <Insertion_Target> <Insert_Columns_And_Source> rank => 0
 <Insertion_Target> ::= <Table_Name> rank => 0
 <Insert_Columns_And_Source> ::= <From_Subquery> rank => 0
                               | <From_Constructor> rank => -1
                               | <From_Default> rank => -2
-<Gen3127> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
-<Gen3127_Maybe> ::= <Gen3127> rank => 0
-<Gen3127_Maybe> ::= rank => -1
+<Gen3134> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
+<Gen3134_Maybe> ::= <Gen3134> rank => 0
+<Gen3134_Maybe> ::= rank => -1
 <Override_Clause_Maybe> ::= <Override_Clause> rank => 0
 <Override_Clause_Maybe> ::= rank => -1
-<From_Subquery> ::= <Gen3127_Maybe> <Override_Clause_Maybe> <Query_Expression> rank => 0
-<Gen3133> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
-<Gen3133_Maybe> ::= <Gen3133> rank => 0
-<Gen3133_Maybe> ::= rank => -1
-<From_Constructor> ::= <Gen3133_Maybe> <Override_Clause_Maybe> <Contextually_Typed_Table_Value_Constructor> rank => 0
+<From_Subquery> ::= <Gen3134_Maybe> <Override_Clause_Maybe> <Query_Expression> rank => 0
+<Gen3140> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
+<Gen3140_Maybe> ::= <Gen3140> rank => 0
+<Gen3140_Maybe> ::= rank => -1
+<From_Constructor> ::= <Gen3140_Maybe> <Override_Clause_Maybe> <Contextually_Typed_Table_Value_Constructor> rank => 0
 <Override_Clause> ::= <OVERRIDING> <USER> <VALUE> rank => 0
                     | <OVERRIDING> <SYSTEM> <VALUE> rank => -1
 <From_Default> ::= <DEFAULT> <VALUES> rank => 0
 <Insert_Column_List> ::= <Column_Name_List> rank => 0
-<Gen3141> ::= <As_Maybe> <Merge_Correlation_Name> rank => 0
-<Gen3141_Maybe> ::= <Gen3141> rank => 0
-<Gen3141_Maybe> ::= rank => -1
-<Merge_Statement> ::= <MERGE> <INTO> <Target_Table> <Gen3141_Maybe> <USING> <Table_Reference> <ON> <Search_Condition> <Merge_Operation_Specification> rank => 0
+<Gen3148> ::= <As_Maybe> <Merge_Correlation_Name> rank => 0
+<Gen3148_Maybe> ::= <Gen3148> rank => 0
+<Gen3148_Maybe> ::= rank => -1
+<Merge_Statement> ::= <MERGE> <INTO> <Target_Table> <Gen3148_Maybe> <USING> <Table_Reference> <ON> <Search_Condition> <Merge_Operation_Specification> rank => 0
 <Merge_Correlation_Name> ::= <Correlation_Name> rank => 0
 <Merge_When_Clause_Many> ::= <Merge_When_Clause>+ rank => 0
 <Merge_Operation_Specification> ::= <Merge_When_Clause_Many> rank => 0
@@ -3374,31 +3381,31 @@ lexeme default = action => [start,length,value] latm => 1
 <Merge_When_Matched_Clause> ::= <WHEN> <MATCHED> <THEN> <Merge_Update_Specification> rank => 0
 <Merge_When_Not_Matched_Clause> ::= <WHEN> <NOT> <MATCHED> <THEN> <Merge_Insert_Specification> rank => 0
 <Merge_Update_Specification> ::= <UPDATE> <SET> <Set_Clause_List> rank => 0
-<Gen3153> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
-<Gen3153_Maybe> ::= <Gen3153> rank => 0
-<Gen3153_Maybe> ::= rank => -1
-<Merge_Insert_Specification> ::= <INSERT> <Gen3153_Maybe> <Override_Clause_Maybe> <VALUES> <Merge_Insert_Value_List> rank => 0
-<Gen3157> ::= <Comma> <Merge_Insert_Value_Element> rank => 0
-<Gen3157_Any> ::= <Gen3157>* rank => 0
-<Merge_Insert_Value_List> ::= <Left_Paren> <Merge_Insert_Value_Element> <Gen3157_Any> <Right_Paren> rank => 0
+<Gen3160> ::= <Left_Paren> <Insert_Column_List> <Right_Paren> rank => 0
+<Gen3160_Maybe> ::= <Gen3160> rank => 0
+<Gen3160_Maybe> ::= rank => -1
+<Merge_Insert_Specification> ::= <INSERT> <Gen3160_Maybe> <Override_Clause_Maybe> <VALUES> <Merge_Insert_Value_List> rank => 0
+<Gen3164> ::= <Comma> <Merge_Insert_Value_Element> rank => 0
+<Gen3164_Any> ::= <Gen3164>* rank => 0
+<Merge_Insert_Value_List> ::= <Left_Paren> <Merge_Insert_Value_Element> <Gen3164_Any> <Right_Paren> rank => 0
 <Merge_Insert_Value_Element> ::= <Value_Expression> rank => 0
                                | <Contextually_Typed_Value_Specification> rank => -1
 <Update_Statement_Positioned> ::= <UPDATE> <Target_Table> <SET> <Set_Clause_List> <WHERE> <CURRENT> <OF> <Cursor_Name> rank => 0
-<Gen3163> ::= <WHERE> <Search_Condition> rank => 0
-<Gen3163_Maybe> ::= <Gen3163> rank => 0
-<Gen3163_Maybe> ::= rank => -1
-<Update_Statement_Searched> ::= <UPDATE> <Target_Table> <SET> <Set_Clause_List> <Gen3163_Maybe> rank => 0
-<Gen3167> ::= <Comma> <Set_Clause> rank => 0
-<Gen3167_Any> ::= <Gen3167>* rank => 0
-<Set_Clause_List> ::= <Set_Clause> <Gen3167_Any> rank => 0
+<Gen3170> ::= <WHERE> <Search_Condition> rank => 0
+<Gen3170_Maybe> ::= <Gen3170> rank => 0
+<Gen3170_Maybe> ::= rank => -1
+<Update_Statement_Searched> ::= <UPDATE> <Target_Table> <SET> <Set_Clause_List> <Gen3170_Maybe> rank => 0
+<Gen3174> ::= <Comma> <Set_Clause> rank => 0
+<Gen3174_Any> ::= <Gen3174>* rank => 0
+<Set_Clause_List> ::= <Set_Clause> <Gen3174_Any> rank => 0
 <Set_Clause> ::= <Multiple_Column_Assignment> rank => 0
                | <Set_Target> <Equals_Operator> <Update_Source> rank => -1
 <Set_Target> ::= <Update_Target> rank => 0
                | <Mutated_Set_Clause> rank => -1
 <Multiple_Column_Assignment> ::= <Set_Target_List> <Equals_Operator> <Assigned_Row> rank => 0
-<Gen3175> ::= <Comma> <Set_Target> rank => 0
-<Gen3175_Any> ::= <Gen3175>* rank => 0
-<Set_Target_List> ::= <Left_Paren> <Set_Target> <Gen3175_Any> <Right_Paren> rank => 0
+<Gen3182> ::= <Comma> <Set_Target> rank => 0
+<Gen3182_Any> ::= <Gen3182>* rank => 0
+<Set_Target_List> ::= <Left_Paren> <Set_Target> <Gen3182_Any> <Right_Paren> rank => 0
 <Assigned_Row> ::= <Contextually_Typed_Row_Value_Expression> rank => 0
 <Update_Target> ::= <Object_Column> rank => 0
                   | <Object_Column> <Left_Bracket_Or_Trigraph> <Simple_Value_Specification> <Right_Bracket_Or_Trigraph> rank => -1
@@ -3408,28 +3415,28 @@ lexeme default = action => [start,length,value] latm => 1
                    | <Mutated_Set_Clause> rank => -1
 <Update_Source> ::= <Value_Expression> rank => 0
                   | <Contextually_Typed_Value_Specification> rank => -1
-<Gen3187> ::= <ON> <COMMIT> <Table_Commit_Action> <ROWS> rank => 0
-<Gen3187_Maybe> ::= <Gen3187> rank => 0
-<Gen3187_Maybe> ::= rank => -1
-<Temporary_Table_Declaration> ::= <DECLARE> <LOCAL> <TEMPORARY> <TABLE> <Table_Name> <Table_Element_List> <Gen3187_Maybe> rank => 0
-<Gen3191> ::= <Comma> <Locator_Reference> rank => 0
-<Gen3191_Any> ::= <Gen3191>* rank => 0
-<Free_Locator_Statement> ::= <FREE> <LOCATOR> <Locator_Reference> <Gen3191_Any> rank => 0
+<Gen3194> ::= <ON> <COMMIT> <Table_Commit_Action> <ROWS> rank => 0
+<Gen3194_Maybe> ::= <Gen3194> rank => 0
+<Gen3194_Maybe> ::= rank => -1
+<Temporary_Table_Declaration> ::= <DECLARE> <LOCAL> <TEMPORARY> <TABLE> <Table_Name> <Table_Element_List> <Gen3194_Maybe> rank => 0
+<Gen3198> ::= <Comma> <Locator_Reference> rank => 0
+<Gen3198_Any> ::= <Gen3198>* rank => 0
+<Free_Locator_Statement> ::= <FREE> <LOCATOR> <Locator_Reference> <Gen3198_Any> rank => 0
 <Locator_Reference> ::= <Host_Parameter_Name> rank => 0
                       | <Embedded_Variable_Name> rank => -1
-<Gen3196> ::= <Comma> <Locator_Reference> rank => 0
-<Gen3196_Any> ::= <Gen3196>* rank => 0
-<Hold_Locator_Statement> ::= <HOLD> <LOCATOR> <Locator_Reference> <Gen3196_Any> rank => 0
+<Gen3203> ::= <Comma> <Locator_Reference> rank => 0
+<Gen3203_Any> ::= <Gen3203>* rank => 0
+<Hold_Locator_Statement> ::= <HOLD> <LOCATOR> <Locator_Reference> <Gen3203_Any> rank => 0
 <Call_Statement> ::= <CALL> <Routine_Invocation> rank => 0
 <Return_Statement> ::= <RETURN> <Return_Value> rank => 0
 <Return_Value> ::= <Value_Expression> rank => 0
                  | <NULL> rank => -1
-<Gen3203> ::= <Comma> <Transaction_Mode> rank => 0
-<Gen3203_Any> ::= <Gen3203>* rank => 0
-<Gen3205> ::= <Transaction_Mode> <Gen3203_Any> rank => 0
-<Gen3205_Maybe> ::= <Gen3205> rank => 0
-<Gen3205_Maybe> ::= rank => -1
-<Start_Transaction_Statement> ::= <START> <TRANSACTION> <Gen3205_Maybe> rank => 0
+<Gen3210> ::= <Comma> <Transaction_Mode> rank => 0
+<Gen3210_Any> ::= <Gen3210>* rank => 0
+<Gen3212> ::= <Transaction_Mode> <Gen3210_Any> rank => 0
+<Gen3212_Maybe> ::= <Gen3212> rank => 0
+<Gen3212_Maybe> ::= rank => -1
+<Start_Transaction_Statement> ::= <START> <TRANSACTION> <Gen3212_Maybe> rank => 0
 <Transaction_Mode> ::= <Isolation_Level> rank => 0
                      | <Transaction_Access_Mode> rank => -1
                      | <Diagnostics_Size> rank => -2
@@ -3445,16 +3452,16 @@ lexeme default = action => [start,length,value] latm => 1
 <Local_Maybe> ::= <LOCAL> rank => 0
 <Local_Maybe> ::= rank => -1
 <Set_Transaction_Statement> ::= <SET> <Local_Maybe> <Transaction_Characteristics> rank => 0
-<Gen3224> ::= <Comma> <Transaction_Mode> rank => 0
-<Gen3224_Any> ::= <Gen3224>* rank => 0
-<Transaction_Characteristics> ::= <TRANSACTION> <Transaction_Mode> <Gen3224_Any> rank => 0
-<Gen3227> ::= <DEFERRED> rank => 0
+<Gen3231> ::= <Comma> <Transaction_Mode> rank => 0
+<Gen3231_Any> ::= <Gen3231>* rank => 0
+<Transaction_Characteristics> ::= <TRANSACTION> <Transaction_Mode> <Gen3231_Any> rank => 0
+<Gen3234> ::= <DEFERRED> rank => 0
             | <IMMEDIATE> rank => -1
-<Set_Constraints_Mode_Statement> ::= <SET> <CONSTRAINTS> <Constraint_Name_List> <Gen3227> rank => 0
-<Gen3230> ::= <Comma> <Constraint_Name> rank => 0
-<Gen3230_Any> ::= <Gen3230>* rank => 0
+<Set_Constraints_Mode_Statement> ::= <SET> <CONSTRAINTS> <Constraint_Name_List> <Gen3234> rank => 0
+<Gen3237> ::= <Comma> <Constraint_Name> rank => 0
+<Gen3237_Any> ::= <Gen3237>* rank => 0
 <Constraint_Name_List> ::= <ALL> rank => 0
-                         | <Constraint_Name> <Gen3230_Any> rank => -1
+                         | <Constraint_Name> <Gen3237_Any> rank => -1
 <Savepoint_Statement> ::= <SAVEPOINT> <Savepoint_Specifier> rank => 0
 <Savepoint_Specifier> ::= <Savepoint_Name> rank => 0
 <Release_Savepoint_Statement> ::= <RELEASE> <SAVEPOINT> <Savepoint_Specifier> rank => 0
@@ -3462,25 +3469,25 @@ lexeme default = action => [start,length,value] latm => 1
 <Work_Maybe> ::= rank => -1
 <No_Maybe> ::= <NO> rank => 0
 <No_Maybe> ::= rank => -1
-<Gen3241> ::= <AND> <No_Maybe> <CHAIN> rank => 0
-<Gen3241_Maybe> ::= <Gen3241> rank => 0
-<Gen3241_Maybe> ::= rank => -1
-<Commit_Statement> ::= <COMMIT> <Work_Maybe> <Gen3241_Maybe> rank => 0
-<Gen3245> ::= <AND> <No_Maybe> <CHAIN> rank => 0
-<Gen3245_Maybe> ::= <Gen3245> rank => 0
-<Gen3245_Maybe> ::= rank => -1
+<Gen3248> ::= <AND> <No_Maybe> <CHAIN> rank => 0
+<Gen3248_Maybe> ::= <Gen3248> rank => 0
+<Gen3248_Maybe> ::= rank => -1
+<Commit_Statement> ::= <COMMIT> <Work_Maybe> <Gen3248_Maybe> rank => 0
+<Gen3252> ::= <AND> <No_Maybe> <CHAIN> rank => 0
+<Gen3252_Maybe> ::= <Gen3252> rank => 0
+<Gen3252_Maybe> ::= rank => -1
 <Savepoint_Clause_Maybe> ::= <Savepoint_Clause> rank => 0
 <Savepoint_Clause_Maybe> ::= rank => -1
-<Rollback_Statement> ::= <ROLLBACK> <Work_Maybe> <Gen3245_Maybe> <Savepoint_Clause_Maybe> rank => 0
+<Rollback_Statement> ::= <ROLLBACK> <Work_Maybe> <Gen3252_Maybe> <Savepoint_Clause_Maybe> rank => 0
 <Savepoint_Clause> ::= <TO> <SAVEPOINT> <Savepoint_Specifier> rank => 0
 <Connect_Statement> ::= <CONNECT> <TO> <Connection_Target> rank => 0
-<Gen3253> ::= <AS> <Connection_Name> rank => 0
-<Gen3253_Maybe> ::= <Gen3253> rank => 0
-<Gen3253_Maybe> ::= rank => -1
-<Gen3256> ::= <USER> <Connection_User_Name> rank => 0
-<Gen3256_Maybe> ::= <Gen3256> rank => 0
-<Gen3256_Maybe> ::= rank => -1
-<Connection_Target> ::= <Sql_Server_Name> <Gen3253_Maybe> <Gen3256_Maybe> rank => 0
+<Gen3260> ::= <AS> <Connection_Name> rank => 0
+<Gen3260_Maybe> ::= <Gen3260> rank => 0
+<Gen3260_Maybe> ::= rank => -1
+<Gen3263> ::= <USER> <Connection_User_Name> rank => 0
+<Gen3263_Maybe> ::= <Gen3263> rank => 0
+<Gen3263_Maybe> ::= rank => -1
+<Connection_Target> ::= <Sql_Server_Name> <Gen3260_Maybe> <Gen3263_Maybe> rank => 0
                       | <DEFAULT> rank => -1
 <Set_Connection_Statement> ::= <SET> <CONNECTION> <Connection_Object> rank => 0
 <Connection_Object> ::= <DEFAULT> rank => 0
@@ -3490,9 +3497,9 @@ lexeme default = action => [start,length,value] latm => 1
                       | <ALL> rank => -1
                       | <CURRENT> rank => -2
 <Set_Session_Characteristics_Statement> ::= <SET> <SESSION> <CHARACTERISTICS> <AS> <Session_Characteristic_List> rank => 0
-<Gen3269> ::= <Comma> <Session_Characteristic> rank => 0
-<Gen3269_Any> ::= <Gen3269>* rank => 0
-<Session_Characteristic_List> ::= <Session_Characteristic> <Gen3269_Any> rank => 0
+<Gen3276> ::= <Comma> <Session_Characteristic> rank => 0
+<Gen3276_Any> ::= <Gen3276>* rank => 0
+<Session_Characteristic_List> ::= <Session_Characteristic> <Gen3276_Any> rank => 0
 <Session_Characteristic> ::= <Transaction_Characteristics> rank => 0
 <Set_Session_User_Identifier_Statement> ::= <SET> <SESSION> <AUTHORIZATION> <Value_Specification> rank => 0
 <Set_Role_Statement> ::= <SET> <ROLE> <Role_Specification> rank => 0
@@ -3512,33 +3519,33 @@ lexeme default = action => [start,length,value] latm => 1
 <Set_Transform_Group_Statement> ::= <SET> <Transform_Group_Characteristic> rank => 0
 <Transform_Group_Characteristic> ::= <DEFAULT> <TRANSFORM> <GROUP> <Value_Specification> rank => 0
                                    | <TRANSFORM> <GROUP> <FOR> <TYPE> <Path_Resolved_User_Defined_Type_Name> <Value_Specification> rank => -1
-<Gen3291> ::= <FOR> <Character_Set_Specification_List> rank => 0
-<Gen3291_Maybe> ::= <Gen3291> rank => 0
-<Gen3291_Maybe> ::= rank => -1
-<Gen3294> ::= <FOR> <Character_Set_Specification_List> rank => 0
-<Gen3294_Maybe> ::= <Gen3294> rank => 0
-<Gen3294_Maybe> ::= rank => -1
-<Set_Session_Collation_Statement> ::= <SET> <COLLATION> <Collation_Specification> <Gen3291_Maybe> rank => 0
-                                    | <SET> <NO> <COLLATION> <Gen3294_Maybe> rank => -1
-<Gen3299> ::= <Comma> <Character_Set_Specification> rank => 0
-<Gen3299_Any> ::= <Gen3299>* rank => 0
-<Character_Set_Specification_List> ::= <Character_Set_Specification> <Gen3299_Any> rank => -1
+<Gen3298> ::= <FOR> <Character_Set_Specification_List> rank => 0
+<Gen3298_Maybe> ::= <Gen3298> rank => 0
+<Gen3298_Maybe> ::= rank => -1
+<Gen3301> ::= <FOR> <Character_Set_Specification_List> rank => 0
+<Gen3301_Maybe> ::= <Gen3301> rank => 0
+<Gen3301_Maybe> ::= rank => -1
+<Set_Session_Collation_Statement> ::= <SET> <COLLATION> <Collation_Specification> <Gen3298_Maybe> rank => 0
+                                    | <SET> <NO> <COLLATION> <Gen3301_Maybe> rank => -1
+<Gen3306> ::= <Comma> <Character_Set_Specification> rank => 0
+<Gen3306_Any> ::= <Gen3306>* rank => 0
+<Character_Set_Specification_List> ::= <Character_Set_Specification> <Gen3306_Any> rank => -1
 <Collation_Specification> ::= <Value_Specification> rank => 0
 <SQL_Maybe> ::= <SQL> rank => 0
 <SQL_Maybe> ::= rank => -1
-<Gen3305> ::= <WITH> <MAX> <Occurrences> rank => 0
-<Gen3305_Maybe> ::= <Gen3305> rank => 0
-<Gen3305_Maybe> ::= rank => -1
-<Allocate_Descriptor_Statement> ::= <ALLOCATE> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> <Gen3305_Maybe> rank => 0
+<Gen3312> ::= <WITH> <MAX> <Occurrences> rank => 0
+<Gen3312_Maybe> ::= <Gen3312> rank => 0
+<Gen3312_Maybe> ::= rank => -1
+<Allocate_Descriptor_Statement> ::= <ALLOCATE> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> <Gen3312_Maybe> rank => 0
 <Occurrences> ::= <Simple_Value_Specification> rank => 0
 <Deallocate_Descriptor_Statement> ::= <DEALLOCATE> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> rank => 0
 <Get_Descriptor_Statement> ::= <GET> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> <Get_Descriptor_Information> rank => 0
-<Gen3312> ::= <Comma> <Get_Header_Information> rank => 0
-<Gen3312_Any> ::= <Gen3312>* rank => 0
-<Gen3314> ::= <Comma> <Get_Item_Information> rank => 0
-<Gen3314_Any> ::= <Gen3314>* rank => 0
-<Get_Descriptor_Information> ::= <Get_Header_Information> <Gen3312_Any> rank => 0
-                               | <VALUE> <Item_Number> <Get_Item_Information> <Gen3314_Any> rank => -1
+<Gen3319> ::= <Comma> <Get_Header_Information> rank => 0
+<Gen3319_Any> ::= <Gen3319>* rank => 0
+<Gen3321> ::= <Comma> <Get_Item_Information> rank => 0
+<Gen3321_Any> ::= <Gen3321>* rank => 0
+<Get_Descriptor_Information> ::= <Get_Header_Information> <Gen3319_Any> rank => 0
+                               | <VALUE> <Item_Number> <Get_Item_Information> <Gen3321_Any> rank => -1
 <Get_Header_Information> ::= <Simple_Target_Specification_1> <Equals_Operator> <Header_Item_Name> rank => 0
 <Header_Item_Name> ::= <COUNT> rank => 0
                      | <KEY_TYPE> rank => -1
@@ -3587,12 +3594,12 @@ lexeme default = action => [start,length,value] latm => 1
                          | <USER_DEFINED_TYPE_SCHEMA> rank => -35
                          | <USER_DEFINED_TYPE_CODE> rank => -36
 <Set_Descriptor_Statement> ::= <SET> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> <Set_Descriptor_Information> rank => 0
-<Gen3366> ::= <Comma> <Set_Header_Information> rank => 0
-<Gen3366_Any> ::= <Gen3366>* rank => 0
-<Gen3368> ::= <Comma> <Set_Item_Information> rank => 0
-<Gen3368_Any> ::= <Gen3368>* rank => 0
-<Set_Descriptor_Information> ::= <Set_Header_Information> <Gen3366_Any> rank => 0
-                               | <VALUE> <Item_Number> <Set_Item_Information> <Gen3368_Any> rank => -1
+<Gen3373> ::= <Comma> <Set_Header_Information> rank => 0
+<Gen3373_Any> ::= <Gen3373>* rank => 0
+<Gen3375> ::= <Comma> <Set_Item_Information> rank => 0
+<Gen3375_Any> ::= <Gen3375>* rank => 0
+<Set_Descriptor_Information> ::= <Set_Header_Information> <Gen3373_Any> rank => 0
+                               | <VALUE> <Item_Number> <Set_Item_Information> <Gen3375_Any> rank => -1
 <Set_Header_Information> ::= <Header_Item_Name> <Equals_Operator> <Simple_Value_Specification_1> rank => 0
 <Set_Item_Information> ::= <Descriptor_Item_Name> <Equals_Operator> <Simple_Value_Specification_2> rank => 0
 <Simple_Value_Specification_1> ::= <Simple_Value_Specification> rank => 0
@@ -3643,16 +3650,16 @@ lexeme default = action => [start,length,value] latm => 1
                      | <CURSOR> <Extended_Cursor_Name> <STRUCTURE> rank => -1
 <Input_Using_Clause> ::= <Using_Arguments> rank => 0
                        | <Using_Input_Descriptor> rank => -1
-<Gen3422> ::= <Comma> <Using_Argument> rank => 0
-<Gen3422_Any> ::= <Gen3422>* rank => 0
-<Using_Arguments> ::= <USING> <Using_Argument> <Gen3422_Any> rank => 0
+<Gen3429> ::= <Comma> <Using_Argument> rank => 0
+<Gen3429_Any> ::= <Gen3429>* rank => 0
+<Using_Arguments> ::= <USING> <Using_Argument> <Gen3429_Any> rank => 0
 <Using_Argument> ::= <General_Value_Specification> rank => 0
 <Using_Input_Descriptor> ::= <Using_Descriptor> rank => 0
 <Output_Using_Clause> ::= <Into_Arguments> rank => 0
                         | <Into_Descriptor> rank => -1
-<Gen3429> ::= <Comma> <Into_Argument> rank => 0
-<Gen3429_Any> ::= <Gen3429>* rank => 0
-<Into_Arguments> ::= <INTO> <Into_Argument> <Gen3429_Any> rank => 0
+<Gen3436> ::= <Comma> <Into_Argument> rank => 0
+<Gen3436_Any> ::= <Gen3436>* rank => 0
+<Into_Arguments> ::= <INTO> <Into_Argument> <Gen3436_Any> rank => 0
 <Into_Argument> ::= <Target_Specification> rank => 0
 <Into_Descriptor> ::= <INTO> <SQL_Maybe> <DESCRIPTOR> <Descriptor_Name> rank => 0
 <Result_Using_Clause_Maybe> ::= <Result_Using_Clause> rank => 0
@@ -3672,18 +3679,18 @@ lexeme default = action => [start,length,value] latm => 1
 <Input_Using_Clause_Maybe> ::= <Input_Using_Clause> rank => 0
 <Input_Using_Clause_Maybe> ::= rank => -1
 <Dynamic_Open_Statement> ::= <OPEN> <Dynamic_Cursor_Name> <Input_Using_Clause_Maybe> rank => 0
-<Gen3451> ::= <Fetch_Orientation_Maybe> <FROM> rank => 0
-<Gen3451_Maybe> ::= <Gen3451> rank => 0
-<Gen3451_Maybe> ::= rank => -1
-<Dynamic_Fetch_Statement> ::= <FETCH> <Gen3451_Maybe> <Dynamic_Cursor_Name> <Output_Using_Clause> rank => 0
+<Gen3458> ::= <Fetch_Orientation_Maybe> <FROM> rank => 0
+<Gen3458_Maybe> ::= <Gen3458> rank => 0
+<Gen3458_Maybe> ::= rank => -1
+<Dynamic_Fetch_Statement> ::= <FETCH> <Gen3458_Maybe> <Dynamic_Cursor_Name> <Output_Using_Clause> rank => 0
 <Dynamic_Single_Row_Select_Statement> ::= <Query_Specification> rank => 0
 <Dynamic_Close_Statement> ::= <CLOSE> <Dynamic_Cursor_Name> rank => 0
 <Dynamic_Delete_Statement_Positioned> ::= <DELETE> <FROM> <Target_Table> <WHERE> <CURRENT> <OF> <Dynamic_Cursor_Name> rank => 0
 <Dynamic_Update_Statement_Positioned> ::= <UPDATE> <Target_Table> <SET> <Set_Clause_List> <WHERE> <CURRENT> <OF> <Dynamic_Cursor_Name> rank => 0
-<Gen3459> ::= <FROM> <Target_Table> rank => 0
-<Gen3459_Maybe> ::= <Gen3459> rank => 0
-<Gen3459_Maybe> ::= rank => -1
-<Preparable_Dynamic_Delete_Statement_Positioned> ::= <DELETE> <Gen3459_Maybe> <WHERE> <CURRENT> <OF> <Scope_Option_Maybe> <Cursor_Name> rank => 0
+<Gen3466> ::= <FROM> <Target_Table> rank => 0
+<Gen3466_Maybe> ::= <Gen3466> rank => 0
+<Gen3466_Maybe> ::= rank => -1
+<Preparable_Dynamic_Delete_Statement_Positioned> ::= <DELETE> <Gen3466_Maybe> <WHERE> <CURRENT> <OF> <Scope_Option_Maybe> <Cursor_Name> rank => 0
 <Target_Table_Maybe> ::= <Target_Table> rank => 0
 <Target_Table_Maybe> ::= rank => -1
 <Preparable_Dynamic_Update_Statement_Positioned> ::= <UPDATE> <Target_Table_Maybe> <SET> <Set_Clause_List> <WHERE> <CURRENT> <OF> <Scope_Option_Maybe> <Cursor_Name> rank => 0
@@ -3712,19 +3719,19 @@ lexeme default = action => [start,length,value] latm => 1
                    | <Semicolon> rank => -1
                    | <Right_Paren> rank => -2
 <Embedded_Authorization_Declaration> ::= <DECLARE> <Embedded_Authorization_Clause> rank => 0
-<Gen3491> ::= <ONLY> rank => 0
+<Gen3498> ::= <ONLY> rank => 0
             | <AND> <DYNAMIC> rank => -1
-<Gen3493> ::= <FOR> <STATIC> <Gen3491> rank => 0
-<Gen3493_Maybe> ::= <Gen3493> rank => 0
-<Gen3493_Maybe> ::= rank => -1
-<Gen3496> ::= <ONLY> rank => 0
+<Gen3500> ::= <FOR> <STATIC> <Gen3498> rank => 0
+<Gen3500_Maybe> ::= <Gen3500> rank => 0
+<Gen3500_Maybe> ::= rank => -1
+<Gen3503> ::= <ONLY> rank => 0
             | <AND> <DYNAMIC> rank => -1
-<Gen3498> ::= <FOR> <STATIC> <Gen3496> rank => 0
-<Gen3498_Maybe> ::= <Gen3498> rank => 0
-<Gen3498_Maybe> ::= rank => -1
+<Gen3505> ::= <FOR> <STATIC> <Gen3503> rank => 0
+<Gen3505_Maybe> ::= <Gen3505> rank => 0
+<Gen3505_Maybe> ::= rank => -1
 <Embedded_Authorization_Clause> ::= <SCHEMA> <Schema_Name> rank => 0
-                                  | <AUTHORIZATION> <Embedded_Authorization_Identifier> <Gen3493_Maybe> rank => -1
-                                  | <SCHEMA> <Schema_Name> <AUTHORIZATION> <Embedded_Authorization_Identifier> <Gen3498_Maybe> rank => -2
+                                  | <AUTHORIZATION> <Embedded_Authorization_Identifier> <Gen3500_Maybe> rank => -1
+                                  | <SCHEMA> <Schema_Name> <AUTHORIZATION> <Embedded_Authorization_Identifier> <Gen3505_Maybe> rank => -2
 <Embedded_Authorization_Identifier> ::= <Module_Authorization_Identifier> rank => 0
 <Embedded_Path_Specification> ::= <Path_Specification> rank => 0
 <Embedded_Transform_Group_Specification> ::= <Transform_Group_Specification> rank => 0
@@ -3755,12 +3762,12 @@ lexeme default = action => [start,length,value] latm => 1
                     | <Pl_I_Host_Identifier> rank => -6
 <Embedded_Exception_Declaration> ::= <WHENEVER> <Condition> <Condition_Action> rank => 0
 <Condition> ::= <SQL_Condition> rank => 0
-<Gen3534> ::= <Comma> <Sqlstate_Subclass_Value> rank => 0
-<Gen3534_Maybe> ::= <Gen3534> rank => 0
-<Gen3534_Maybe> ::= rank => -1
-<Gen3537> ::= <Sqlstate_Class_Value> <Gen3534_Maybe> rank => 0
+<Gen3541> ::= <Comma> <Sqlstate_Subclass_Value> rank => 0
+<Gen3541_Maybe> ::= <Gen3541> rank => 0
+<Gen3541_Maybe> ::= rank => -1
+<Gen3544> ::= <Sqlstate_Class_Value> <Gen3541_Maybe> rank => 0
 <SQL_Condition> ::= <Major_Category> rank => 0
-                  | <SQLSTATE> <Gen3537> rank => -1
+                  | <SQLSTATE> <Gen3544> rank => -1
                   | <CONSTRAINT> <Constraint_Name> rank => -2
 <Major_Category> ::= <SQLEXCEPTION> rank => 0
                    | <SQLWARNING> rank => -1
@@ -3772,38 +3779,38 @@ lexeme default = action => [start,length,value] latm => 1
 <Sqlstate_Char> ~ <Sqlstate_Char_L0>
 <Condition_Action> ::= <CONTINUE> rank => 0
                      | <Go_To> rank => -1
-<Gen3551> ::= <GOTO> rank => 0
+<Gen3558> ::= <GOTO> rank => 0
             | <GO> <TO> rank => -1
-<Go_To> ::= <Gen3551> <Goto_Target> rank => 0
+<Go_To> ::= <Gen3558> <Goto_Target> rank => 0
 <Goto_Target> ::= <Unsigned_Integer> rank => 0
 <Embedded_SQL_Ada_Program> ::= <EXEC> <SQL> rank => 0
-<Gen3556> ::= <Comma> <Ada_Host_Identifier> rank => 0
-<Gen3556_Any> ::= <Gen3556>* rank => 0
+<Gen3563> ::= <Comma> <Ada_Host_Identifier> rank => 0
+<Gen3563_Any> ::= <Gen3563>* rank => 0
 <Ada_Initial_Value_Maybe> ::= <Ada_Initial_Value> rank => 0
 <Ada_Initial_Value_Maybe> ::= rank => -1
-<Ada_Variable_Definition> ::= <Ada_Host_Identifier> <Gen3556_Any> <Colon> <Ada_Type_Specification> <Ada_Initial_Value_Maybe> rank => 0
+<Ada_Variable_Definition> ::= <Ada_Host_Identifier> <Gen3563_Any> <Colon> <Ada_Type_Specification> <Ada_Initial_Value_Maybe> rank => 0
 <Character_Representation_Many> ::= <Character_Representation>+ rank => 0
 <Ada_Initial_Value> ::= <Ada_Assignment_Operator> <Character_Representation_Many> rank => 0
 <Ada_Assignment_Operator> ::= <Colon> <Equals_Operator> rank => 0
-<Ada_Host_Identifier> ::= <Lex575_Many> rank => 0
+<Ada_Host_Identifier> ::= <Lex574_Many> rank => 0
 <Ada_Type_Specification> ::= <Ada_Qualified_Type_Specification> rank => 0
                            | <Ada_Unqualified_Type_Specification> rank => -1
                            | <Ada_Derived_Type_Specification> rank => -2
 <Is_Maybe> ::= <IS> rank => 0
 <Is_Maybe> ::= rank => -1
-<Gen3570> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3570_Maybe> ::= <Gen3570> rank => 0
-<Gen3570_Maybe> ::= rank => -1
-<Ada_Qualified_Type_Specification> ::= <Lex576> <Period> <CHAR> <Gen3570_Maybe> <Left_Paren> <Lex577> <Double_Period> <Length> <Right_Paren> rank => 0
-                                     | <Lex576> <Period> <SMALLINT> rank => -1
-                                     | <Lex576> <Period> <INT> rank => -2
-                                     | <Lex576> <Period> <BIGINT> rank => -3
-                                     | <Lex576> <Period> <REAL> rank => -4
-                                     | <Lex576> <Period> <DOUBLE_PRECISION> rank => -5
-                                     | <Lex576> <Period> <BOOLEAN> rank => -6
-                                     | <Lex576> <Period> <SQLSTATE_TYPE> rank => -7
-                                     | <Lex576> <Period> <INDICATOR_TYPE> rank => -8
-<Ada_Unqualified_Type_Specification> ::= <CHAR> <Left_Paren> <Lex577> <Double_Period> <Length> <Right_Paren> rank => 0
+<Gen3577> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3577_Maybe> ::= <Gen3577> rank => 0
+<Gen3577_Maybe> ::= rank => -1
+<Ada_Qualified_Type_Specification> ::= <Lex575> <Period> <CHAR> <Gen3577_Maybe> <Left_Paren> <Lex576> <Double_Period> <Length> <Right_Paren> rank => 0
+                                     | <Lex575> <Period> <SMALLINT> rank => -1
+                                     | <Lex575> <Period> <INT> rank => -2
+                                     | <Lex575> <Period> <BIGINT> rank => -3
+                                     | <Lex575> <Period> <REAL> rank => -4
+                                     | <Lex575> <Period> <DOUBLE_PRECISION> rank => -5
+                                     | <Lex575> <Period> <BOOLEAN> rank => -6
+                                     | <Lex575> <Period> <SQLSTATE_TYPE> rank => -7
+                                     | <Lex575> <Period> <INDICATOR_TYPE> rank => -8
+<Ada_Unqualified_Type_Specification> ::= <CHAR> <Left_Paren> <Lex576> <Double_Period> <Length> <Right_Paren> rank => 0
                                        | <SMALLINT> rank => -1
                                        | <INT> rank => -2
                                        | <BIGINT> rank => -3
@@ -3821,10 +3828,10 @@ lexeme default = action => [start,length,value] latm => 1
                                    | <Ada_Ref_Variable> rank => -6
                                    | <Ada_Array_Locator_Variable> rank => -7
                                    | <Ada_Multiset_Locator_Variable> rank => -8
-<Gen3600> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3600_Maybe> ::= <Gen3600> rank => 0
-<Gen3600_Maybe> ::= rank => -1
-<Ada_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3600_Maybe> rank => 0
+<Gen3607> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3607_Maybe> ::= <Gen3607> rank => 0
+<Gen3607_Maybe> ::= rank => -1
+<Ada_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3607_Maybe> rank => 0
 <Ada_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
 <Ada_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Ada_Blob_Locator_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <AS> <LOCATOR> rank => 0
@@ -3847,27 +3854,27 @@ lexeme default = action => [start,length,value] latm => 1
                     | <static> rank => -2
 <C_Class_Modifier> ::= <const> rank => 0
                      | <volatile> rank => -1
-<Gen3626> ::= <long> <long> rank => 0
+<Gen3633> ::= <long> <long> rank => 0
             | <long> rank => -1
             | <short> rank => -2
             | <float> rank => -3
             | <double> rank => -4
 <C_Initial_Value_Maybe> ::= <C_Initial_Value> rank => 0
 <C_Initial_Value_Maybe> ::= rank => -1
-<Gen3633> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3633_Any> ::= <Gen3633>* rank => 0
-<C_Numeric_Variable> ::= <Gen3626> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3633_Any> rank => 0
-<Gen3636> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3636_Maybe> ::= <Gen3636> rank => 0
-<Gen3636_Maybe> ::= rank => -1
-<Gen3639> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
-<Gen3639_Any> ::= <Gen3639>* rank => 0
-<C_Character_Variable> ::= <C_Character_Type> <Gen3636_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3639_Any> rank => 0
+<Gen3640> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3640_Any> ::= <Gen3640>* rank => 0
+<C_Numeric_Variable> ::= <Gen3633> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3640_Any> rank => 0
+<Gen3643> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3643_Maybe> ::= <Gen3643> rank => 0
+<Gen3643_Maybe> ::= rank => -1
+<Gen3646> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
+<Gen3646_Any> ::= <Gen3646>* rank => 0
+<C_Character_Variable> ::= <C_Character_Type> <Gen3643_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3646_Any> rank => 0
 <C_Character_Type> ::= <char> rank => 0
                      | <unsigned> <char> rank => -1
                      | <unsigned> <short> rank => -2
 <C_Array_Specification> ::= <Left_Bracket> <Length> <Right_Bracket> rank => 0
-<C_Host_Identifier> ::= <Lex592_Many> rank => 0
+<C_Host_Identifier> ::= <Lex591_Many> rank => 0
 <C_Derived_Variable> ::= <C_Varchar_Variable> rank => 0
                        | <C_Nchar_Variable> rank => -1
                        | <C_Nchar_Varying_Variable> rank => -2
@@ -3881,65 +3888,65 @@ lexeme default = action => [start,length,value] latm => 1
                        | <C_Multiset_Locator_Variable> rank => -10
                        | <C_User_Defined_Type_Locator_Variable> rank => -11
                        | <C_Ref_Variable> rank => -12
-<Gen3660> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3660_Maybe> ::= <Gen3660> rank => 0
-<Gen3660_Maybe> ::= rank => -1
-<Gen3663> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
-<Gen3663_Any> ::= <Gen3663>* rank => 0
-<C_Varchar_Variable> ::= <VARCHAR> <Gen3660_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3663_Any> rank => 0
-<Gen3666> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3666_Maybe> ::= <Gen3666> rank => 0
-<Gen3666_Maybe> ::= rank => -1
-<Gen3669> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
-<Gen3669_Any> ::= <Gen3669>* rank => 0
-<C_Nchar_Variable> ::= <NCHAR> <Gen3666_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3669_Any> rank => 0
-<Gen3672> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3672_Maybe> ::= <Gen3672> rank => 0
-<Gen3672_Maybe> ::= rank => -1
-<Gen3675> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
-<Gen3675_Any> ::= <Gen3675>* rank => 0
-<C_Nchar_Varying_Variable> ::= <NCHAR> <VARYING> <Gen3672_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3675_Any> rank => 0
-<Gen3678> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3678_Maybe> ::= <Gen3678> rank => 0
-<Gen3678_Maybe> ::= rank => -1
-<Gen3681> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3681_Any> ::= <Gen3681>* rank => 0
-<C_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3678_Maybe> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3681_Any> rank => 0
-<Gen3684> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3684_Maybe> ::= <Gen3684> rank => 0
-<Gen3684_Maybe> ::= rank => -1
-<Gen3687> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3687_Any> ::= <Gen3687>* rank => 0
-<C_Nclob_Variable> ::= <SQL> <TYPE> <IS> <NCLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3684_Maybe> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3687_Any> rank => 0
-<Gen3690> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3690_Any> ::= <Gen3690>* rank => 0
-<C_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3690_Any> rank => 0
-<Gen3693> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3693_Any> ::= <Gen3693>* rank => 0
-<C_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3693_Any> rank => 0
-<Gen3696> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3696_Any> ::= <Gen3696>* rank => 0
-<C_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3696_Any> rank => 0
-<Gen3699> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3699_Any> ::= <Gen3699>* rank => 0
-<C_Blob_Locator_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3699_Any> rank => 0
-<Gen3702> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3702_Any> ::= <Gen3702>* rank => 0
-<C_Array_Locator_Variable> ::= <SQL> <TYPE> <IS> <Array_Type> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3702_Any> rank => 0
-<Gen3705> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3705_Any> ::= <Gen3705>* rank => 0
-<C_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3705_Any> rank => 0
-<Gen3708> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
-<Gen3708_Any> ::= <Gen3708>* rank => 0
-<C_User_Defined_Type_Locator_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3708_Any> rank => 0
+<Gen3667> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3667_Maybe> ::= <Gen3667> rank => 0
+<Gen3667_Maybe> ::= rank => -1
+<Gen3670> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
+<Gen3670_Any> ::= <Gen3670>* rank => 0
+<C_Varchar_Variable> ::= <VARCHAR> <Gen3667_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3670_Any> rank => 0
+<Gen3673> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3673_Maybe> ::= <Gen3673> rank => 0
+<Gen3673_Maybe> ::= rank => -1
+<Gen3676> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
+<Gen3676_Any> ::= <Gen3676>* rank => 0
+<C_Nchar_Variable> ::= <NCHAR> <Gen3673_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3676_Any> rank => 0
+<Gen3679> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3679_Maybe> ::= <Gen3679> rank => 0
+<Gen3679_Maybe> ::= rank => -1
+<Gen3682> ::= <Comma> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> rank => 0
+<Gen3682_Any> ::= <Gen3682>* rank => 0
+<C_Nchar_Varying_Variable> ::= <NCHAR> <VARYING> <Gen3679_Maybe> <C_Host_Identifier> <C_Array_Specification> <C_Initial_Value_Maybe> <Gen3682_Any> rank => 0
+<Gen3685> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3685_Maybe> ::= <Gen3685> rank => 0
+<Gen3685_Maybe> ::= rank => -1
+<Gen3688> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3688_Any> ::= <Gen3688>* rank => 0
+<C_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3685_Maybe> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3688_Any> rank => 0
+<Gen3691> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3691_Maybe> ::= <Gen3691> rank => 0
+<Gen3691_Maybe> ::= rank => -1
+<Gen3694> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3694_Any> ::= <Gen3694>* rank => 0
+<C_Nclob_Variable> ::= <SQL> <TYPE> <IS> <NCLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3691_Maybe> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3694_Any> rank => 0
+<Gen3697> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3697_Any> ::= <Gen3697>* rank => 0
+<C_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3697_Any> rank => 0
+<Gen3700> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3700_Any> ::= <Gen3700>* rank => 0
+<C_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3700_Any> rank => 0
+<Gen3703> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3703_Any> ::= <Gen3703>* rank => 0
+<C_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3703_Any> rank => 0
+<Gen3706> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3706_Any> ::= <Gen3706>* rank => 0
+<C_Blob_Locator_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3706_Any> rank => 0
+<Gen3709> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3709_Any> ::= <Gen3709>* rank => 0
+<C_Array_Locator_Variable> ::= <SQL> <TYPE> <IS> <Array_Type> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3709_Any> rank => 0
+<Gen3712> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3712_Any> ::= <Gen3712>* rank => 0
+<C_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3712_Any> rank => 0
+<Gen3715> ::= <Comma> <C_Host_Identifier> <C_Initial_Value_Maybe> rank => 0
+<Gen3715_Any> ::= <Gen3715>* rank => 0
+<C_User_Defined_Type_Locator_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <LOCATOR> <C_Host_Identifier> <C_Initial_Value_Maybe> <Gen3715_Any> rank => 0
 <C_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <C_Initial_Value> ::= <Equals_Operator> <Character_Representation_Many> rank => 0
 <Embedded_SQL_Cobol_Program> ::= <EXEC> <SQL> rank => 0
-<Cobol_Host_Identifier> ::= <Lex593_Many> rank => 0
-<Gen3715> ::= <Lex594> rank => 0
-            | <Lex595> rank => -1
+<Cobol_Host_Identifier> ::= <Lex592_Many> rank => 0
+<Gen3722> ::= <Lex593> rank => 0
+            | <Lex594> rank => -1
 <Character_Representation_Any> ::= <Character_Representation>* rank => 0
-<Cobol_Variable_Definition> ::= <Gen3715> <Cobol_Host_Identifier> <Cobol_Type_Specification> <Character_Representation_Any> <Period> rank => 0
+<Cobol_Variable_Definition> ::= <Gen3722> <Cobol_Host_Identifier> <Cobol_Type_Specification> <Character_Representation_Any> <Period> rank => 0
 <Cobol_Type_Specification> ::= <Cobol_Character_Type> rank => 0
                              | <Cobol_National_Character_Type> rank => -1
                              | <Cobol_Numeric_Type> rank => -2
@@ -3955,121 +3962,121 @@ lexeme default = action => [start,length,value] latm => 1
                                      | <Cobol_Multiset_Locator_Variable> rank => -7
                                      | <Cobol_User_Defined_Type_Locator_Variable> rank => -8
                                      | <Cobol_Ref_Variable> rank => -9
-<Gen3734> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3734_Maybe> ::= <Gen3734> rank => 0
-<Gen3734_Maybe> ::= rank => -1
-<Gen3737> ::= <PIC> rank => 0
+<Gen3741> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3741_Maybe> ::= <Gen3741> rank => 0
+<Gen3741_Maybe> ::= rank => -1
+<Gen3744> ::= <PIC> rank => 0
             | <PICTURE> rank => -1
-<Gen3739> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen3739_Maybe> ::= <Gen3739> rank => 0
-<Gen3739_Maybe> ::= rank => -1
-<Gen3742> ::= <X> <Gen3739_Maybe> rank => 0
-<Gen3742_Many> ::= <Gen3742>+ rank => 0
-<Cobol_Character_Type> ::= <Gen3734_Maybe> <Gen3737> <Is_Maybe> <Gen3742_Many> rank => 0
-<Gen3745> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3745_Maybe> ::= <Gen3745> rank => 0
-<Gen3745_Maybe> ::= rank => -1
-<Gen3748> ::= <PIC> rank => 0
+<Gen3746> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen3746_Maybe> ::= <Gen3746> rank => 0
+<Gen3746_Maybe> ::= rank => -1
+<Gen3749> ::= <X> <Gen3746_Maybe> rank => 0
+<Gen3749_Many> ::= <Gen3749>+ rank => 0
+<Cobol_Character_Type> ::= <Gen3741_Maybe> <Gen3744> <Is_Maybe> <Gen3749_Many> rank => 0
+<Gen3752> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3752_Maybe> ::= <Gen3752> rank => 0
+<Gen3752_Maybe> ::= rank => -1
+<Gen3755> ::= <PIC> rank => 0
             | <PICTURE> rank => -1
-<Gen3750> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen3750_Maybe> ::= <Gen3750> rank => 0
-<Gen3750_Maybe> ::= rank => -1
-<Gen3753> ::= <N> <Gen3750_Maybe> rank => 0
-<Gen3753_Many> ::= <Gen3753>+ rank => 0
-<Cobol_National_Character_Type> ::= <Gen3745_Maybe> <Gen3748> <Is_Maybe> <Gen3753_Many> rank => 0
-<Gen3756> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3756_Maybe> ::= <Gen3756> rank => 0
-<Gen3756_Maybe> ::= rank => -1
-<Gen3759> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3759_Maybe> ::= <Gen3759> rank => 0
-<Gen3759_Maybe> ::= rank => -1
-<Cobol_Clob_Variable> ::= <Gen3756_Maybe> <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3759_Maybe> rank => 0
+<Gen3757> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen3757_Maybe> ::= <Gen3757> rank => 0
+<Gen3757_Maybe> ::= rank => -1
+<Gen3760> ::= <N> <Gen3757_Maybe> rank => 0
+<Gen3760_Many> ::= <Gen3760>+ rank => 0
+<Cobol_National_Character_Type> ::= <Gen3752_Maybe> <Gen3755> <Is_Maybe> <Gen3760_Many> rank => 0
 <Gen3763> ::= <USAGE> <Is_Maybe> rank => 0
 <Gen3763_Maybe> ::= <Gen3763> rank => 0
 <Gen3763_Maybe> ::= rank => -1
 <Gen3766> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
 <Gen3766_Maybe> ::= <Gen3766> rank => 0
 <Gen3766_Maybe> ::= rank => -1
-<Cobol_Nclob_Variable> ::= <Gen3763_Maybe> <SQL> <TYPE> <IS> <NCLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3766_Maybe> rank => 0
+<Cobol_Clob_Variable> ::= <Gen3763_Maybe> <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3766_Maybe> rank => 0
 <Gen3770> ::= <USAGE> <Is_Maybe> rank => 0
 <Gen3770_Maybe> ::= <Gen3770> rank => 0
 <Gen3770_Maybe> ::= rank => -1
-<Cobol_Blob_Variable> ::= <Gen3770_Maybe> <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
-<Gen3774> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3774_Maybe> ::= <Gen3774> rank => 0
-<Gen3774_Maybe> ::= rank => -1
-<Cobol_User_Defined_Type_Variable> ::= <Gen3774_Maybe> <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
-<Gen3778> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3778_Maybe> ::= <Gen3778> rank => 0
-<Gen3778_Maybe> ::= rank => -1
-<Cobol_Clob_Locator_Variable> ::= <Gen3778_Maybe> <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
-<Gen3782> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3782_Maybe> ::= <Gen3782> rank => 0
-<Gen3782_Maybe> ::= rank => -1
-<Cobol_Blob_Locator_Variable> ::= <Gen3782_Maybe> <SQL> <TYPE> <IS> <BLOB> <AS> <LOCATOR> rank => 0
-<Gen3786> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3786_Maybe> ::= <Gen3786> rank => 0
-<Gen3786_Maybe> ::= rank => -1
-<Cobol_Array_Locator_Variable> ::= <Gen3786_Maybe> <SQL> <TYPE> <IS> <Array_Type> <AS> <LOCATOR> rank => 0
-<Gen3790> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3790_Maybe> ::= <Gen3790> rank => 0
-<Gen3790_Maybe> ::= rank => -1
-<Cobol_Multiset_Locator_Variable> ::= <Gen3790_Maybe> <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
-<Gen3794> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3794_Maybe> ::= <Gen3794> rank => 0
-<Gen3794_Maybe> ::= rank => -1
-<Cobol_User_Defined_Type_Locator_Variable> ::= <Gen3794_Maybe> <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <LOCATOR> rank => 0
-<Gen3798> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3798_Maybe> ::= <Gen3798> rank => 0
-<Gen3798_Maybe> ::= rank => -1
-<Cobol_Ref_Variable> ::= <Gen3798_Maybe> <SQL> <TYPE> <IS> <Reference_Type> rank => 0
-<Gen3802> ::= <PIC> rank => 0
+<Gen3773> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3773_Maybe> ::= <Gen3773> rank => 0
+<Gen3773_Maybe> ::= rank => -1
+<Cobol_Nclob_Variable> ::= <Gen3770_Maybe> <SQL> <TYPE> <IS> <NCLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3773_Maybe> rank => 0
+<Gen3777> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3777_Maybe> ::= <Gen3777> rank => 0
+<Gen3777_Maybe> ::= rank => -1
+<Cobol_Blob_Variable> ::= <Gen3777_Maybe> <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
+<Gen3781> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3781_Maybe> ::= <Gen3781> rank => 0
+<Gen3781_Maybe> ::= rank => -1
+<Cobol_User_Defined_Type_Variable> ::= <Gen3781_Maybe> <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
+<Gen3785> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3785_Maybe> ::= <Gen3785> rank => 0
+<Gen3785_Maybe> ::= rank => -1
+<Cobol_Clob_Locator_Variable> ::= <Gen3785_Maybe> <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
+<Gen3789> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3789_Maybe> ::= <Gen3789> rank => 0
+<Gen3789_Maybe> ::= rank => -1
+<Cobol_Blob_Locator_Variable> ::= <Gen3789_Maybe> <SQL> <TYPE> <IS> <BLOB> <AS> <LOCATOR> rank => 0
+<Gen3793> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3793_Maybe> ::= <Gen3793> rank => 0
+<Gen3793_Maybe> ::= rank => -1
+<Cobol_Array_Locator_Variable> ::= <Gen3793_Maybe> <SQL> <TYPE> <IS> <Array_Type> <AS> <LOCATOR> rank => 0
+<Gen3797> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3797_Maybe> ::= <Gen3797> rank => 0
+<Gen3797_Maybe> ::= rank => -1
+<Cobol_Multiset_Locator_Variable> ::= <Gen3797_Maybe> <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
+<Gen3801> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3801_Maybe> ::= <Gen3801> rank => 0
+<Gen3801_Maybe> ::= rank => -1
+<Cobol_User_Defined_Type_Locator_Variable> ::= <Gen3801_Maybe> <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <LOCATOR> rank => 0
+<Gen3805> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3805_Maybe> ::= <Gen3805> rank => 0
+<Gen3805_Maybe> ::= rank => -1
+<Cobol_Ref_Variable> ::= <Gen3805_Maybe> <SQL> <TYPE> <IS> <Reference_Type> rank => 0
+<Gen3809> ::= <PIC> rank => 0
             | <PICTURE> rank => -1
-<Gen3804> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3804_Maybe> ::= <Gen3804> rank => 0
-<Gen3804_Maybe> ::= rank => -1
-<Cobol_Numeric_Type> ::= <Gen3802> <Is_Maybe> <S> <Cobol_Nines_Specification> <Gen3804_Maybe> <DISPLAY> <SIGN> <LEADING> <SEPARATE> rank => 0
+<Gen3811> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3811_Maybe> ::= <Gen3811> rank => 0
+<Gen3811_Maybe> ::= rank => -1
+<Cobol_Numeric_Type> ::= <Gen3809> <Is_Maybe> <S> <Cobol_Nines_Specification> <Gen3811_Maybe> <DISPLAY> <SIGN> <LEADING> <SEPARATE> rank => 0
 <Cobol_Nines_Maybe> ::= <Cobol_Nines> rank => 0
 <Cobol_Nines_Maybe> ::= rank => -1
-<Gen3810> ::= <V> <Cobol_Nines_Maybe> rank => 0
-<Gen3810_Maybe> ::= <Gen3810> rank => 0
-<Gen3810_Maybe> ::= rank => -1
-<Cobol_Nines_Specification> ::= <Cobol_Nines> <Gen3810_Maybe> rank => 0
+<Gen3817> ::= <V> <Cobol_Nines_Maybe> rank => 0
+<Gen3817_Maybe> ::= <Gen3817> rank => 0
+<Gen3817_Maybe> ::= rank => -1
+<Cobol_Nines_Specification> ::= <Cobol_Nines> <Gen3817_Maybe> rank => 0
                               | <V> <Cobol_Nines> rank => -1
 <Cobol_Integer_Type> ::= <Cobol_Binary_Integer> rank => 0
-<Gen3816> ::= <PIC> rank => 0
+<Gen3823> ::= <PIC> rank => 0
             | <PICTURE> rank => -1
-<Gen3818> ::= <USAGE> <Is_Maybe> rank => 0
-<Gen3818_Maybe> ::= <Gen3818> rank => 0
-<Gen3818_Maybe> ::= rank => -1
-<Cobol_Binary_Integer> ::= <Gen3816> <Is_Maybe> <S> <Cobol_Nines> <Gen3818_Maybe> <BINARY> rank => 0
-<Gen3822> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen3822_Maybe> ::= <Gen3822> rank => 0
-<Gen3822_Maybe> ::= rank => -1
-<Gen3825> ::= <Lex604> <Gen3822_Maybe> rank => 0
-<Gen3825_Many> ::= <Gen3825>+ rank => 0
-<Cobol_Nines> ::= <Gen3825_Many> rank => 0
+<Gen3825> ::= <USAGE> <Is_Maybe> rank => 0
+<Gen3825_Maybe> ::= <Gen3825> rank => 0
+<Gen3825_Maybe> ::= rank => -1
+<Cobol_Binary_Integer> ::= <Gen3823> <Is_Maybe> <S> <Cobol_Nines> <Gen3825_Maybe> <BINARY> rank => 0
+<Gen3829> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
+<Gen3829_Maybe> ::= <Gen3829> rank => 0
+<Gen3829_Maybe> ::= rank => -1
+<Gen3832> ::= <Lex603> <Gen3829_Maybe> rank => 0
+<Gen3832_Many> ::= <Gen3832>+ rank => 0
+<Cobol_Nines> ::= <Gen3832_Many> rank => 0
 <Embedded_SQL_Fortran_Program> ::= <EXEC> <SQL> rank => 0
-<Fortran_Host_Identifier> ::= <Lex605_Many> rank => 0
-<Gen3830> ::= <Comma> <Fortran_Host_Identifier> rank => 0
-<Gen3830_Any> ::= <Gen3830>* rank => 0
-<Fortran_Variable_Definition> ::= <Fortran_Type_Specification> <Fortran_Host_Identifier> <Gen3830_Any> rank => 0
-<Gen3833> ::= <Asterisk> <Length> rank => 0
-<Gen3833_Maybe> ::= <Gen3833> rank => 0
-<Gen3833_Maybe> ::= rank => -1
-<Gen3836> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3836_Maybe> ::= <Gen3836> rank => 0
-<Gen3836_Maybe> ::= rank => -1
-<Gen3839> ::= <Lex607_Many> rank => 0
-<Gen3839> ::= rank => -1
-<Gen3841> ::= <Asterisk> <Length> rank => 0
-<Gen3841_Maybe> ::= <Gen3841> rank => 0
-<Gen3841_Maybe> ::= rank => -1
-<Gen3844> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3844_Maybe> ::= <Gen3844> rank => 0
-<Gen3844_Maybe> ::= rank => -1
-<Fortran_Type_Specification> ::= <CHARACTER> <Gen3833_Maybe> <Gen3836_Maybe> rank => 0
-                               | <CHARACTER> <KIND> <Equals_Operator> <Lex607> <Gen3839> <Gen3841_Maybe> <Gen3844_Maybe> rank => -1
+<Fortran_Host_Identifier> ::= <Lex604_Many> rank => 0
+<Gen3837> ::= <Comma> <Fortran_Host_Identifier> rank => 0
+<Gen3837_Any> ::= <Gen3837>* rank => 0
+<Fortran_Variable_Definition> ::= <Fortran_Type_Specification> <Fortran_Host_Identifier> <Gen3837_Any> rank => 0
+<Gen3840> ::= <Asterisk> <Length> rank => 0
+<Gen3840_Maybe> ::= <Gen3840> rank => 0
+<Gen3840_Maybe> ::= rank => -1
+<Gen3843> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3843_Maybe> ::= <Gen3843> rank => 0
+<Gen3843_Maybe> ::= rank => -1
+<Gen3846> ::= <Lex606_Many> rank => 0
+<Gen3846> ::= rank => -1
+<Gen3848> ::= <Asterisk> <Length> rank => 0
+<Gen3848_Maybe> ::= <Gen3848> rank => 0
+<Gen3848_Maybe> ::= rank => -1
+<Gen3851> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3851_Maybe> ::= <Gen3851> rank => 0
+<Gen3851_Maybe> ::= rank => -1
+<Fortran_Type_Specification> ::= <CHARACTER> <Gen3840_Maybe> <Gen3843_Maybe> rank => 0
+                               | <CHARACTER> <KIND> <Equals_Operator> <Lex606> <Gen3846> <Gen3848_Maybe> <Gen3851_Maybe> rank => -1
                                | <INTEGER> rank => -2
                                | <REAL> rank => -3
                                | <DOUBLE> <PRECISION> rank => -4
@@ -4084,10 +4091,10 @@ lexeme default = action => [start,length,value] latm => 1
                                        | <Fortran_Array_Locator_Variable> rank => -6
                                        | <Fortran_Multiset_Locator_Variable> rank => -7
                                        | <Fortran_Ref_Variable> rank => -8
-<Gen3863> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3863_Maybe> ::= <Gen3863> rank => 0
-<Gen3863_Maybe> ::= rank => -1
-<Fortran_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3863_Maybe> rank => 0
+<Gen3870> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3870_Maybe> ::= <Gen3870> rank => 0
+<Gen3870_Maybe> ::= rank => -1
+<Fortran_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3870_Maybe> rank => 0
 <Fortran_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Fortran_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
 <Fortran_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
@@ -4100,22 +4107,22 @@ lexeme default = action => [start,length,value] latm => 1
 <Mumps_Variable_Definition> ::= <Mumps_Numeric_Variable> <Semicolon> rank => 0
                               | <Mumps_Character_Variable> <Semicolon> rank => -1
                               | <Mumps_Derived_Type_Specification> <Semicolon> rank => -2
-<Mumps_Host_Identifier> ::= <Lex610_Many> rank => 0
-<Gen3880> ::= <Comma> <Mumps_Host_Identifier> <Mumps_Length_Specification> rank => 0
-<Gen3880_Any> ::= <Gen3880>* rank => 0
-<Mumps_Character_Variable> ::= <VARCHAR> <Mumps_Host_Identifier> <Mumps_Length_Specification> <Gen3880_Any> rank => 0
+<Mumps_Host_Identifier> ::= <Lex609_Many> rank => 0
+<Gen3887> ::= <Comma> <Mumps_Host_Identifier> <Mumps_Length_Specification> rank => 0
+<Gen3887_Any> ::= <Gen3887>* rank => 0
+<Mumps_Character_Variable> ::= <VARCHAR> <Mumps_Host_Identifier> <Mumps_Length_Specification> <Gen3887_Any> rank => 0
 <Mumps_Length_Specification> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
-<Gen3884> ::= <Comma> <Mumps_Host_Identifier> rank => 0
-<Gen3884_Any> ::= <Gen3884>* rank => 0
-<Mumps_Numeric_Variable> ::= <Mumps_Type_Specification> <Mumps_Host_Identifier> <Gen3884_Any> rank => 0
-<Gen3887> ::= <Comma> <Scale> rank => 0
-<Gen3887_Maybe> ::= <Gen3887> rank => 0
-<Gen3887_Maybe> ::= rank => -1
-<Gen3890> ::= <Left_Paren> <Precision> <Gen3887_Maybe> <Right_Paren> rank => 0
-<Gen3890_Maybe> ::= <Gen3890> rank => 0
-<Gen3890_Maybe> ::= rank => -1
+<Gen3891> ::= <Comma> <Mumps_Host_Identifier> rank => 0
+<Gen3891_Any> ::= <Gen3891>* rank => 0
+<Mumps_Numeric_Variable> ::= <Mumps_Type_Specification> <Mumps_Host_Identifier> <Gen3891_Any> rank => 0
+<Gen3894> ::= <Comma> <Scale> rank => 0
+<Gen3894_Maybe> ::= <Gen3894> rank => 0
+<Gen3894_Maybe> ::= rank => -1
+<Gen3897> ::= <Left_Paren> <Precision> <Gen3894_Maybe> <Right_Paren> rank => 0
+<Gen3897_Maybe> ::= <Gen3897> rank => 0
+<Gen3897_Maybe> ::= rank => -1
 <Mumps_Type_Specification> ::= <INT> rank => 0
-                             | <DEC> <Gen3890_Maybe> rank => -1
+                             | <DEC> <Gen3897_Maybe> rank => -1
                              | <REAL> rank => -2
 <Mumps_Derived_Type_Specification> ::= <Mumps_Clob_Variable> rank => 0
                                      | <Mumps_Blob_Variable> rank => -1
@@ -4126,10 +4133,10 @@ lexeme default = action => [start,length,value] latm => 1
                                      | <Mumps_Array_Locator_Variable> rank => -6
                                      | <Mumps_Multiset_Locator_Variable> rank => -7
                                      | <Mumps_Ref_Variable> rank => -8
-<Gen3905> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3905_Maybe> ::= <Gen3905> rank => 0
-<Gen3905_Maybe> ::= rank => -1
-<Mumps_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3905_Maybe> rank => 0
+<Gen3912> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3912_Maybe> ::= <Gen3912> rank => 0
+<Gen3912_Maybe> ::= rank => -1
+<Mumps_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3912_Maybe> rank => 0
 <Mumps_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Mumps_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
 <Mumps_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
@@ -4139,20 +4146,20 @@ lexeme default = action => [start,length,value] latm => 1
 <Mumps_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
 <Mumps_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <Embedded_SQL_Pascal_Program> ::= <EXEC> <SQL> rank => 0
-<Pascal_Host_Identifier> ::= <Lex611_Many> rank => 0
-<Gen3919> ::= <Comma> <Pascal_Host_Identifier> rank => 0
-<Gen3919_Any> ::= <Gen3919>* rank => 0
-<Pascal_Variable_Definition> ::= <Pascal_Host_Identifier> <Gen3919_Any> <Colon> <Pascal_Type_Specification> <Semicolon> rank => 0
-<Gen3922> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3922_Maybe> ::= <Gen3922> rank => 0
-<Gen3922_Maybe> ::= rank => -1
-<Gen3925> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3925_Maybe> ::= <Gen3925> rank => 0
-<Gen3925_Maybe> ::= rank => -1
-<Pascal_Type_Specification> ::= <PACKED> <ARRAY> <Left_Bracket> <Lex577> <Double_Period> <Length> <Right_Bracket> <OF> <CHAR> <Gen3922_Maybe> rank => 0
+<Pascal_Host_Identifier> ::= <Lex610_Many> rank => 0
+<Gen3926> ::= <Comma> <Pascal_Host_Identifier> rank => 0
+<Gen3926_Any> ::= <Gen3926>* rank => 0
+<Pascal_Variable_Definition> ::= <Pascal_Host_Identifier> <Gen3926_Any> <Colon> <Pascal_Type_Specification> <Semicolon> rank => 0
+<Gen3929> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3929_Maybe> ::= <Gen3929> rank => 0
+<Gen3929_Maybe> ::= rank => -1
+<Gen3932> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3932_Maybe> ::= <Gen3932> rank => 0
+<Gen3932_Maybe> ::= rank => -1
+<Pascal_Type_Specification> ::= <PACKED> <ARRAY> <Left_Bracket> <Lex576> <Double_Period> <Length> <Right_Bracket> <OF> <CHAR> <Gen3929_Maybe> rank => 0
                               | <INTEGER> rank => -1
                               | <REAL> rank => -2
-                              | <CHAR> <Gen3925_Maybe> rank => -3
+                              | <CHAR> <Gen3932_Maybe> rank => -3
                               | <BOOLEAN> rank => -4
                               | <Pascal_Derived_Type_Specification> rank => -5
 <Pascal_Derived_Type_Specification> ::= <Pascal_Clob_Variable> rank => 0
@@ -4164,10 +4171,10 @@ lexeme default = action => [start,length,value] latm => 1
                                       | <Pascal_Array_Locator_Variable> rank => -6
                                       | <Pascal_Multiset_Locator_Variable> rank => -7
                                       | <Pascal_Ref_Variable> rank => -8
-<Gen3943> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3943_Maybe> ::= <Gen3943> rank => 0
-<Gen3943_Maybe> ::= rank => -1
-<Pascal_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3943_Maybe> rank => 0
+<Gen3950> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3950_Maybe> ::= <Gen3950> rank => 0
+<Gen3950_Maybe> ::= rank => -1
+<Pascal_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3950_Maybe> rank => 0
 <Pascal_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Pascal_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
 <Pascal_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
@@ -4177,28 +4184,28 @@ lexeme default = action => [start,length,value] latm => 1
 <Pascal_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
 <Pascal_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <Embedded_SQL_Pl_I_Program> ::= <EXEC> <SQL> rank => 0
-<Pl_I_Host_Identifier> ::= <Lex613_Many> rank => 0
-<Gen3957> ::= <DCL> rank => 0
+<Pl_I_Host_Identifier> ::= <Lex612_Many> rank => 0
+<Gen3964> ::= <DCL> rank => 0
             | <DECLARE> rank => -1
-<Gen3959> ::= <Comma> <Pl_I_Host_Identifier> rank => 0
-<Gen3959_Any> ::= <Gen3959>* rank => 0
-<Pl_I_Variable_Definition> ::= <Gen3957> <Pl_I_Host_Identifier> <Left_Paren> <Pl_I_Host_Identifier> <Gen3959_Any> <Right_Paren> <Pl_I_Type_Specification> <Character_Representation_Any> <Semicolon> rank => 0
-<Gen3962> ::= <CHAR> rank => 0
+<Gen3966> ::= <Comma> <Pl_I_Host_Identifier> rank => 0
+<Gen3966_Any> ::= <Gen3966>* rank => 0
+<Pl_I_Variable_Definition> ::= <Gen3964> <Pl_I_Host_Identifier> <Left_Paren> <Pl_I_Host_Identifier> <Gen3966_Any> <Right_Paren> <Pl_I_Type_Specification> <Character_Representation_Any> <Semicolon> rank => 0
+<Gen3969> ::= <CHAR> rank => 0
             | <CHARACTER> rank => -1
 <Varying_Maybe> ::= <VARYING> rank => 0
 <Varying_Maybe> ::= rank => -1
-<Gen3966> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3966_Maybe> ::= <Gen3966> rank => 0
-<Gen3966_Maybe> ::= rank => -1
-<Gen3969> ::= <Comma> <Scale> rank => 0
-<Gen3969_Maybe> ::= <Gen3969> rank => 0
-<Gen3969_Maybe> ::= rank => -1
-<Gen3972> ::= <Left_Paren> <Precision> <Right_Paren> rank => 0
-<Gen3972_Maybe> ::= <Gen3972> rank => 0
-<Gen3972_Maybe> ::= rank => -1
-<Pl_I_Type_Specification> ::= <Gen3962> <Varying_Maybe> <Left_Paren> <Length> <Right_Paren> <Gen3966_Maybe> rank => 0
-                            | <Pl_I_Type_Fixed_Decimal> <Left_Paren> <Precision> <Gen3969_Maybe> <Right_Paren> rank => -1
-                            | <Pl_I_Type_Fixed_Binary> <Gen3972_Maybe> rank => -2
+<Gen3973> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3973_Maybe> ::= <Gen3973> rank => 0
+<Gen3973_Maybe> ::= rank => -1
+<Gen3976> ::= <Comma> <Scale> rank => 0
+<Gen3976_Maybe> ::= <Gen3976> rank => 0
+<Gen3976_Maybe> ::= rank => -1
+<Gen3979> ::= <Left_Paren> <Precision> <Right_Paren> rank => 0
+<Gen3979_Maybe> ::= <Gen3979> rank => 0
+<Gen3979_Maybe> ::= rank => -1
+<Pl_I_Type_Specification> ::= <Gen3969> <Varying_Maybe> <Left_Paren> <Length> <Right_Paren> <Gen3973_Maybe> rank => 0
+                            | <Pl_I_Type_Fixed_Decimal> <Left_Paren> <Precision> <Gen3976_Maybe> <Right_Paren> rank => -1
+                            | <Pl_I_Type_Fixed_Binary> <Gen3979_Maybe> rank => -2
                             | <Pl_I_Type_Float_Binary> <Left_Paren> <Precision> <Right_Paren> rank => -3
                             | <Pl_I_Derived_Type_Specification> rank => -4
 <Pl_I_Derived_Type_Specification> ::= <Pl_I_Clob_Variable> rank => 0
@@ -4210,10 +4217,10 @@ lexeme default = action => [start,length,value] latm => 1
                                     | <Pl_I_Array_Locator_Variable> rank => -6
                                     | <Pl_I_Multiset_Locator_Variable> rank => -7
                                     | <Pl_I_Ref_Variable> rank => -8
-<Gen3989> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
-<Gen3989_Maybe> ::= <Gen3989> rank => 0
-<Gen3989_Maybe> ::= rank => -1
-<Pl_I_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3989_Maybe> rank => 0
+<Gen3996> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
+<Gen3996_Maybe> ::= <Gen3996> rank => 0
+<Gen3996_Maybe> ::= rank => -1
+<Pl_I_Clob_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> <Gen3996_Maybe> rank => 0
 <Pl_I_Blob_Variable> ::= <SQL> <TYPE> <IS> <BLOB> <Left_Paren> <Large_Object_Length> <Right_Paren> rank => 0
 <Pl_I_User_Defined_Type_Variable> ::= <SQL> <TYPE> <IS> <Path_Resolved_User_Defined_Type_Name> <AS> <Predefined_Type> rank => 0
 <Pl_I_Clob_Locator_Variable> ::= <SQL> <TYPE> <IS> <CLOB> <AS> <LOCATOR> rank => 0
@@ -4222,24 +4229,24 @@ lexeme default = action => [start,length,value] latm => 1
 <Pl_I_Array_Locator_Variable> ::= <SQL> <TYPE> <IS> <Array_Type> <AS> <LOCATOR> rank => 0
 <Pl_I_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
 <Pl_I_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
-<Gen4001> ::= <DEC> rank => 0
+<Gen4008> ::= <DEC> rank => 0
             | <DECIMAL> rank => -1
-<Gen4003> ::= <DEC> rank => 0
+<Gen4010> ::= <DEC> rank => 0
             | <DECIMAL> rank => -1
-<Pl_I_Type_Fixed_Decimal> ::= <Gen4001> <FIXED> rank => 0
-                            | <FIXED> <Gen4003> rank => -1
-<Gen4007> ::= <BIN> rank => 0
+<Pl_I_Type_Fixed_Decimal> ::= <Gen4008> <FIXED> rank => 0
+                            | <FIXED> <Gen4010> rank => -1
+<Gen4014> ::= <BIN> rank => 0
             | <BINARY> rank => -1
-<Gen4009> ::= <BIN> rank => 0
+<Gen4016> ::= <BIN> rank => 0
             | <BINARY> rank => -1
-<Pl_I_Type_Fixed_Binary> ::= <Gen4007> <FIXED> rank => 0
-                           | <FIXED> <Gen4009> rank => -1
-<Gen4013> ::= <BIN> rank => 0
+<Pl_I_Type_Fixed_Binary> ::= <Gen4014> <FIXED> rank => 0
+                           | <FIXED> <Gen4016> rank => -1
+<Gen4020> ::= <BIN> rank => 0
             | <BINARY> rank => -1
-<Gen4015> ::= <BIN> rank => 0
+<Gen4022> ::= <BIN> rank => 0
             | <BINARY> rank => -1
-<Pl_I_Type_Float_Binary> ::= <Gen4013> <FLOAT> rank => 0
-                           | <FLOAT> <Gen4015> rank => -1
+<Pl_I_Type_Float_Binary> ::= <Gen4020> <FLOAT> rank => 0
+                           | <FLOAT> <Gen4022> rank => -1
 <Direct_SQL_Statement> ::= <Directly_Executable_Statement> <Semicolon> rank => 0
 <Directly_Executable_Statement> ::= <Direct_SQL_Data_Statement> rank => 0
                                   | <SQL_Schema_Statement> rank => -1
@@ -4256,9 +4263,9 @@ lexeme default = action => [start,length,value] latm => 1
 <Get_Diagnostics_Statement> ::= <GET> <DIAGNOSTICS> <SQL_Diagnostics_Information> rank => 0
 <SQL_Diagnostics_Information> ::= <Statement_Information> rank => 0
                                 | <Condition_Information> rank => -1
-<Gen4035> ::= <Comma> <Statement_Information_Item> rank => 0
-<Gen4035_Any> ::= <Gen4035>* rank => 0
-<Statement_Information> ::= <Statement_Information_Item> <Gen4035_Any> rank => 0
+<Gen4042> ::= <Comma> <Statement_Information_Item> rank => 0
+<Gen4042_Any> ::= <Gen4042>* rank => 0
+<Statement_Information> ::= <Statement_Information_Item> <Gen4042_Any> rank => 0
 <Statement_Information_Item> ::= <Simple_Target_Specification> <Equals_Operator> <Statement_Information_Item_Name> rank => 0
 <Statement_Information_Item_Name> ::= <NUMBER> rank => 0
                                     | <MORE> rank => -1
@@ -4270,11 +4277,11 @@ lexeme default = action => [start,length,value] latm => 1
                                     | <TRANSACTIONS_COMMITTED> rank => -7
                                     | <TRANSACTIONS_ROLLED_BACK> rank => -8
                                     | <TRANSACTION_ACTIVE> rank => -9
-<Gen4049> ::= <EXCEPTION> rank => 0
+<Gen4056> ::= <EXCEPTION> rank => 0
             | <CONDITION> rank => -1
-<Gen4051> ::= <Comma> <Condition_Information_Item> rank => 0
-<Gen4051_Any> ::= <Gen4051>* rank => 0
-<Condition_Information> ::= <Gen4049> <Condition_Number> <Condition_Information_Item> <Gen4051_Any> rank => 0
+<Gen4058> ::= <Comma> <Condition_Information_Item> rank => 0
+<Gen4058_Any> ::= <Gen4058>* rank => 0
+<Condition_Information> ::= <Gen4056> <Condition_Number> <Condition_Information_Item> <Gen4058_Any> rank => 0
 <Condition_Information_Item> ::= <Simple_Target_Specification> <Equals_Operator> <Condition_Information_Item_Name> rank => 0
 <Condition_Information_Item_Name> ::= <CATALOG_NAME> rank => 0
                                     | <CLASS_ORIGIN> rank => -1
@@ -4724,12 +4731,11 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex038> ~ '&'
 <Lex039> ~ '"'
 <Lex040> ~ '"'
-<Lex041> ~ 'UESCAPE':i
 <Lex042> ~ [']
 <Lex043> ~ [']
 <Lex044> ~ [a-fA-f0-9]
 <Lex045> ~ '+'
-<Lex046> ~ [\x{1b}]
+<Lex046> ~ [\x{5c}]
 <Lex047> ~ [^"]
 <Lex048> ~ [\x{5c}]
 <Lex049> ~ '"'
@@ -4738,31 +4744,32 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex375> ~ 'END-EXEC'
 :lexeme ~ <Lex473>  priority => 1
 <Lex473> ~ 'REGR_R2'
-<Lex547> ~ [^']
-<Lex548> ~ [\x{5c}]
+<Lex546> ~ [^']
+<Lex547> ~ [\x{5c}]
+<Lex548> ~ [']
 <Lex549> ~ [']
 <Lex550> ~ [']
-<Lex551> ~ [']
-<Lex552> ~ 'N':i
-<Lex565_Many> ~ [\d]+
-<Lex566> ~ 'E':i
-<Lex568> ~ [^\[\]()|\^\-+*_%?{\\]
-<Lex569> ~ [\x{5c}]
-<Lex570> ~ [\[\]()|\^\-+*_%?{\\]
-<Lex575_Many> ~ [^\s]+
-<Lex576> ~ 'Interfaces.SQL'
-<Lex577> ~ '1'
+<Lex551> ~ 'N':i
+<Lex552> ~ 'U':i
+<Lex564_Many> ~ [\d]+
+<Lex565> ~ 'E':i
+<Lex567> ~ [^\[\]()|\^\-+*_%?{\\]
+<Lex568> ~ [\x{5c}]
+<Lex569> ~ [\[\]()|\^\-+*_%?{\\]
+<Lex574_Many> ~ [^\s]+
+<Lex575> ~ 'Interfaces.SQL'
+<Lex576> ~ '1'
+<Lex591_Many> ~ [^\s]+
 <Lex592_Many> ~ [^\s]+
-<Lex593_Many> ~ [^\s]+
-<Lex594> ~ '01'
-<Lex595> ~ '77'
-<Lex604> ~ '9'
-<Lex605_Many> ~ [^\s]+
-<Lex607> ~ [0-9]
-<Lex607_Many> ~ [0-9]*
+<Lex593> ~ '01'
+<Lex594> ~ '77'
+<Lex603> ~ '9'
+<Lex604_Many> ~ [^\s]+
+<Lex606> ~ [0-9]
+<Lex606_Many> ~ [0-9]*
+<Lex609_Many> ~ [^\s]+
 <Lex610_Many> ~ [^\s]+
-<Lex611_Many> ~ [^\s]+
-<Lex613_Many> ~ [^\s]+
+<Lex612_Many> ~ [^\s]+
 <M> ~ 'M':i
 <MAP> ~ 'MAP':i
 :lexeme ~ <MATCH>  priority => 1
@@ -5084,7 +5091,6 @@ lexeme default = action => [start,length,value] latm => 1
 :lexeme ~ <TRUE>  priority => 1
 <TRUE> ~ 'TRUE':i
 <TYPE> ~ 'TYPE':i
-<U> ~ 'U':i
 :lexeme ~ <UESCAPE>  priority => 1
 <UESCAPE> ~ 'UESCAPE':i
 <UNBOUNDED> ~ 'UNBOUNDED':i
@@ -5168,17 +5174,19 @@ lexeme default = action => [start,length,value] latm => 1
 <volatile> ~ 'volatile'
 
 _WS ~ [\s]+
-:discard ~ _WS
+<space any L0> ~ _WS
+<Discard_L0> ~ <space any L0>
 
 _COMMENT_EVERYYHERE_START ~ '--'
 _COMMENT_EVERYYHERE_END ~ [^\n]*
 _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
-:discard ~ _COMMENT
+<SQL style comment L0> ~ _COMMENT
+<Discard_L0> ~ <SQL style comment L0>
 
 ############################################################################
 # Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
 ############################################################################
-<C style comment> ~ '/*' <comment interior> '*/'
+<C style comment L0> ~ '/*' <comment interior> '*/'
 <comment interior> ~
     <optional non stars>
     <optional star prefixed segments>
@@ -5189,5 +5197,8 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 <stars> ~ [*]+
 <optional star free text> ~ [^*]*
 <optional pre final stars> ~ [*]*
-:discard ~ <C style comment>
+<Discard_L0> ~ <C style comment L0>
+
+<discard> ~ <Discard_L0>
+:discard ~ <discard>
 
