@@ -31,7 +31,7 @@ foreach (sort __PACKAGE__->section_data_names) {
                 $input =~ s/\s*$//;
                 if (length($input) > 0) {
                     my $xml = $tokenObj->asXML($input
-                                               #, trace_terminals => 1
+                                               , trace_terminals => 1
                         );
                     if (! grep {$_->localname() ne $wantedLexeme} $xml->findnodes($lexemesXpath)) {
                         pass("$testName: $input");
