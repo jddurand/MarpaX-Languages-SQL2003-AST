@@ -93,12 +93,14 @@ sub _unicodeValue {
 :default ::= action => ::first
 :start ::= <Unicode delimited identifier value>
 
-<Unicode delimited identifier value> ::= ('U&"') <Unicode delimiter body> ('"')
+<Unicode delimiter body many> ::= <Unicode delimiter body>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<Unicode delimited identifier value> ::= ('U&') <Unicode delimiter body many>
 
 <nondoublequote character> ~ [^"]
                            | [\\x{$Unicode_Escape_Specifier_Hex}] '"'
 
-<Unicode delimiter body> ::= <Unicode identifier part>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<Unicode identifier part many> ::= <Unicode identifier part>+  action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<Unicode delimiter body> ::= ('"') <Unicode identifier part many> ('"')
 <Unicode identifier part> ::= <Unicode delimited identifier part>
                             | <Unicode escape value>
 
@@ -119,6 +121,33 @@ sub _unicodeValue {
 <Unicode 6 digit escape value> ~ [\\x{$Unicode_Escape_Specifier_Hex}] '+' <hexit> <hexit> <hexit> <hexit> <hexit> <hexit>
 <Unicode character escape value> ~ [\\x{$Unicode_Escape_Specifier_Hex}] [\\x{$Unicode_Escape_Specifier_Hex}]
 
+_WS ~ [\\s]+
+<space any L0> ~ _WS
+<discard> ~ <space any L0>
+
+_COMMENT_EVERYYHERE_START ~ '--'
+_COMMENT_EVERYYHERE_END ~ [^\\n]*
+_COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
+<SQL style comment L0> ~ _COMMENT
+<discard> ~ <SQL style comment L0>
+
+############################################################################
+# Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
+############################################################################
+<C style comment L0> ~ '/*' <comment interior> '*/'
+<comment interior> ~
+    <optional non stars>
+    <optional star prefixed segments>
+    <optional pre final stars>
+<optional non stars> ~ [^*]*
+<optional star prefixed segments> ~ <star prefixed segment>*
+<star prefixed segment> ~ <stars> [^/*] <optional star free text>
+<stars> ~ [*]+
+<optional star free text> ~ [^*]*
+<optional pre final stars> ~ [*]*
+<discard> ~ <C style comment L0>
+
+<separator> ::= <discard>
 GRAMMAR
     $self->{Unicode}->{$Unicode_Escape_Specifier_Value} = Marpa::R2::Scanless::G->new({source => \$data});
   }

@@ -234,7 +234,7 @@
 
 <Unicode delimited identifier value> ~
 		/*LEX*/U /*LEX*/'&'
-                /*LEX*/(/*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"')
+                /*LEX*/(/*LEX*/(<separator L0>)* /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"')+
 
 /* In the value phase we will revisit <Unicode delimited identifier> */
 

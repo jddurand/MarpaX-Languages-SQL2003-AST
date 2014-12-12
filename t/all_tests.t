@@ -32,6 +32,7 @@ foreach (sort __PACKAGE__->section_data_names) {
                     my $xml = $tokenObj->asXML($input
                                                # , trace_terminals => 1
                         );
+		    diag("\n" . ('=' x length($input)) . "\n$input\n" . ('=' x length($input)) . "\n" . $xml->toString(1));
                     my %wantedLexemes = ();
                     map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
                     my %unwantedLexemes = ();
@@ -107,9 +108,10 @@ _utf8'some text'/* A comment */'Something else'
 __[ <007> token:Unicode:Unicode_Delimited_Identifier ]__
 /***************************************************************************/
 U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '#'
-U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '!'
+U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '\'
 U&"m\00fcde"
-U&"m\44fcde"
+U&"m\00fcde""m\00fcde"
+U&"m\00fcde"/* Comment */"m\00fcde"
 
 __[ <007> token:Large object:Large_Object_Length_Token ]__
 /***************************************************************************/
