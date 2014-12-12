@@ -355,7 +355,7 @@ lexeme default = action => [start,length,value] latm => 1
 <Genlex131> ~ <Lex039> <Unicode_Delimiter_Body_L0> <Lex040>
               | <Lex041> <Unicode_Delimiter_Body_L0> <Lex042>
 <Unicode_Delimited_Identifier_Value> ~ <Lex037> <Lex038> <Genlex131>
-<Unicode_Delimited_Identifier> ::= <Unicode_Delimited_Identifier_Value> <Unicode_Escape_Specifier> rank => 0
+<Unicode_Delimited_Identifier> ::= <Unicode_Delimited_Identifier_Value> <Unicode_Escape_Specifier> rank => 0 action => _unicodeDelimitedIdentifier
 <Genlex135> ~ <Lex044> <Unicode_Escape_Character_L0> <Lex045>
 <Gen136> ::= <UESCAPE> <Genlex135> rank => 0
 <Gen136_Maybe> ::= <Gen136> rank => 0
@@ -4318,85 +4318,85 @@ lexeme default = action => [start,length,value] latm => 1
 <ABSOLUTE> ~ 'ABSOLUTE':i
 <ACTION> ~ 'ACTION':i
 <ADA> ~ 'ADA':i
-:lexeme ~ <ADD>  priority => 1
+:lexeme ~ <ADD> priority => 1
 <ADD> ~ 'ADD':i
 <ADMIN> ~ 'ADMIN':i
 <AFTER> ~ 'AFTER':i
-:lexeme ~ <ALL>  priority => 1
+:lexeme ~ <ALL> priority => 1
 <ALL> ~ 'ALL':i
-:lexeme ~ <ALLOCATE>  priority => 1
+:lexeme ~ <ALLOCATE> priority => 1
 <ALLOCATE> ~ 'ALLOCATE':i
-:lexeme ~ <ALTER>  priority => 1
+:lexeme ~ <ALTER> priority => 1
 <ALTER> ~ 'ALTER':i
 <ALWAYS> ~ 'ALWAYS':i
-:lexeme ~ <AND>  priority => 1
+:lexeme ~ <AND> priority => 1
 <AND> ~ 'AND':i
-:lexeme ~ <ANY>  priority => 1
+:lexeme ~ <ANY> priority => 1
 <ANY> ~ 'ANY':i
-:lexeme ~ <ARE>  priority => 1
+:lexeme ~ <ARE> priority => 1
 <ARE> ~ 'ARE':i
-:lexeme ~ <ARRAY>  priority => 1
+:lexeme ~ <ARRAY> priority => 1
 <ARRAY> ~ 'ARRAY':i
-:lexeme ~ <AS>  priority => 1
+:lexeme ~ <AS> priority => 1
 <AS> ~ 'AS':i
 <ASC> ~ 'ASC':i
-:lexeme ~ <ASENSITIVE>  priority => 1
+:lexeme ~ <ASENSITIVE> priority => 1
 <ASENSITIVE> ~ 'ASENSITIVE':i
 <ASSERTION> ~ 'ASSERTION':i
 <ASSIGNMENT> ~ 'ASSIGNMENT':i
-:lexeme ~ <ASYMMETRIC>  priority => 1
+:lexeme ~ <ASYMMETRIC> priority => 1
 <ASYMMETRIC> ~ 'ASYMMETRIC':i
-:lexeme ~ <AT>  priority => 1
+:lexeme ~ <AT> priority => 1
 <AT> ~ 'AT':i
-:lexeme ~ <ATOMIC>  priority => 1
+:lexeme ~ <ATOMIC> priority => 1
 <ATOMIC> ~ 'ATOMIC':i
 <ATTRIBUTE> ~ 'ATTRIBUTE':i
 <ATTRIBUTES> ~ 'ATTRIBUTES':i
-:lexeme ~ <AUTHORIZATION>  priority => 1
+:lexeme ~ <AUTHORIZATION> priority => 1
 <AUTHORIZATION> ~ 'AUTHORIZATION':i
 <AVG> ~ 'AVG':i
 <B> ~ 'B':i
 <BEFORE> ~ 'BEFORE':i
-:lexeme ~ <BEGIN>  priority => 1
+:lexeme ~ <BEGIN> priority => 1
 <BEGIN> ~ 'BEGIN':i
 <BERNOULLI> ~ 'BERNOULLI':i
-:lexeme ~ <BETWEEN>  priority => 1
+:lexeme ~ <BETWEEN> priority => 1
 <BETWEEN> ~ 'BETWEEN':i
-:lexeme ~ <BIGINT>  priority => 1
+:lexeme ~ <BIGINT> priority => 1
 <BIGINT> ~ 'BIGINT':i
 <BIN> ~ 'BIN':i
-:lexeme ~ <BINARY>  priority => 1
+:lexeme ~ <BINARY> priority => 1
 <BINARY> ~ 'BINARY':i
-:lexeme ~ <BLOB>  priority => 1
+:lexeme ~ <BLOB> priority => 1
 <BLOB> ~ 'BLOB':i
-:lexeme ~ <BOOLEAN>  priority => 1
+:lexeme ~ <BOOLEAN> priority => 1
 <BOOLEAN> ~ 'BOOLEAN':i
-:lexeme ~ <BOTH>  priority => 1
+:lexeme ~ <BOTH> priority => 1
 <BOTH> ~ 'BOTH':i
 <BREADTH> ~ 'BREADTH':i
-:lexeme ~ <BY>  priority => 1
+:lexeme ~ <BY> priority => 1
 <BY> ~ 'BY':i
 <C> ~ 'C':i
-:lexeme ~ <CALL>  priority => 1
+:lexeme ~ <CALL> priority => 1
 <CALL> ~ 'CALL':i
-:lexeme ~ <CALLED>  priority => 1
+:lexeme ~ <CALLED> priority => 1
 <CALLED> ~ 'CALLED':i
 <CARDINALITY> ~ 'CARDINALITY':i
 <CASCADE> ~ 'CASCADE':i
-:lexeme ~ <CASCADED>  priority => 1
+:lexeme ~ <CASCADED> priority => 1
 <CASCADED> ~ 'CASCADED':i
-:lexeme ~ <CASE>  priority => 1
+:lexeme ~ <CASE> priority => 1
 <CASE> ~ 'CASE':i
-:lexeme ~ <CAST>  priority => 1
+:lexeme ~ <CAST> priority => 1
 <CAST> ~ 'CAST':i
 <CATALOG> ~ 'CATALOG':i
 <CATALOG_NAME> ~ 'CATALOG_NAME':i
 <CEIL> ~ 'CEIL':i
 <CEILING> ~ 'CEILING':i
 <CHAIN> ~ 'CHAIN':i
-:lexeme ~ <CHAR>  priority => 1
+:lexeme ~ <CHAR> priority => 1
 <CHAR> ~ 'CHAR':i
-:lexeme ~ <CHARACTER>  priority => 1
+:lexeme ~ <CHARACTER> priority => 1
 <CHARACTER> ~ 'CHARACTER':i
 <CHARACTERISTICS> ~ 'CHARACTERISTICS':i
 <CHARACTERS> ~ 'CHARACTERS':i
@@ -4405,39 +4405,39 @@ lexeme default = action => [start,length,value] latm => 1
 <CHARACTER_SET_NAME> ~ 'CHARACTER_SET_NAME':i
 <CHARACTER_SET_SCHEMA> ~ 'CHARACTER_SET_SCHEMA':i
 <CHAR_LENGTH> ~ 'CHAR_LENGTH':i
-:lexeme ~ <CHECK>  priority => 1
+:lexeme ~ <CHECK> priority => 1
 <CHECK> ~ 'CHECK':i
 <CHECKED> ~ 'CHECKED':i
 <CLASS_ORIGIN> ~ 'CLASS_ORIGIN':i
-:lexeme ~ <CLOB>  priority => 1
+:lexeme ~ <CLOB> priority => 1
 <CLOB> ~ 'CLOB':i
-:lexeme ~ <CLOSE>  priority => 1
+:lexeme ~ <CLOSE> priority => 1
 <CLOSE> ~ 'CLOSE':i
 <COALESCE> ~ 'COALESCE':i
 <COBOL> ~ 'COBOL':i
 <CODE_UNITS> ~ 'CODE_UNITS':i
-:lexeme ~ <COLLATE>  priority => 1
+:lexeme ~ <COLLATE> priority => 1
 <COLLATE> ~ 'COLLATE':i
 <COLLATION> ~ 'COLLATION':i
 <COLLATION_CATALOG> ~ 'COLLATION_CATALOG':i
 <COLLATION_NAME> ~ 'COLLATION_NAME':i
 <COLLATION_SCHEMA> ~ 'COLLATION_SCHEMA':i
 <COLLECT> ~ 'COLLECT':i
-:lexeme ~ <COLUMN>  priority => 1
+:lexeme ~ <COLUMN> priority => 1
 <COLUMN> ~ 'COLUMN':i
 <COLUMN_NAME> ~ 'COLUMN_NAME':i
 <COMMAND_FUNCTION> ~ 'COMMAND_FUNCTION':i
 <COMMAND_FUNCTION_CODE> ~ 'COMMAND_FUNCTION_CODE':i
-:lexeme ~ <COMMIT>  priority => 1
+:lexeme ~ <COMMIT> priority => 1
 <COMMIT> ~ 'COMMIT':i
 <COMMITTED> ~ 'COMMITTED':i
 <CONDITION> ~ 'CONDITION':i
 <CONDITION_NUMBER> ~ 'CONDITION_NUMBER':i
-:lexeme ~ <CONNECT>  priority => 1
+:lexeme ~ <CONNECT> priority => 1
 <CONNECT> ~ 'CONNECT':i
 <CONNECTION> ~ 'CONNECTION':i
 <CONNECTION_NAME> ~ 'CONNECTION_NAME':i
-:lexeme ~ <CONSTRAINT>  priority => 1
+:lexeme ~ <CONSTRAINT> priority => 1
 <CONSTRAINT> ~ 'CONSTRAINT':i
 <CONSTRAINTS> ~ 'CONSTRAINTS':i
 <CONSTRAINT_CATALOG> ~ 'CONSTRAINT_CATALOG':i
@@ -4446,64 +4446,64 @@ lexeme default = action => [start,length,value] latm => 1
 <CONSTRUCTOR> ~ 'CONSTRUCTOR':i
 <CONSTRUCTORS> ~ 'CONSTRUCTORS':i
 <CONTAINS> ~ 'CONTAINS':i
-:lexeme ~ <CONTINUE>  priority => 1
+:lexeme ~ <CONTINUE> priority => 1
 <CONTINUE> ~ 'CONTINUE':i
 <CONVERT> ~ 'CONVERT':i
 <CORR> ~ 'CORR':i
-:lexeme ~ <CORRESPONDING>  priority => 1
+:lexeme ~ <CORRESPONDING> priority => 1
 <CORRESPONDING> ~ 'CORRESPONDING':i
 <COUNT> ~ 'COUNT':i
 <COVAR_POP> ~ 'COVAR_POP':i
 <COVAR_SAMP> ~ 'COVAR_SAMP':i
-:lexeme ~ <CREATE>  priority => 1
+:lexeme ~ <CREATE> priority => 1
 <CREATE> ~ 'CREATE':i
-:lexeme ~ <CROSS>  priority => 1
+:lexeme ~ <CROSS> priority => 1
 <CROSS> ~ 'CROSS':i
-:lexeme ~ <CUBE>  priority => 1
+:lexeme ~ <CUBE> priority => 1
 <CUBE> ~ 'CUBE':i
 <CUME_DIST> ~ 'CUME_DIST':i
-:lexeme ~ <CURRENT>  priority => 1
+:lexeme ~ <CURRENT> priority => 1
 <CURRENT> ~ 'CURRENT':i
 <CURRENT_COLLATION> ~ 'CURRENT_COLLATION':i
-:lexeme ~ <CURRENT_DATE>  priority => 1
+:lexeme ~ <CURRENT_DATE> priority => 1
 <CURRENT_DATE> ~ 'CURRENT_DATE':i
-:lexeme ~ <CURRENT_DEFAULT_TRANSFORM_GROUP>  priority => 1
+:lexeme ~ <CURRENT_DEFAULT_TRANSFORM_GROUP> priority => 1
 <CURRENT_DEFAULT_TRANSFORM_GROUP> ~ 'CURRENT_DEFAULT_TRANSFORM_GROUP':i
-:lexeme ~ <CURRENT_PATH>  priority => 1
+:lexeme ~ <CURRENT_PATH> priority => 1
 <CURRENT_PATH> ~ 'CURRENT_PATH':i
-:lexeme ~ <CURRENT_ROLE>  priority => 1
+:lexeme ~ <CURRENT_ROLE> priority => 1
 <CURRENT_ROLE> ~ 'CURRENT_ROLE':i
-:lexeme ~ <CURRENT_TIME>  priority => 1
+:lexeme ~ <CURRENT_TIME> priority => 1
 <CURRENT_TIME> ~ 'CURRENT_TIME':i
-:lexeme ~ <CURRENT_TIMESTAMP>  priority => 1
+:lexeme ~ <CURRENT_TIMESTAMP> priority => 1
 <CURRENT_TIMESTAMP> ~ 'CURRENT_TIMESTAMP':i
-:lexeme ~ <CURRENT_TRANSFORM_GROUP_FOR_TYPE>  priority => 1
+:lexeme ~ <CURRENT_TRANSFORM_GROUP_FOR_TYPE> priority => 1
 <CURRENT_TRANSFORM_GROUP_FOR_TYPE> ~ 'CURRENT_TRANSFORM_GROUP_FOR_TYPE':i
-:lexeme ~ <CURRENT_USER>  priority => 1
+:lexeme ~ <CURRENT_USER> priority => 1
 <CURRENT_USER> ~ 'CURRENT_USER':i
-:lexeme ~ <CURSOR>  priority => 1
+:lexeme ~ <CURSOR> priority => 1
 <CURSOR> ~ 'CURSOR':i
 <CURSOR_NAME> ~ 'CURSOR_NAME':i
-:lexeme ~ <CYCLE>  priority => 1
+:lexeme ~ <CYCLE> priority => 1
 <CYCLE> ~ 'CYCLE':i
 <D> ~ 'D':i
 <DATA> ~ 'DATA':i
-:lexeme ~ <DATE>  priority => 1
+:lexeme ~ <DATE> priority => 1
 <DATE> ~ 'DATE':i
 <DATETIME_INTERVAL_CODE> ~ 'DATETIME_INTERVAL_CODE':i
 <DATETIME_INTERVAL_PRECISION> ~ 'DATETIME_INTERVAL_PRECISION':i
-:lexeme ~ <DAY>  priority => 1
+:lexeme ~ <DAY> priority => 1
 <DAY> ~ 'DAY':i
 <DCL> ~ 'DCL':i
-:lexeme ~ <DEALLOCATE>  priority => 1
+:lexeme ~ <DEALLOCATE> priority => 1
 <DEALLOCATE> ~ 'DEALLOCATE':i
-:lexeme ~ <DEC>  priority => 1
+:lexeme ~ <DEC> priority => 1
 <DEC> ~ 'DEC':i
-:lexeme ~ <DECIMAL>  priority => 1
+:lexeme ~ <DECIMAL> priority => 1
 <DECIMAL> ~ 'DECIMAL':i
-:lexeme ~ <DECLARE>  priority => 1
+:lexeme ~ <DECLARE> priority => 1
 <DECLARE> ~ 'DECLARE':i
-:lexeme ~ <DEFAULT>  priority => 1
+:lexeme ~ <DEFAULT> priority => 1
 <DEFAULT> ~ 'DEFAULT':i
 <DEFAULTS> ~ 'DEFAULTS':i
 <DEFERRABLE> ~ 'DEFERRABLE':i
@@ -4511,185 +4511,185 @@ lexeme default = action => [start,length,value] latm => 1
 <DEFINED> ~ 'DEFINED':i
 <DEFINER> ~ 'DEFINER':i
 <DEGREE> ~ 'DEGREE':i
-:lexeme ~ <DELETE>  priority => 1
+:lexeme ~ <DELETE> priority => 1
 <DELETE> ~ 'DELETE':i
 <DENSE_RANK> ~ 'DENSE_RANK':i
 <DEPTH> ~ 'DEPTH':i
-:lexeme ~ <DEREF>  priority => 1
+:lexeme ~ <DEREF> priority => 1
 <DEREF> ~ 'DEREF':i
 <DERIVED> ~ 'DERIVED':i
 <DESC> ~ 'DESC':i
-:lexeme ~ <DESCRIBE>  priority => 1
+:lexeme ~ <DESCRIBE> priority => 1
 <DESCRIBE> ~ 'DESCRIBE':i
 <DESCRIPTOR> ~ 'DESCRIPTOR':i
-:lexeme ~ <DETERMINISTIC>  priority => 1
+:lexeme ~ <DETERMINISTIC> priority => 1
 <DETERMINISTIC> ~ 'DETERMINISTIC':i
 <DIAGNOSTICS> ~ 'DIAGNOSTICS':i
-:lexeme ~ <DISCONNECT>  priority => 1
+:lexeme ~ <DISCONNECT> priority => 1
 <DISCONNECT> ~ 'DISCONNECT':i
 <DISPATCH> ~ 'DISPATCH':i
 <DISPLAY> ~ 'DISPLAY':i
-:lexeme ~ <DISTINCT>  priority => 1
+:lexeme ~ <DISTINCT> priority => 1
 <DISTINCT> ~ 'DISTINCT':i
 <DOMAIN> ~ 'DOMAIN':i
-:lexeme ~ <DOUBLE>  priority => 1
+:lexeme ~ <DOUBLE> priority => 1
 <DOUBLE> ~ 'DOUBLE':i
 <DOUBLE_PRECISION> ~ 'DOUBLE_PRECISION':i
-:lexeme ~ <DROP>  priority => 1
+:lexeme ~ <DROP> priority => 1
 <DROP> ~ 'DROP':i
-:lexeme ~ <DYNAMIC>  priority => 1
+:lexeme ~ <DYNAMIC> priority => 1
 <DYNAMIC> ~ 'DYNAMIC':i
 <DYNAMIC_FUNCTION> ~ 'DYNAMIC_FUNCTION':i
 <DYNAMIC_FUNCTION_CODE> ~ 'DYNAMIC_FUNCTION_CODE':i
 <E> ~ 'E':i
-:lexeme ~ <EACH>  priority => 1
+:lexeme ~ <EACH> priority => 1
 <EACH> ~ 'EACH':i
-:lexeme ~ <ELEMENT>  priority => 1
+:lexeme ~ <ELEMENT> priority => 1
 <ELEMENT> ~ 'ELEMENT':i
-:lexeme ~ <ELSE>  priority => 1
+:lexeme ~ <ELSE> priority => 1
 <ELSE> ~ 'ELSE':i
-:lexeme ~ <END>  priority => 1
+:lexeme ~ <END> priority => 1
 <END> ~ 'END':i
 <EQUALS> ~ 'EQUALS':i
-:lexeme ~ <ESCAPE>  priority => 1
+:lexeme ~ <ESCAPE> priority => 1
 <ESCAPE> ~ 'ESCAPE':i
 <EVERY> ~ 'EVERY':i
-:lexeme ~ <EXCEPT>  priority => 1
+:lexeme ~ <EXCEPT> priority => 1
 <EXCEPT> ~ 'EXCEPT':i
 <EXCEPTION> ~ 'EXCEPTION':i
 <EXCLUDE> ~ 'EXCLUDE':i
 <EXCLUDING> ~ 'EXCLUDING':i
-:lexeme ~ <EXEC>  priority => 1
+:lexeme ~ <EXEC> priority => 1
 <EXEC> ~ 'EXEC':i
-:lexeme ~ <EXECUTE>  priority => 1
+:lexeme ~ <EXECUTE> priority => 1
 <EXECUTE> ~ 'EXECUTE':i
-:lexeme ~ <EXISTS>  priority => 1
+:lexeme ~ <EXISTS> priority => 1
 <EXISTS> ~ 'EXISTS':i
 <EXP> ~ 'EXP':i
-:lexeme ~ <EXTERNAL>  priority => 1
+:lexeme ~ <EXTERNAL> priority => 1
 <EXTERNAL> ~ 'EXTERNAL':i
 <EXTRACT> ~ 'EXTRACT':i
 <F> ~ 'F':i
-:lexeme ~ <FALSE>  priority => 1
+:lexeme ~ <FALSE> priority => 1
 <FALSE> ~ 'FALSE':i
-:lexeme ~ <FETCH>  priority => 1
+:lexeme ~ <FETCH> priority => 1
 <FETCH> ~ 'FETCH':i
-:lexeme ~ <FILTER>  priority => 1
+:lexeme ~ <FILTER> priority => 1
 <FILTER> ~ 'FILTER':i
 <FINAL> ~ 'FINAL':i
 <FIRST> ~ 'FIRST':i
 <FIXED> ~ 'FIXED':i
-:lexeme ~ <FLOAT>  priority => 1
+:lexeme ~ <FLOAT> priority => 1
 <FLOAT> ~ 'FLOAT':i
 <FLOOR> ~ 'FLOOR':i
 <FOLLOWING> ~ 'FOLLOWING':i
-:lexeme ~ <FOR>  priority => 1
+:lexeme ~ <FOR> priority => 1
 <FOR> ~ 'FOR':i
-:lexeme ~ <FOREIGN>  priority => 1
+:lexeme ~ <FOREIGN> priority => 1
 <FOREIGN> ~ 'FOREIGN':i
 <FORTRAN> ~ 'FORTRAN':i
 <FOUND> ~ 'FOUND':i
-:lexeme ~ <FREE>  priority => 1
+:lexeme ~ <FREE> priority => 1
 <FREE> ~ 'FREE':i
-:lexeme ~ <FROM>  priority => 1
+:lexeme ~ <FROM> priority => 1
 <FROM> ~ 'FROM':i
-:lexeme ~ <FULL>  priority => 1
+:lexeme ~ <FULL> priority => 1
 <FULL> ~ 'FULL':i
-:lexeme ~ <FUNCTION>  priority => 1
+:lexeme ~ <FUNCTION> priority => 1
 <FUNCTION> ~ 'FUNCTION':i
 <FUSION> ~ 'FUSION':i
 <G> ~ 'G':i
 <GENERAL> ~ 'GENERAL':i
 <GENERATED> ~ 'GENERATED':i
-:lexeme ~ <GET>  priority => 1
+:lexeme ~ <GET> priority => 1
 <GET> ~ 'GET':i
-:lexeme ~ <GLOBAL>  priority => 1
+:lexeme ~ <GLOBAL> priority => 1
 <GLOBAL> ~ 'GLOBAL':i
 <GO> ~ 'GO':i
 <GOTO> ~ 'GOTO':i
-:lexeme ~ <GRANT>  priority => 1
+:lexeme ~ <GRANT> priority => 1
 <GRANT> ~ 'GRANT':i
 <GRANTED> ~ 'GRANTED':i
-:lexeme ~ <GROUP>  priority => 1
+:lexeme ~ <GROUP> priority => 1
 <GROUP> ~ 'GROUP':i
-:lexeme ~ <GROUPING>  priority => 1
+:lexeme ~ <GROUPING> priority => 1
 <GROUPING> ~ 'GROUPING':i
-:lexeme ~ <HAVING>  priority => 1
+:lexeme ~ <HAVING> priority => 1
 <HAVING> ~ 'HAVING':i
 <HIERARCHY> ~ 'HIERARCHY':i
-:lexeme ~ <HOLD>  priority => 1
+:lexeme ~ <HOLD> priority => 1
 <HOLD> ~ 'HOLD':i
-:lexeme ~ <HOUR>  priority => 1
+:lexeme ~ <HOUR> priority => 1
 <HOUR> ~ 'HOUR':i
-:lexeme ~ <IDENTITY>  priority => 1
+:lexeme ~ <IDENTITY> priority => 1
 <IDENTITY> ~ 'IDENTITY':i
-:lexeme ~ <IMMEDIATE>  priority => 1
+:lexeme ~ <IMMEDIATE> priority => 1
 <IMMEDIATE> ~ 'IMMEDIATE':i
 <IMPLEMENTATION> ~ 'IMPLEMENTATION':i
-:lexeme ~ <IN>  priority => 1
+:lexeme ~ <IN> priority => 1
 <IN> ~ 'IN':i
 <INCLUDING> ~ 'INCLUDING':i
 <INCREMENT> ~ 'INCREMENT':i
-:lexeme ~ <INDICATOR>  priority => 1
+:lexeme ~ <INDICATOR> priority => 1
 <INDICATOR> ~ 'INDICATOR':i
 <INDICATOR_TYPE> ~ 'INDICATOR_TYPE':i
 <INITIALLY> ~ 'INITIALLY':i
-:lexeme ~ <INNER>  priority => 1
+:lexeme ~ <INNER> priority => 1
 <INNER> ~ 'INNER':i
-:lexeme ~ <INOUT>  priority => 1
+:lexeme ~ <INOUT> priority => 1
 <INOUT> ~ 'INOUT':i
-:lexeme ~ <INPUT>  priority => 1
+:lexeme ~ <INPUT> priority => 1
 <INPUT> ~ 'INPUT':i
-:lexeme ~ <INSENSITIVE>  priority => 1
+:lexeme ~ <INSENSITIVE> priority => 1
 <INSENSITIVE> ~ 'INSENSITIVE':i
-:lexeme ~ <INSERT>  priority => 1
+:lexeme ~ <INSERT> priority => 1
 <INSERT> ~ 'INSERT':i
 <INSTANCE> ~ 'INSTANCE':i
 <INSTANTIABLE> ~ 'INSTANTIABLE':i
-:lexeme ~ <INT>  priority => 1
+:lexeme ~ <INT> priority => 1
 <INT> ~ 'INT':i
-:lexeme ~ <INTEGER>  priority => 1
+:lexeme ~ <INTEGER> priority => 1
 <INTEGER> ~ 'INTEGER':i
-:lexeme ~ <INTERSECT>  priority => 1
+:lexeme ~ <INTERSECT> priority => 1
 <INTERSECT> ~ 'INTERSECT':i
 <INTERSECTION> ~ 'INTERSECTION':i
-:lexeme ~ <INTERVAL>  priority => 1
+:lexeme ~ <INTERVAL> priority => 1
 <INTERVAL> ~ 'INTERVAL':i
-:lexeme ~ <INTO>  priority => 1
+:lexeme ~ <INTO> priority => 1
 <INTO> ~ 'INTO':i
 <INVOKER> ~ 'INVOKER':i
-:lexeme ~ <IS>  priority => 1
+:lexeme ~ <IS> priority => 1
 <IS> ~ 'IS':i
-:lexeme ~ <ISOLATION>  priority => 1
+:lexeme ~ <ISOLATION> priority => 1
 <ISOLATION> ~ 'ISOLATION':i
-:lexeme ~ <JOIN>  priority => 1
+:lexeme ~ <JOIN> priority => 1
 <JOIN> ~ 'JOIN':i
 <K> ~ 'K':i
 <KEY> ~ 'KEY':i
 <KEY_MEMBER> ~ 'KEY_MEMBER':i
 <KEY_TYPE> ~ 'KEY_TYPE':i
 <KIND> ~ 'KIND':i
-:lexeme ~ <LANGUAGE>  priority => 1
+:lexeme ~ <LANGUAGE> priority => 1
 <LANGUAGE> ~ 'LANGUAGE':i
-:lexeme ~ <LARGE>  priority => 1
+:lexeme ~ <LARGE> priority => 1
 <LARGE> ~ 'LARGE':i
 <LAST> ~ 'LAST':i
-:lexeme ~ <LATERAL>  priority => 1
+:lexeme ~ <LATERAL> priority => 1
 <LATERAL> ~ 'LATERAL':i
-:lexeme ~ <LEADING>  priority => 1
+:lexeme ~ <LEADING> priority => 1
 <LEADING> ~ 'LEADING':i
-:lexeme ~ <LEFT>  priority => 1
+:lexeme ~ <LEFT> priority => 1
 <LEFT> ~ 'LEFT':i
 <LENGTH> ~ 'LENGTH':i
 <LEVEL> ~ 'LEVEL':i
-:lexeme ~ <LIKE>  priority => 1
+:lexeme ~ <LIKE> priority => 1
 <LIKE> ~ 'LIKE':i
 <LN> ~ 'LN':i
-:lexeme ~ <LOCAL>  priority => 1
+:lexeme ~ <LOCAL> priority => 1
 <LOCAL> ~ 'LOCAL':i
-:lexeme ~ <LOCALTIME>  priority => 1
+:lexeme ~ <LOCALTIME> priority => 1
 <LOCALTIME> ~ 'LOCALTIME':i
-:lexeme ~ <LOCALTIMESTAMP>  priority => 1
+:lexeme ~ <LOCALTIMESTAMP> priority => 1
 <LOCALTIMESTAMP> ~ 'LOCALTIMESTAMP':i
 <LOCATOR> ~ 'LOCATOR':i
 <LOGICAL> ~ 'LOGICAL':i
@@ -4739,14 +4739,14 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex045> ~ [']
 <Lex046> ~ [a-fA-f0-9]
 <Lex047> ~ '+'
-<Lex048> ~ [\x{5c}]
+<Lex048> ~ [.]
 <Lex049> ~ [^"]
 <Lex050> ~ [\x{5c}]
 <Lex051> ~ '"'
 <Lex052> ~ '""'
-:lexeme ~ <Lex377>  priority => 1
+:lexeme ~ <Lex377> priority => 1
 <Lex377> ~ 'END-EXEC'
-:lexeme ~ <Lex475>  priority => 1
+:lexeme ~ <Lex475> priority => 1
 <Lex475> ~ 'REGR_R2'
 <Lex548> ~ [^']
 <Lex549> ~ [\x{5c}]
@@ -4776,103 +4776,103 @@ lexeme default = action => [start,length,value] latm => 1
 <Lex614_Many> ~ [^\s]+
 <M> ~ 'M':i
 <MAP> ~ 'MAP':i
-:lexeme ~ <MATCH>  priority => 1
+:lexeme ~ <MATCH> priority => 1
 <MATCH> ~ 'MATCH':i
 <MATCHED> ~ 'MATCHED':i
 <MAX> ~ 'MAX':i
 <MAXVALUE> ~ 'MAXVALUE':i
-:lexeme ~ <MEMBER>  priority => 1
+:lexeme ~ <MEMBER> priority => 1
 <MEMBER> ~ 'MEMBER':i
-:lexeme ~ <MERGE>  priority => 1
+:lexeme ~ <MERGE> priority => 1
 <MERGE> ~ 'MERGE':i
 <MESSAGE_LENGTH> ~ 'MESSAGE_LENGTH':i
 <MESSAGE_OCTET_LENGTH> ~ 'MESSAGE_OCTET_LENGTH':i
 <MESSAGE_TEXT> ~ 'MESSAGE_TEXT':i
-:lexeme ~ <METHOD>  priority => 1
+:lexeme ~ <METHOD> priority => 1
 <METHOD> ~ 'METHOD':i
 <MIN> ~ 'MIN':i
-:lexeme ~ <MINUTE>  priority => 1
+:lexeme ~ <MINUTE> priority => 1
 <MINUTE> ~ 'MINUTE':i
 <MINVALUE> ~ 'MINVALUE':i
 <MOD> ~ 'MOD':i
-:lexeme ~ <MODIFIES>  priority => 1
+:lexeme ~ <MODIFIES> priority => 1
 <MODIFIES> ~ 'MODIFIES':i
-:lexeme ~ <MODULE>  priority => 1
+:lexeme ~ <MODULE> priority => 1
 <MODULE> ~ 'MODULE':i
-:lexeme ~ <MONTH>  priority => 1
+:lexeme ~ <MONTH> priority => 1
 <MONTH> ~ 'MONTH':i
 <MORE> ~ 'MORE':i
-:lexeme ~ <MULTISET>  priority => 1
+:lexeme ~ <MULTISET> priority => 1
 <MULTISET> ~ 'MULTISET':i
 <MUMPS> ~ 'MUMPS':i
 <N> ~ 'N':i
 <NAME> ~ 'NAME':i
 <NAMES> ~ 'NAMES':i
-:lexeme ~ <NATIONAL>  priority => 1
+:lexeme ~ <NATIONAL> priority => 1
 <NATIONAL> ~ 'NATIONAL':i
-:lexeme ~ <NATURAL>  priority => 1
+:lexeme ~ <NATURAL> priority => 1
 <NATURAL> ~ 'NATURAL':i
-:lexeme ~ <NCHAR>  priority => 1
+:lexeme ~ <NCHAR> priority => 1
 <NCHAR> ~ 'NCHAR':i
-:lexeme ~ <NCLOB>  priority => 1
+:lexeme ~ <NCLOB> priority => 1
 <NCLOB> ~ 'NCLOB':i
 <NESTING> ~ 'NESTING':i
-:lexeme ~ <NEW>  priority => 1
+:lexeme ~ <NEW> priority => 1
 <NEW> ~ 'NEW':i
 <NEXT> ~ 'NEXT':i
-:lexeme ~ <NO>  priority => 1
+:lexeme ~ <NO> priority => 1
 <NO> ~ 'NO':i
-:lexeme ~ <NONE>  priority => 1
+:lexeme ~ <NONE> priority => 1
 <NONE> ~ 'NONE':i
 <NORMALIZE> ~ 'NORMALIZE':i
 <NORMALIZED> ~ 'NORMALIZED':i
-:lexeme ~ <NOT>  priority => 1
+:lexeme ~ <NOT> priority => 1
 <NOT> ~ 'NOT':i
-:lexeme ~ <NULL>  priority => 1
+:lexeme ~ <NULL> priority => 1
 <NULL> ~ 'NULL':i
 <NULLABLE> ~ 'NULLABLE':i
 <NULLIF> ~ 'NULLIF':i
 <NULLS> ~ 'NULLS':i
 <NUMBER> ~ 'NUMBER':i
-:lexeme ~ <NUMERIC>  priority => 1
+:lexeme ~ <NUMERIC> priority => 1
 <NUMERIC> ~ 'NUMERIC':i
 <OBJECT> ~ 'OBJECT':i
 <OCTETS> ~ 'OCTETS':i
 <OCTET_LENGTH> ~ 'OCTET_LENGTH':i
-:lexeme ~ <OF>  priority => 1
+:lexeme ~ <OF> priority => 1
 <OF> ~ 'OF':i
-:lexeme ~ <OLD>  priority => 1
+:lexeme ~ <OLD> priority => 1
 <OLD> ~ 'OLD':i
-:lexeme ~ <ON>  priority => 1
+:lexeme ~ <ON> priority => 1
 <ON> ~ 'ON':i
-:lexeme ~ <ONLY>  priority => 1
+:lexeme ~ <ONLY> priority => 1
 <ONLY> ~ 'ONLY':i
-:lexeme ~ <OPEN>  priority => 1
+:lexeme ~ <OPEN> priority => 1
 <OPEN> ~ 'OPEN':i
 <OPTION> ~ 'OPTION':i
 <OPTIONS> ~ 'OPTIONS':i
-:lexeme ~ <OR>  priority => 1
+:lexeme ~ <OR> priority => 1
 <OR> ~ 'OR':i
-:lexeme ~ <ORDER>  priority => 1
+:lexeme ~ <ORDER> priority => 1
 <ORDER> ~ 'ORDER':i
 <ORDERING> ~ 'ORDERING':i
 <ORDINALITY> ~ 'ORDINALITY':i
 <OTHERS> ~ 'OTHERS':i
-:lexeme ~ <OUT>  priority => 1
+:lexeme ~ <OUT> priority => 1
 <OUT> ~ 'OUT':i
-:lexeme ~ <OUTER>  priority => 1
+:lexeme ~ <OUTER> priority => 1
 <OUTER> ~ 'OUTER':i
-:lexeme ~ <OUTPUT>  priority => 1
+:lexeme ~ <OUTPUT> priority => 1
 <OUTPUT> ~ 'OUTPUT':i
-:lexeme ~ <OVER>  priority => 1
+:lexeme ~ <OVER> priority => 1
 <OVER> ~ 'OVER':i
-:lexeme ~ <OVERLAPS>  priority => 1
+:lexeme ~ <OVERLAPS> priority => 1
 <OVERLAPS> ~ 'OVERLAPS':i
 <OVERLAY> ~ 'OVERLAY':i
 <OVERRIDING> ~ 'OVERRIDING':i
 <PACKED> ~ 'PACKED':i
 <PAD> ~ 'PAD':i
-:lexeme ~ <PARAMETER>  priority => 1
+:lexeme ~ <PARAMETER> priority => 1
 <PARAMETER> ~ 'PARAMETER':i
 <PARAMETER_MODE> ~ 'PARAMETER_MODE':i
 <PARAMETER_NAME> ~ 'PARAMETER_NAME':i
@@ -4881,7 +4881,7 @@ lexeme default = action => [start,length,value] latm => 1
 <PARAMETER_SPECIFIC_NAME> ~ 'PARAMETER_SPECIFIC_NAME':i
 <PARAMETER_SPECIFIC_SCHEMA> ~ 'PARAMETER_SPECIFIC_SCHEMA':i
 <PARTIAL> ~ 'PARTIAL':i
-:lexeme ~ <PARTITION>  priority => 1
+:lexeme ~ <PARTITION> priority => 1
 <PARTITION> ~ 'PARTITION':i
 <PASCAL> ~ 'PASCAL':i
 <PATH> ~ 'PATH':i
@@ -4895,87 +4895,87 @@ lexeme default = action => [start,length,value] latm => 1
 <POSITION> ~ 'POSITION':i
 <POWER> ~ 'POWER':i
 <PRECEDING> ~ 'PRECEDING':i
-:lexeme ~ <PRECISION>  priority => 1
+:lexeme ~ <PRECISION> priority => 1
 <PRECISION> ~ 'PRECISION':i
-:lexeme ~ <PREPARE>  priority => 1
+:lexeme ~ <PREPARE> priority => 1
 <PREPARE> ~ 'PREPARE':i
 <PRESERVE> ~ 'PRESERVE':i
-:lexeme ~ <PRIMARY>  priority => 1
+:lexeme ~ <PRIMARY> priority => 1
 <PRIMARY> ~ 'PRIMARY':i
 <PRIOR> ~ 'PRIOR':i
 <PRIVILEGES> ~ 'PRIVILEGES':i
-:lexeme ~ <PROCEDURE>  priority => 1
+:lexeme ~ <PROCEDURE> priority => 1
 <PROCEDURE> ~ 'PROCEDURE':i
 <PUBLIC> ~ 'PUBLIC':i
-:lexeme ~ <RANGE>  priority => 1
+:lexeme ~ <RANGE> priority => 1
 <RANGE> ~ 'RANGE':i
 <RANK> ~ 'RANK':i
 <READ> ~ 'READ':i
-:lexeme ~ <READS>  priority => 1
+:lexeme ~ <READS> priority => 1
 <READS> ~ 'READS':i
-:lexeme ~ <REAL>  priority => 1
+:lexeme ~ <REAL> priority => 1
 <REAL> ~ 'REAL':i
-:lexeme ~ <RECURSIVE>  priority => 1
+:lexeme ~ <RECURSIVE> priority => 1
 <RECURSIVE> ~ 'RECURSIVE':i
-:lexeme ~ <REF>  priority => 1
+:lexeme ~ <REF> priority => 1
 <REF> ~ 'REF':i
-:lexeme ~ <REFERENCES>  priority => 1
+:lexeme ~ <REFERENCES> priority => 1
 <REFERENCES> ~ 'REFERENCES':i
-:lexeme ~ <REFERENCING>  priority => 1
+:lexeme ~ <REFERENCING> priority => 1
 <REFERENCING> ~ 'REFERENCING':i
-:lexeme ~ <REGR_AVGX>  priority => 1
+:lexeme ~ <REGR_AVGX> priority => 1
 <REGR_AVGX> ~ 'REGR_AVGX':i
-:lexeme ~ <REGR_AVGY>  priority => 1
+:lexeme ~ <REGR_AVGY> priority => 1
 <REGR_AVGY> ~ 'REGR_AVGY':i
-:lexeme ~ <REGR_COUNT>  priority => 1
+:lexeme ~ <REGR_COUNT> priority => 1
 <REGR_COUNT> ~ 'REGR_COUNT':i
-:lexeme ~ <REGR_INTERCEPT>  priority => 1
+:lexeme ~ <REGR_INTERCEPT> priority => 1
 <REGR_INTERCEPT> ~ 'REGR_INTERCEPT':i
-:lexeme ~ <REGR_SLOPE>  priority => 1
+:lexeme ~ <REGR_SLOPE> priority => 1
 <REGR_SLOPE> ~ 'REGR_SLOPE':i
-:lexeme ~ <REGR_SXX>  priority => 1
+:lexeme ~ <REGR_SXX> priority => 1
 <REGR_SXX> ~ 'REGR_SXX':i
-:lexeme ~ <REGR_SXY>  priority => 1
+:lexeme ~ <REGR_SXY> priority => 1
 <REGR_SXY> ~ 'REGR_SXY':i
-:lexeme ~ <REGR_SYY>  priority => 1
+:lexeme ~ <REGR_SYY> priority => 1
 <REGR_SYY> ~ 'REGR_SYY':i
 <RELATIVE> ~ 'RELATIVE':i
-:lexeme ~ <RELEASE>  priority => 1
+:lexeme ~ <RELEASE> priority => 1
 <RELEASE> ~ 'RELEASE':i
 <REPEATABLE> ~ 'REPEATABLE':i
 <RESTART> ~ 'RESTART':i
 <RESTRICT> ~ 'RESTRICT':i
-:lexeme ~ <RESULT>  priority => 1
+:lexeme ~ <RESULT> priority => 1
 <RESULT> ~ 'RESULT':i
-:lexeme ~ <RETURN>  priority => 1
+:lexeme ~ <RETURN> priority => 1
 <RETURN> ~ 'RETURN':i
 <RETURNED_CARDINALITY> ~ 'RETURNED_CARDINALITY':i
 <RETURNED_LENGTH> ~ 'RETURNED_LENGTH':i
 <RETURNED_OCTET_LENGTH> ~ 'RETURNED_OCTET_LENGTH':i
 <RETURNED_SQLSTATE> ~ 'RETURNED_SQLSTATE':i
-:lexeme ~ <RETURNS>  priority => 1
+:lexeme ~ <RETURNS> priority => 1
 <RETURNS> ~ 'RETURNS':i
-:lexeme ~ <REVOKE>  priority => 1
+:lexeme ~ <REVOKE> priority => 1
 <REVOKE> ~ 'REVOKE':i
-:lexeme ~ <RIGHT>  priority => 1
+:lexeme ~ <RIGHT> priority => 1
 <RIGHT> ~ 'RIGHT':i
 <ROLE> ~ 'ROLE':i
-:lexeme ~ <ROLLBACK>  priority => 1
+:lexeme ~ <ROLLBACK> priority => 1
 <ROLLBACK> ~ 'ROLLBACK':i
-:lexeme ~ <ROLLUP>  priority => 1
+:lexeme ~ <ROLLUP> priority => 1
 <ROLLUP> ~ 'ROLLUP':i
 <ROUTINE> ~ 'ROUTINE':i
 <ROUTINE_CATALOG> ~ 'ROUTINE_CATALOG':i
 <ROUTINE_NAME> ~ 'ROUTINE_NAME':i
 <ROUTINE_SCHEMA> ~ 'ROUTINE_SCHEMA':i
-:lexeme ~ <ROW>  priority => 1
+:lexeme ~ <ROW> priority => 1
 <ROW> ~ 'ROW':i
-:lexeme ~ <ROWS>  priority => 1
+:lexeme ~ <ROWS> priority => 1
 <ROWS> ~ 'ROWS':i
 <ROW_COUNT> ~ 'ROW_COUNT':i
 <ROW_NUMBER> ~ 'ROW_NUMBER':i
 <S> ~ 'S':i
-:lexeme ~ <SAVEPOINT>  priority => 1
+:lexeme ~ <SAVEPOINT> priority => 1
 <SAVEPOINT> ~ 'SAVEPOINT':i
 <SCALE> ~ 'SCALE':i
 <SCHEMA> ~ 'SCHEMA':i
@@ -4984,96 +4984,96 @@ lexeme default = action => [start,length,value] latm => 1
 <SCOPE_CATALOG> ~ 'SCOPE_CATALOG':i
 <SCOPE_NAME> ~ 'SCOPE_NAME':i
 <SCOPE_SCHEMA> ~ 'SCOPE_SCHEMA':i
-:lexeme ~ <SCROLL>  priority => 1
+:lexeme ~ <SCROLL> priority => 1
 <SCROLL> ~ 'SCROLL':i
-:lexeme ~ <SEARCH>  priority => 1
+:lexeme ~ <SEARCH> priority => 1
 <SEARCH> ~ 'SEARCH':i
-:lexeme ~ <SECOND>  priority => 1
+:lexeme ~ <SECOND> priority => 1
 <SECOND> ~ 'SECOND':i
 <SECTION> ~ 'SECTION':i
 <SECURITY> ~ 'SECURITY':i
-:lexeme ~ <SELECT>  priority => 1
+:lexeme ~ <SELECT> priority => 1
 <SELECT> ~ 'SELECT':i
 <SELF> ~ 'SELF':i
-:lexeme ~ <SENSITIVE>  priority => 1
+:lexeme ~ <SENSITIVE> priority => 1
 <SENSITIVE> ~ 'SENSITIVE':i
 <SEPARATE> ~ 'SEPARATE':i
 <SEQUENCE> ~ 'SEQUENCE':i
 <SERIALIZABLE> ~ 'SERIALIZABLE':i
 <SERVER_NAME> ~ 'SERVER_NAME':i
 <SESSION> ~ 'SESSION':i
-:lexeme ~ <SESSION_USER>  priority => 1
+:lexeme ~ <SESSION_USER> priority => 1
 <SESSION_USER> ~ 'SESSION_USER':i
-:lexeme ~ <SET>  priority => 1
+:lexeme ~ <SET> priority => 1
 <SET> ~ 'SET':i
 <SETS> ~ 'SETS':i
 <SIGN> ~ 'SIGN':i
-:lexeme ~ <SIMILAR>  priority => 1
+:lexeme ~ <SIMILAR> priority => 1
 <SIMILAR> ~ 'SIMILAR':i
 <SIMPLE> ~ 'SIMPLE':i
 <SIZE> ~ 'SIZE':i
-:lexeme ~ <SMALLINT>  priority => 1
+:lexeme ~ <SMALLINT> priority => 1
 <SMALLINT> ~ 'SMALLINT':i
-:lexeme ~ <SOME>  priority => 1
+:lexeme ~ <SOME> priority => 1
 <SOME> ~ 'SOME':i
 <SOURCE> ~ 'SOURCE':i
 <SPACE> ~ 'SPACE':i
-:lexeme ~ <SPECIFIC>  priority => 1
+:lexeme ~ <SPECIFIC> priority => 1
 <SPECIFIC> ~ 'SPECIFIC':i
-:lexeme ~ <SPECIFICTYPE>  priority => 1
+:lexeme ~ <SPECIFICTYPE> priority => 1
 <SPECIFICTYPE> ~ 'SPECIFICTYPE':i
 <SPECIFIC_NAME> ~ 'SPECIFIC_NAME':i
-:lexeme ~ <SQL>  priority => 1
+:lexeme ~ <SQL> priority => 1
 <SQL> ~ 'SQL':i
-:lexeme ~ <SQLEXCEPTION>  priority => 1
+:lexeme ~ <SQLEXCEPTION> priority => 1
 <SQLEXCEPTION> ~ 'SQLEXCEPTION':i
-:lexeme ~ <SQLSTATE>  priority => 1
+:lexeme ~ <SQLSTATE> priority => 1
 <SQLSTATE> ~ 'SQLSTATE':i
 <SQLSTATE_TYPE> ~ 'SQLSTATE_TYPE':i
-:lexeme ~ <SQLWARNING>  priority => 1
+:lexeme ~ <SQLWARNING> priority => 1
 <SQLWARNING> ~ 'SQLWARNING':i
 <SQRT> ~ 'SQRT':i
-:lexeme ~ <START>  priority => 1
+:lexeme ~ <START> priority => 1
 <START> ~ 'START':i
 <STATE> ~ 'STATE':i
 <STATEMENT> ~ 'STATEMENT':i
-:lexeme ~ <STATIC>  priority => 1
+:lexeme ~ <STATIC> priority => 1
 <STATIC> ~ 'STATIC':i
 <STDDEV_POP> ~ 'STDDEV_POP':i
 <STDDEV_SAMP> ~ 'STDDEV_SAMP':i
 <STRUCTURE> ~ 'STRUCTURE':i
 <STYLE> ~ 'STYLE':i
 <SUBCLASS_ORIGIN> ~ 'SUBCLASS_ORIGIN':i
-:lexeme ~ <SUBMULTISET>  priority => 1
+:lexeme ~ <SUBMULTISET> priority => 1
 <SUBMULTISET> ~ 'SUBMULTISET':i
 <SUBSTRING> ~ 'SUBSTRING':i
 <SUM> ~ 'SUM':i
-:lexeme ~ <SYMMETRIC>  priority => 1
+:lexeme ~ <SYMMETRIC> priority => 1
 <SYMMETRIC> ~ 'SYMMETRIC':i
-:lexeme ~ <SYSTEM>  priority => 1
+:lexeme ~ <SYSTEM> priority => 1
 <SYSTEM> ~ 'SYSTEM':i
-:lexeme ~ <SYSTEM_USER>  priority => 1
+:lexeme ~ <SYSTEM_USER> priority => 1
 <SYSTEM_USER> ~ 'SYSTEM_USER':i
-:lexeme ~ <TABLE>  priority => 1
+:lexeme ~ <TABLE> priority => 1
 <TABLE> ~ 'TABLE':i
 <TABLESAMPLE> ~ 'TABLESAMPLE':i
 <TABLE_NAME> ~ 'TABLE_NAME':i
 <TEMPORARY> ~ 'TEMPORARY':i
-:lexeme ~ <THEN>  priority => 1
+:lexeme ~ <THEN> priority => 1
 <THEN> ~ 'THEN':i
 <TIES> ~ 'TIES':i
-:lexeme ~ <TIME>  priority => 1
+:lexeme ~ <TIME> priority => 1
 <TIME> ~ 'TIME':i
-:lexeme ~ <TIMESTAMP>  priority => 1
+:lexeme ~ <TIMESTAMP> priority => 1
 <TIMESTAMP> ~ 'TIMESTAMP':i
-:lexeme ~ <TIMEZONE_HOUR>  priority => 1
+:lexeme ~ <TIMEZONE_HOUR> priority => 1
 <TIMEZONE_HOUR> ~ 'TIMEZONE_HOUR':i
-:lexeme ~ <TIMEZONE_MINUTE>  priority => 1
+:lexeme ~ <TIMEZONE_MINUTE> priority => 1
 <TIMEZONE_MINUTE> ~ 'TIMEZONE_MINUTE':i
-:lexeme ~ <TO>  priority => 1
+:lexeme ~ <TO> priority => 1
 <TO> ~ 'TO':i
 <TOP_LEVEL_COUNT> ~ 'TOP_LEVEL_COUNT':i
-:lexeme ~ <TRAILING>  priority => 1
+:lexeme ~ <TRAILING> priority => 1
 <TRAILING> ~ 'TRAILING':i
 <TRANSACTION> ~ 'TRANSACTION':i
 <TRANSACTIONS_COMMITTED> ~ 'TRANSACTIONS_COMMITTED':i
@@ -5082,80 +5082,80 @@ lexeme default = action => [start,length,value] latm => 1
 <TRANSFORM> ~ 'TRANSFORM':i
 <TRANSFORMS> ~ 'TRANSFORMS':i
 <TRANSLATE> ~ 'TRANSLATE':i
-:lexeme ~ <TRANSLATION>  priority => 1
+:lexeme ~ <TRANSLATION> priority => 1
 <TRANSLATION> ~ 'TRANSLATION':i
-:lexeme ~ <TREAT>  priority => 1
+:lexeme ~ <TREAT> priority => 1
 <TREAT> ~ 'TREAT':i
-:lexeme ~ <TRIGGER>  priority => 1
+:lexeme ~ <TRIGGER> priority => 1
 <TRIGGER> ~ 'TRIGGER':i
 <TRIGGER_CATALOG> ~ 'TRIGGER_CATALOG':i
 <TRIGGER_NAME> ~ 'TRIGGER_NAME':i
 <TRIGGER_SCHEMA> ~ 'TRIGGER_SCHEMA':i
 <TRIM> ~ 'TRIM':i
-:lexeme ~ <TRUE>  priority => 1
+:lexeme ~ <TRUE> priority => 1
 <TRUE> ~ 'TRUE':i
 <TYPE> ~ 'TYPE':i
-:lexeme ~ <UESCAPE>  priority => 1
+:lexeme ~ <UESCAPE> priority => 1
 <UESCAPE> ~ 'UESCAPE':i
 <UNBOUNDED> ~ 'UNBOUNDED':i
 <UNCOMMITTED> ~ 'UNCOMMITTED':i
 <UNDER> ~ 'UNDER':i
-:lexeme ~ <UNION>  priority => 1
+:lexeme ~ <UNION> priority => 1
 <UNION> ~ 'UNION':i
-:lexeme ~ <UNIQUE>  priority => 1
+:lexeme ~ <UNIQUE> priority => 1
 <UNIQUE> ~ 'UNIQUE':i
-:lexeme ~ <UNKNOWN>  priority => 1
+:lexeme ~ <UNKNOWN> priority => 1
 <UNKNOWN> ~ 'UNKNOWN':i
 <UNNAMED> ~ 'UNNAMED':i
-:lexeme ~ <UNNEST>  priority => 1
+:lexeme ~ <UNNEST> priority => 1
 <UNNEST> ~ 'UNNEST':i
-:lexeme ~ <UPDATE>  priority => 1
+:lexeme ~ <UPDATE> priority => 1
 <UPDATE> ~ 'UPDATE':i
-:lexeme ~ <UPPER>  priority => 1
+:lexeme ~ <UPPER> priority => 1
 <UPPER> ~ 'UPPER':i
 <USAGE> ~ 'USAGE':i
-:lexeme ~ <USER>  priority => 1
+:lexeme ~ <USER> priority => 1
 <USER> ~ 'USER':i
 <USER_DEFINED_TYPE_CATALOG> ~ 'USER_DEFINED_TYPE_CATALOG':i
 <USER_DEFINED_TYPE_CODE> ~ 'USER_DEFINED_TYPE_CODE':i
 <USER_DEFINED_TYPE_NAME> ~ 'USER_DEFINED_TYPE_NAME':i
 <USER_DEFINED_TYPE_SCHEMA> ~ 'USER_DEFINED_TYPE_SCHEMA':i
-:lexeme ~ <USING>  priority => 1
+:lexeme ~ <USING> priority => 1
 <USING> ~ 'USING':i
 <V> ~ 'V':i
-:lexeme ~ <VALUE>  priority => 1
+:lexeme ~ <VALUE> priority => 1
 <VALUE> ~ 'VALUE':i
-:lexeme ~ <VALUES>  priority => 1
+:lexeme ~ <VALUES> priority => 1
 <VALUES> ~ 'VALUES':i
-:lexeme ~ <VARCHAR>  priority => 1
+:lexeme ~ <VARCHAR> priority => 1
 <VARCHAR> ~ 'VARCHAR':i
-:lexeme ~ <VARYING>  priority => 1
+:lexeme ~ <VARYING> priority => 1
 <VARYING> ~ 'VARYING':i
-:lexeme ~ <VAR_POP>  priority => 1
+:lexeme ~ <VAR_POP> priority => 1
 <VAR_POP> ~ 'VAR_POP':i
-:lexeme ~ <VAR_SAMP>  priority => 1
+:lexeme ~ <VAR_SAMP> priority => 1
 <VAR_SAMP> ~ 'VAR_SAMP':i
 <VIEW> ~ 'VIEW':i
-:lexeme ~ <WHEN>  priority => 1
+:lexeme ~ <WHEN> priority => 1
 <WHEN> ~ 'WHEN':i
-:lexeme ~ <WHENEVER>  priority => 1
+:lexeme ~ <WHENEVER> priority => 1
 <WHENEVER> ~ 'WHENEVER':i
-:lexeme ~ <WHERE>  priority => 1
+:lexeme ~ <WHERE> priority => 1
 <WHERE> ~ 'WHERE':i
-:lexeme ~ <WIDTH_BUCKET>  priority => 1
+:lexeme ~ <WIDTH_BUCKET> priority => 1
 <WIDTH_BUCKET> ~ 'WIDTH_BUCKET':i
-:lexeme ~ <WINDOW>  priority => 1
+:lexeme ~ <WINDOW> priority => 1
 <WINDOW> ~ 'WINDOW':i
-:lexeme ~ <WITH>  priority => 1
+:lexeme ~ <WITH> priority => 1
 <WITH> ~ 'WITH':i
-:lexeme ~ <WITHIN>  priority => 1
+:lexeme ~ <WITHIN> priority => 1
 <WITHIN> ~ 'WITHIN':i
-:lexeme ~ <WITHOUT>  priority => 1
+:lexeme ~ <WITHOUT> priority => 1
 <WITHOUT> ~ 'WITHOUT':i
 <WORK> ~ 'WORK':i
 <WRITE> ~ 'WRITE':i
 <X> ~ 'X':i
-:lexeme ~ <YEAR>  priority => 1
+:lexeme ~ <YEAR> priority => 1
 <YEAR> ~ 'YEAR':i
 <ZONE> ~ 'ZONE':i
 <_> ~ '_':i

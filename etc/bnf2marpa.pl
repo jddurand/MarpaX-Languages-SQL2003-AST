@@ -77,8 +77,8 @@ sub _pushLexemes {
 	$content = join(' ', "<$symbol>", '~', $rhs);
       }
     }
-    if ($self->{lexemePriorities}->{$symbol}) {
-      push(@{$rcp}, ":lexeme ~ <$symbol>  priority => $self->{lexemePriorities}->{$symbol}");
+    if ($priority) {
+      push(@{$rcp}, ":lexeme ~ <$symbol> priority => $priority");
     }
     push(@{$rcp}, $content);
     $self->{symbols}->{$symbol} = {terminal => 1, content => $content};
@@ -103,6 +103,7 @@ sub _pushG1 {
       }
       my $lhs = $rule->{lhs} eq ':start' ? ':start' : "<$rule->{lhs}>";
       my $rulesep = $rule->{rulesep};
+      my $action = $rule->{action};
       my $content;
       if (@{$rule->{rhs}}) {
         my @rhs = map {"<$_>"} @{$rule->{rhs}};
@@ -120,6 +121,9 @@ sub _pushG1 {
         if ($lhs ne ':start') {
           $content .= " rank => " . $rank{$lhs}--;
         }
+	if ($action) {
+          $content .= " action => $action";
+	}
       }
       if ($self->{separator}->{$rule->{lhs}}) {
         $content .= " separator => <$self->{separator}->{$rule->{lhs}}> proper => 0";
@@ -226,19 +230,25 @@ sub _lexeme {
   return $self->_rule($symbol, $rulesep, $expressions);
 }
 
+sub _concatenation {
+  my ($self, $exceptions) = @_;
+
+  return [$exceptions, undef]; # No action
+}
+
 sub _rule {
   my ($self, $symbol, $rulesep, $expressions, $quantifier, $symbolp) = @_;
 
   #
   # $expressions is [@concatenation]
-  # Every $concatenation is [$exceptions]
+  # Every $concatenation is [$exceptions,$action]
   # $exceptions is [@exception]
-  # Every exception is a symbol
+  # Every exception is $symbol
 
   foreach (@{$expressions}) {
     my $concatenation = $_;
-    my ($exceptions) = @{$concatenation};
-    push(@{$self->{rules}}, {lhs => $symbol, rhs => $exceptions, rulesep => $rulesep, quantifier => $quantifier || ''});
+    my ($exceptions, $action) = @{$concatenation};
+    push(@{$self->{rules}}, {lhs => $symbol, rhs => $exceptions, rulesep => $rulesep, action => $action, quantifier => $quantifier || ''});
   }
 
   return $self;
@@ -470,8 +480,8 @@ sub _termFactorQuantifier {
                   if ($quantifier eq '*') {
                     my $newSymbol = $self->{unCopiableLexemes}->{$factor} ? sprintf('Lex%03d', 1 + (scalar @{$self->{lexemes}})) : sprintf('Gen%03d', 1 + (scalar @{$self->{rules}}));
                     print STDERR "[INFO] Using a nullable symbol for: $symbol $rulesep $factor$quantifier, i.e. $newSymbol $rulesep $thisSymbol; $newSymbol ::= ;\n";
-                    $self->_rule($newSymbol, $rulesep, [ [ [ $thisSymbol ] , {} ] ]);
-                    $self->_rule($newSymbol, $rulesep, [ [ [] , {} ] ]);
+                    $self->_rule($newSymbol, $rulesep, [ [ [ $thisSymbol ] ] ]);
+                    $self->_rule($newSymbol, $rulesep, [ [ [] ] ]);
                     #
                     # For the return
                     #
@@ -484,7 +494,7 @@ sub _termFactorQuantifier {
 	      }
 	  } else {
             my $rulesep = $self->{unCopiableLexemes}->{$factor} ? '~' : '::=';
-            $self->_rule($symbol, $rulesep, [ [ [ $factor ] , {} ] ], $quantifier);
+            $self->_rule($symbol, $rulesep, [ [ [ $factor ] ] ], $quantifier);
 	  }
       }
   } elsif ($quantifier eq '?') {
@@ -492,8 +502,8 @@ sub _termFactorQuantifier {
       if (! exists($self->{quantifiedSymbols}->{$symbol})) {
         my $rulesep = $self->{unCopiableLexemes}->{$factor} ? '~' : '::=';
 	  $self->{quantifiedSymbols}->{$symbol}++;
-	  $self->_rule($symbol, $rulesep, [ [ [ "$factor" ] , {} ] ]);
-	  $self->_rule($symbol, $rulesep, [ [ [] , {} ] ]);
+	  $self->_rule($symbol, $rulesep, [ [ [ "$factor" ] ] ]);
+	  $self->_rule($symbol, $rulesep, [ [ [] ] ]);
       }
   } else {
       die "Unsupported quantifier '$quantifier'";
@@ -586,16 +596,19 @@ lexeme default = latm => 1
 symbol         ::= SYMBOL                                               action => _symbol
 rules          ::= rule+                                                action => _rules
 rule           ::= symbol RULESEP expressions                           action => _rule
-rule           ::= symbol RULESEP expressions LexemeOnlyPriority        action => _lexeme
+rule           ::= symbol '~' expressions LexemeOnlyPriority            action => _lexeme
 expressions    ::= concatenation+ separator => PIPE                     action => [values]
-concatenation  ::= exceptions                                           action => [values]
+concatenation  ::= exceptions semanticOnlyAction                        action => [values]
+concatenation  ::= exceptions                                           action => _concatenation
 exceptions     ::= exception+                                           action => [values]
 exception      ::= term
 priority       ~ [\d]+
 lexPriority    ~ [-+\d]+
+semanticAction ~ [\w]+
 LexemePriority ::= ('priority' '=>') priority
 LexemePriority ::=                                                       action => _lexemeWithoutPriority
 LexemeOnlyPriority ::= ('lexPriority' '=>') lexPriority
+semanticOnlyAction ::= ('semanticAction' '=>') semanticAction
 forceUncopiableLexeme ::= '/*LEX*/'                                      action => _isUncopiableLexeme
 forceUncopiableLexeme ::=                                                action => _isCopiableLexeme
 separator      ::= ('separator' '=>') symbol

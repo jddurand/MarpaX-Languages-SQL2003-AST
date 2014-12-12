@@ -243,9 +243,12 @@
                   /*LEX*/['] <Unicode delimiter body L0> /*LEX*/[']
                   )
 
+/* In the value phase we will revisit <Unicode delimited identifier> */
+
 <Unicode delimited identifier> ::=
 		<Unicode delimited identifier value>
 		<Unicode escape specifier>
+                semanticAction => _unicodeDelimitedIdentifier
 
 <Unicode escape specifier> ::= ( UESCAPE /*LEX*/(/*LEX*/"'" <Unicode escape character L0> /*LEX*/"'") )?
 
@@ -270,7 +273,8 @@
 
 <Unicode character escape value L0> ~ <Unicode escape character L0 ><Unicode escape character L0>
 
-<Unicode escape character L0> ~ /*LEX*/#x5c
+/* We VOLONTARILY take ANY character as unicode escape: confirmity will be done at value post-processing v.s. UESCAPE eventual value */
+<Unicode escape character L0> ~ /*LEX*/[.]
 
 <nondoublequote character L0> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
 

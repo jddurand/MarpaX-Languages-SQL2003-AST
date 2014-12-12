@@ -3,6 +3,7 @@ use warnings FATAL => 'all';
 
 package MarpaX::Languages::SQL2003::AST::Actions::XML;
 use parent 'MarpaX::Languages::SQL2003::AST::Actions';
+use SUPER;
 use XML::LibXML;
 use Scalar::Util qw/blessed/;
 
@@ -31,6 +32,7 @@ sub _nonTerminalSemantic {
   my $self = shift;
 
   my ($lhs, @rhs) = $self->_getRuleDescription();
+
   my $maxRhs = $#rhs;
 
   $lhs =~ s/^<//;
@@ -65,5 +67,11 @@ sub _nonTerminalSemantic {
 
   return $rc;
 }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unicodeDelimitedIdentifier { super(); }
+
+# ----------------------------------------------------------------------------------------
 
 1;

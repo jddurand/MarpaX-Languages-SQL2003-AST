@@ -27,6 +27,10 @@ sub _nonTerminalSemantic { croak "Please implement the _nonTerminalSemantic acti
 
 # ----------------------------------------------------------------------------------------
 
+sub _rcName { croak "Please implement the _rcName action!"; }
+
+# ----------------------------------------------------------------------------------------
+
 sub _getRuleDescription {
   my ($self) = @_;
 
@@ -36,5 +40,11 @@ sub _getRuleDescription {
 
   return ($lhs, @rhs);
 }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unicodeDelimitedIdentifier { croak "Please implement the _unicodeDelimitedIdentifier action!"; }
+
+# ----------------------------------------------------------------------------------------
 
 1;

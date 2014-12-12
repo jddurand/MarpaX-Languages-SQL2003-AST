@@ -3,6 +3,7 @@ use warnings FATAL => 'all';
 
 package MarpaX::Languages::SQL2003::AST::Actions::Blessed;
 use parent 'MarpaX::Languages::SQL2003::AST::Actions';
+use SUPER;
 use Scalar::Util qw/blessed/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Blessed semantic actions
@@ -50,5 +51,11 @@ sub _nonTerminalSemantic {
 
   return bless(\@array, $lhs);
 }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unicodeDelimitedIdentifier { super(); }
+
+# ----------------------------------------------------------------------------------------
 
 1;
