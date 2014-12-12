@@ -87,9 +87,6 @@ sub _unicodeValue {
   if (! defined($self->{Unicode_Escape_Specifier}->{$Unicode_Escape_Specifier_Value})) {
     my $Unicode_Escape_Specifier_Hex = sprintf('%x', ord($Unicode_Escape_Specifier_Value));
     my $data = <<GRAMMAR;
-#
-# No notion of discard here. We can write everything in G1
-#
 :default ::= action => ::first
 :start ::= <Unicode delimited identifier value>
 
