@@ -104,12 +104,12 @@ _latin1'string'
 _utf8'some text'/* A comment */'Something else'
 'hello'
 
-__[ <007> token:Unicode:Unicode_Delimited_Identifier_Value ]__
+__[ <007> token:Unicode:Unicode_Delimited_Identifier ]__
 /***************************************************************************/
-U&"\0441\043F\0430\0441\0438\0431\043E"
+U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '#'
+U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '!'
 U&"m\00fcde"
-U&'\0441\043F\0430\0441\0438\0431\043E'
-U&'m\00fcde'
+U&"m\44fcde"
 
 __[ <007> token:Large object:Large_Object_Length_Token ]__
 /***************************************************************************/

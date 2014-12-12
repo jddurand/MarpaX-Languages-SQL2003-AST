@@ -70,7 +70,69 @@ sub _nonTerminalSemantic {
 
 # ----------------------------------------------------------------------------------------
 
+sub _lexemeValue {
+  my ($self, $node) = @_;
+
+  if (! defined($node)) {
+    return undef;
+  }
+
+  return $node->getAttribute('text');
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _lexemeStart {
+  my ($self, $node) = @_;
+
+  if (! defined($node)) {
+    return undef;
+  }
+
+  return $node->getAttribute('start');
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _lexemeLength {
+  my ($self, $node) = @_;
+
+  if (! defined($node)) {
+    return undef;
+  }
+
+  return $node->getAttribute('length');
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _childByIndex {
+  my ($self, $node, $index) = @_;
+
+  if (! defined($node)) {
+    return undef;
+  }
+
+  my $i = -1;
+  my $child = $node->firstChild();
+  while (++$i < $index) {
+    $child = $child->nextSibling();
+  }
+
+  return $child;
+}
+
+# ----------------------------------------------------------------------------------------
+
 sub _unicodeDelimitedIdentifier { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unicodeDelimitedIdentifierUescape { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _showProgressAndExit { super(); }
 
 # ----------------------------------------------------------------------------------------
 

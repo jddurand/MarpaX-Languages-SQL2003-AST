@@ -5,17 +5,14 @@
 # <host identifier> is approximated to [^\s]+ for any language             #
 # <regular identifier> is supposed to match <SQL language identifier>      #
 # <direct implementation-defined statement> is skipped.                    #
-# <escaped character> prefix is fixed to '\'                               #
-# <escaped character> and <non-escaped character> done as perl FireBird    #
+# UESCAPE is fully supported.                                              #
 # <embeded SQL TARGET LANGUAGE> are supposed to all be EXEC SQL            #
 # <host label identifier> is skipped                                       #
 # <host PL/I label variable> is skipped                                    #
 # <COBOL dbcs> is not implemented                                          #
-# In unicode strings ESCAPE sentence is supported but IGNORED              #
 #                                                                          #
 # Take care that in SQL-2003 string are single quoted, Unicode strings are #
-# double quoted! Ok... I extended the grammar to allow single quote for    #
-# Unicode Strings -;                                                       #
+# double quoted, and UESCAPE is single quoted.                             #
 #                                                                          #
 ############################################################################
 # Marpa specific constraints:                                              #
@@ -237,20 +234,22 @@
 
 <Unicode delimited identifier value> ~
 		/*LEX*/U /*LEX*/'&'
-                /*LEX*/(
-                  /*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"'
-                  |
-                  /*LEX*/['] <Unicode delimiter body L0> /*LEX*/[']
-                  )
+                /*LEX*/(/*LEX*/'"' <Unicode delimiter body L0> /*LEX*/'"')
 
 /* In the value phase we will revisit <Unicode delimited identifier> */
 
 <Unicode delimited identifier> ::=
 		<Unicode delimited identifier value>
-		<Unicode escape specifier>
                 semanticAction => _unicodeDelimitedIdentifier
+                |
+		<Unicode delimited identifier value>
+                /*LEX*/(<separator L0>)* 
+		<Unicode escape specifier>
+                semanticAction => _unicodeDelimitedIdentifierUescape
 
-<Unicode escape specifier> ::= ( UESCAPE /*LEX*/(/*LEX*/"'" <Unicode escape character L0> /*LEX*/"'") )?
+<Unicode escape specifier> ::= ( UESCAPE priority => 1
+                                 /*LEX*/(/*LEX*/"'" <Unicode escape character L0> /*LEX*/"'")
+                               )?
 
 <Unicode delimiter body L0> ~ /*LEX*/(<Unicode identifier part L0>)+
 
@@ -274,9 +273,9 @@
 <Unicode character escape value L0> ~ <Unicode escape character L0 ><Unicode escape character L0>
 
 /* We VOLONTARILY take ANY character as unicode escape: confirmity will be done at value post-processing v.s. UESCAPE eventual value */
-<Unicode escape character L0> ~ /*LEX*/[.]
+<Unicode escape character L0> ~ /*LEX*/[\s\S]
 
-<nondoublequote character L0> ~ /*LEX*/[^"] | /*LEX*/#x5c /*LEX*/'"'
+<nondoublequote character L0> ~ /*LEX*/[^"] | <Unicode escape character L0> /*LEX*/'"'
 
 <doublequote symbol L0> ~ /*LEX*/'""'
 
@@ -823,7 +822,7 @@
 	|	TREAT                              priority => 1
 	|	TRIGGER                            priority => 1
 	|	TRUE                               priority => 1
-	|	UESCAPE                            priority => 1
+/*	|	UESCAPE                            priority => 1 Prioritized only in the context of Unicode */
 	|	UNION                              priority => 1
 	|	UNIQUE                             priority => 1
 	|	UNKNOWN                            priority => 1
