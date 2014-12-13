@@ -19,24 +19,24 @@ my $tokenObj;
     $tokenObj = new_ok('MarpaX::Languages::SQL2003::AST');
     diag("Second grammar with <token>+ as value");
 }
-my $generalLiteralObj;
+my $literalObj;
 {
     no warnings;
-    local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <General_Literals>\n<General_Literals> ::= <General_Literal>+\n";
-    $generalLiteralObj = new_ok('MarpaX::Languages::SQL2003::AST');
-    diag("Third grammar with <General_Literal>+ as value");
+    local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Literals>\n<Literals> ::= <Literal>+\n";
+    $literalObj = new_ok('MarpaX::Languages::SQL2003::AST');
+    diag("Third grammar with <Literal>+ as value");
 }
 foreach (sort __PACKAGE__->section_data_names) {
     my $testName = $_;
     my $stringp = __PACKAGE__->section_data($testName);
-    if ($testName =~ /\b(?:token|general literal):/) {
+    if ($testName =~ /\b(?:token|literal):/) {
         subtest $testName => sub {
             foreach (split(/\n/, ${$stringp})) {
                 my $input = $_;
                 $input =~ s/^\s*//;
                 $input =~ s/\s*$//;
                 if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
-		    my $obj = ($testName =~ /\btoken:/) ? $tokenObj : $generalLiteralObj;
+		    my $obj = ($testName =~ /\btoken:/) ? $tokenObj : $literalObj;
                     my $xml = $obj->asXML($input
 					  # , trace_terminals => 1
 					 );
@@ -73,6 +73,10 @@ foreach (sort __PACKAGE__->section_data_names) {
 }
 
 __DATA__
+__[ <000> literal:Character String Literal:Character_String_Literal ]__
+/***************************************************************************/
+_anotherSetName'This' /* A Comment */ 'Other''String with a simple and an escaped quotes: \' inside'
+
 __[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
 A
@@ -92,20 +96,29 @@ __[ <003> token:Unsigned Numeric Literal:Unsigned_Numeric_Literal ]__
 1E+10
 1E-20
 
-__[ <004> token:National Character String Literal:National_Character_String_Literal ]__
+__[ <003> literal:Signed Numeric Literal:Signed_Numeric_Literal ]__
+/***************************************************************************/
++0
++0.21
+-0.21
+-.22
++1E+10
+-1E-20
+
+__[ <005> token:National Character String Literal:National_Character_String_Literal ]__
 /***************************************************************************/
 N'some text'
 n'some text'
 N'some text'/*A comment */'Another text'
 n'some text'/*A comment */'Another text'/* Another comment */
 
-__[ <005> token:Large Object Length Token:Large_Object_Length_Token ]__
+__[ <006> token:Large Object Length Token:Large_Object_Length_Token ]__
 /***************************************************************************/
 1G
 10K
 1000m
 
-__[ <007> token:Unicode Delimited Identifier:Unicode_Delimited_Identifier ]__
+__[ <008> token:Unicode Delimited Identifier:Unicode_Delimited_Identifier ]__
 /***************************************************************************/
 U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '#'
 U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '\'
@@ -113,21 +126,22 @@ U&"m\00fcde"
 U&"m\00fcde""m\00fcde"
 U&"m\00fcde"/* Comment */"m\00fcde"
 
-__[ <008> token:Large object:Large_Object_Length_Token ]__
+__[ <009> token:Large object:Large_Object_Length_Token ]__
 /***************************************************************************/
 1M
 100K
 2G
 
-__[ <007> token:Delimited Identifier:Delimited_Identifier ]__
+__[ <010> token:Delimited Identifier:Delimited_Identifier ]__
 /***************************************************************************/
 "This"
 "This \"quoted\""
 
-__[ <008> general literal:Character String Literal:Character_String_Literal ]__
+__[ <011> literal:Character String Literal:Character_String_Literal ]__
 /***************************************************************************/
 'This' 'String'
 _setName'This' 'String'
+_anotherSetName'This' /* A Comment */ 'Other''String with a simple and an escaped quotes: \' inside'
 
 __[ <100> SELECT ]__
 /***************************************************************************/

@@ -151,7 +151,7 @@ sub _rules {
   push(@rc, 'inaccessible is ok by default');
 #   push(@rc, ':default ::= action => [values] bless => ::lhs');
   push(@rc, ':default ::= action => _nonTerminalSemantic');
-  push(@rc, 'lexeme default = action => [start,length,value] latm => 1');
+  push(@rc, 'lexeme default = action => [start,length,value,value] latm => 1');
   if (defined($self->{start}->{number})) {
       push(@rc, ':start ::= ' . $self->{start}->{rule});
   }

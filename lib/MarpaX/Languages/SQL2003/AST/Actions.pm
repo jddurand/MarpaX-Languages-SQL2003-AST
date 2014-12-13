@@ -4,6 +4,7 @@ use warnings FATAL => 'all';
 package MarpaX::Languages::SQL2003::AST::Actions;
 use Marpa::R2;
 use Carp qw/croak/;
+ use Math::BigFloat;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Semantic actions generic class
 
@@ -36,7 +37,9 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 <optional pre final stars> ~ [*]*
 <discard> ~ <C style comment L0>
 
-<separator> ::= <discard>
+<discard many> ~ <discard>+
+
+<separator> ::= <discard many>
 SEPARATOR
 
 =head1 DESCRIPTION
@@ -97,7 +100,7 @@ sub _showProgressAndExit {
 # ----------------------------------------------------------------------------------------
 
 sub _unicodeDelimitedIdentifierValue {
-  my ($self, $start, $length, $Unicode_Delimited_Identifier_Value, $Unicode_Escape_Specifier_Value) = @_;
+  my ($self, $start, $length, $text, $Unicode_Escape_Specifier_Value) = @_;
 
   #
   # $Unicode_Escape_Specifier_Value is in the form 'X'
@@ -156,17 +159,17 @@ GRAMMAR
                                        # trace_terminals => 1,
                                        # trace_values => 1,
                                        semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
-  $r->read(\$Unicode_Delimited_Identifier_Value);
+  $r->read(\$text);
   #
   # Fake this is a lexeme
   #
-  my $text = ${$r->value};
+  my $value = ${$r->value};
   #
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($text);
-  return [$start, $length, $text];
+  utf8::upgrade($value);
+  return [$start, $length, $text, $value];
 }
 
 # ----------------------------------------------------------------------------------------
@@ -174,12 +177,9 @@ GRAMMAR
 sub _unicodeDelimitedIdentifier {
   my ($self, $Unicode_Delimited_Identifier_Lexeme) = @_;
 
-  my $Unicode_Delimited_Identifier_Value = $Unicode_Delimited_Identifier_Lexeme->[2];
+  my ($start, $length, $text, $value) = @{$Unicode_Delimited_Identifier_Lexeme};
 
-  my $start = $Unicode_Delimited_Identifier_Lexeme->[0];
-  my $length = $Unicode_Delimited_Identifier_Lexeme->[1];
-
-  return $self->_unicodeDelimitedIdentifierValue($start, $length, $Unicode_Delimited_Identifier_Value, '\\');
+  return $self->_unicodeDelimitedIdentifierValue($start, $length, $text, '\\');
 }
 
 # ----------------------------------------------------------------------------------------
@@ -187,10 +187,7 @@ sub _unicodeDelimitedIdentifier {
 sub _unicodeDelimitedIdentifierUescape {
   my ($self, $Unicode_Delimited_Identifier_Lexeme, $separator_L0_any, $Unicode_Escape_Specifier) = @_;
 
-  #
-  # $Unicode_Delimited_Identifier_Value is a lexeme, not yet processed
-  #
-  my $Unicode_Delimited_Identifier_Value = $Unicode_Delimited_Identifier_Lexeme->[2];
+  my $text = $Unicode_Delimited_Identifier_Lexeme->[2];
   #
   # $Unicode_Escape_Specifier is: 
   # <Unicode_Escape_Specifier> ::= <XXX_Maybe>
@@ -211,7 +208,7 @@ sub _unicodeDelimitedIdentifierUescape {
   substr($Unicode_Escape_Specifier_Value,  0, 1) = '';
   substr($Unicode_Escape_Specifier_Value, -1, 1) = '';
 
-  return $self->_unicodeDelimitedIdentifierValue($start, $length, $Unicode_Delimited_Identifier_Value, $Unicode_Escape_Specifier_Value);
+  return $self->_unicodeDelimitedIdentifierValue($start, $length, $text, $Unicode_Escape_Specifier_Value);
 }
 
 # ----------------------------------------------------------------------------------------
@@ -268,18 +265,15 @@ sub _UnicodeEscape {
 sub _nationalCharacterStringLiteral {
   my ($self, $nationalCharacterStringLiteral_Lexeme) = @_;
 
-  my $nationalCharacterStringLiteral_Value = $nationalCharacterStringLiteral_Lexeme->[2];
+  my ($start, $length, $text, $value) = @{$nationalCharacterStringLiteral_Lexeme};
 
-  my $start = $nationalCharacterStringLiteral_Lexeme->[0];
-  my $length = $nationalCharacterStringLiteral_Lexeme->[1];
-
-  return $self->_nationalCharacterStringLiteralValue($start, $length, $nationalCharacterStringLiteral_Value, '\\');
+  return $self->_nationalCharacterStringLiteralValue($start, $length, $text, '\\');
 }
 
 # ----------------------------------------------------------------------------------------
 
 sub _nationalCharacterStringLiteralValue {
-  my ($self, $start, $length, $nationalCharacterStringLiteral_Value, $Escape_Specifier_Value) = @_;
+  my ($self, $start, $length, $text, $Escape_Specifier_Value) = @_;
 
   $self->{National_Character_String_Literal_Grammar} //= {};
   if (! defined($self->{National_Character_String_Literal_Grammar}->{$Escape_Specifier_Value})) {
@@ -287,18 +281,22 @@ sub _nationalCharacterStringLiteralValue {
     my $data = <<GRAMMAR;
 :default ::= action => ::first
 :start ::= <National Character String Literal value>
+lexeme default = latm => 1
 
 <_quote> ~ [']
 <quote> ~ <_quote>
 
 <_notquote> ~ [^']
-<notquote> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+<notquote symbol> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+<quote symbol> ~ <_quote> <_quote>
+
+<inner representation> ::= <notquote symbol> | <quote symbol>
 
 <character representation many> ::= <character representation>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 <National Character String Literal value> ::= ('N':i) <character representation many>
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <notquote>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 
 $SEPARATOR
 GRAMMAR
@@ -308,17 +306,17 @@ GRAMMAR
                                        # trace_terminals => 1,
                                        # trace_values => 1,
                                        semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
-  $r->read(\$nationalCharacterStringLiteral_Value);
+  $r->read(\$text);
   #
   # Fake this is a lexeme
   #
-  my $text = ${$r->value};
+  my $value = ${$r->value};
   #
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($text);
-  return [$start, $length, $text];
+  utf8::upgrade($value);
+  return [$start, $length, $text, $value];
 }
 
 # ----------------------------------------------------------------------------------------
@@ -326,18 +324,15 @@ GRAMMAR
 sub _characterStringLiteral {
   my ($self, $characterStringLiteral_Lexeme) = @_;
 
-  my $characterStringLiteral_Value = $characterStringLiteral_Lexeme->[2];
+  my ($start, $length, $text, $value) = @{$characterStringLiteral_Lexeme};
 
-  my $start = $characterStringLiteral_Lexeme->[0];
-  my $length = $characterStringLiteral_Lexeme->[1];
-
-  return $self->_characterStringLiteralValue($start, $length, $characterStringLiteral_Value, '\\');
+  return $self->_characterStringLiteralValue($start, $length, $text, '\\');
 }
 
 # ----------------------------------------------------------------------------------------
 
 sub _characterStringLiteralValue {
-  my ($self, $start, $length, $characterStringLiteral_Value, $Escape_Specifier_Value) = @_;
+  my ($self, $start, $length, $text, $Escape_Specifier_Value) = @_;
 
   $self->{Character_String_Literal_Grammar} //= {};
   if (! defined($self->{Character_String_Literal_Grammar}->{$Escape_Specifier_Value})) {
@@ -345,25 +340,41 @@ sub _characterStringLiteralValue {
     my $data = <<GRAMMAR;
 :default ::= action => ::first
 :start ::= <Character String Literal value>
+lexeme default = latm => 1        # LATM is important here because <set name> and <character representation> compete each other
 
 <_quote> ~ [']
 <quote> ~ <_quote>
 
 <_notquote> ~ [^']
-<notquote> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+<notquote symbol> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+<quote symbol> ~ <_quote> <_quote>
 
 <character representation many> ::= <character representation>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
-<not space> ~ [^\\s]
-<not space many> ::= <not space>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 
-<Character String Literal introducer> ::= ('_':i) <not space many> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<_period> ~ '.'
+<_simple latin letter> ~ [a-zA-Z]
+<_digit> ~ [0-9]
+<_identifier start> ~ <_simple latin letter>
+<_identifier part> ~  <_simple latin letter> | <_digit>
+<_identifier part many> ~ <_identifier part>+
+
+<_schema name> ~ <_catalog name> <_period> <_unqualified schema name> | <_unqualified schema name>
+<_unqualified schema name> ~ <_identifier>
+<_catalog name> ~ <_identifier>
+
+<_identifier> ~ <_identifier start> <_identifier part many>
+
+<set name> ~ <_schema name> <_period> <_identifier> | <_identifier>
+
+<Character String Literal introducer> ::= ('_':i) <set name>
 
 <Character String Literal value> ::= <Character String Literal introducer> <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithIntroducer
                                    |
                                    <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithoutIntroducer
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <notquote>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner representation> ::= <notquote symbol> | <quote symbol>
 
 $SEPARATOR
 GRAMMAR
@@ -373,7 +384,7 @@ GRAMMAR
                                        # trace_terminals => 1,
                                        # trace_values => 1,
                                        semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
-  $r->read(\$characterStringLiteral_Value);
+  $r->read(\$text);
   #
   # Fake this is a lexeme.
   # Here the value is guaranteed to be an array reference containing:
@@ -382,21 +393,21 @@ GRAMMAR
   #
   my $arrayp = ${$r->value};
 
-  my ($label, $introducerValue, $text) = @{$arrayp};
+  my ($label, $introducerValue, $value) = @{$arrayp};
   #
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
   utf8::upgrade($introducerValue);
-  utf8::upgrade($text);
-  return [$start, $length, $text, $label, $introducerValue];
+  utf8::upgrade($value);
+  return [$start, $length, $text, $value, $label, $introducerValue];
 }
 
 # ----------------------------------------------------------------------------------------
 
 sub _characterStringLiteralWithIntroducer {
   my ($self, $introducer, $value) = @_;
-
+  # Internal action
   return ['introducer', $introducer, $value];
 }
 
@@ -404,8 +415,28 @@ sub _characterStringLiteralWithIntroducer {
 
 sub _characterStringLiteralWithoutIntroducer {
   my ($self, $value) = @_;
-
+  # Internal action
   return ['introducer', '', $value];
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _signedNumericLiteral {
+  my ($self, $lexeme) = @_;
+
+  my ($start, $length, $text, $value) = @{$lexeme};
+
+  return [$start, $length, $text, Math::BigFloat->new("$value")->bstr()];
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _unsignedNumericLiteral {
+  my ($self, $lexeme) = @_;
+
+  my ($start, $length, $text, $value) = @{$lexeme};
+
+  return [$start, $length, $text, Math::BigFloat->new("$value")->bstr()];
 }
 
 # ----------------------------------------------------------------------------------------

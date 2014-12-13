@@ -41,22 +41,24 @@ sub _nonTerminalSemantic {
   my $node = XML::LibXML::Element->new($lhs);
 
   foreach (0..$#_) {
+    my $index = $_;
     my $child;
-    if (! blessed($_[$_])) {
+    if (! blessed($_[$index])) {
       #
       # This is a lexeme
       #
-      $child = XML::LibXML::Element->new($rhs[$_]);
-      $child->setAttribute('start', $_[$_]->[0]);
-      $child->setAttribute('length', $_[$_]->[1]);
-      $child->setAttribute('text', $_[$_]->[2]);
-      my $i = 3;
-      while ($#{$_[$_]} >= $i) {
-	$child->setAttribute($_[$_]->[$i], $_[$_]->[$i+1]);
+      $child = XML::LibXML::Element->new($rhs[$index]);
+      $child->setAttribute('start',  $_[$index]->[0]);
+      $child->setAttribute('length', $_[$index]->[1]);
+      $child->setAttribute('text',   $_[$index]->[2]);
+      $child->setAttribute('value',  $_[$index]->[3]);
+      my $i = 4;
+      while ($#{$_[$index]} >= $i) {
+	$child->setAttribute($_[$index]->[$i], $_[$index]->[$i+1]);
 	$i += 2;
       }
     } else {
-      $child = $_[$_];
+      $child = $_[$index];
     }
     $node->addChild($child);
   }
@@ -82,7 +84,7 @@ sub _lexemeValue {
     return undef;
   }
 
-  return $node->getAttribute('text');
+  return $node->getAttribute('value');
 }
 
 # ----------------------------------------------------------------------------------------
@@ -146,6 +148,14 @@ sub _nationalCharacterStringLiteral { super(); }
 # ----------------------------------------------------------------------------------------
 
 sub _characterStringLiteral { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _signedNumericLiteral { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unsignedNumericLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
 

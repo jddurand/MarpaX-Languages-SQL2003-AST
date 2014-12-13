@@ -38,13 +38,20 @@ sub _nonTerminalSemantic {
 
   foreach (0..$#_) {
     my $child;
-    if (! blessed($_[$_])) {
+    my $index = $_;
+    if (! blessed($_[$index])) {
       #
       # This is a lexeme
       #
-      $child = bless($_[$_], $rhs[$_]);
+      my $raw = {start => $_[$index]->[0], length => $_[$index]->[1], text => $_[$index]->[2], value => $_[$index]->[3]};
+      my $i = 4;
+      while ($#{$_[$index]} >= $i) {
+	$raw->{$_[$index]->[$i]} = $_[$index]->[$i+1];
+	$i += 2;
+      }
+      $child = bless($raw, $rhs[$index]);
     } else {
-      $child = $_[$_];
+      $child = $_[$index];
     }
     push(@array, $child);
   }
@@ -119,6 +126,14 @@ sub _nationalCharacterStringLiteral { super(); }
 # ----------------------------------------------------------------------------------------
 
 sub _characterStringLiteral { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _signedNumericLiteral { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _unsignedNumericLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
 
