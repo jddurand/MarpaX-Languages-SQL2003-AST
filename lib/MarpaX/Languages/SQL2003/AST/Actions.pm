@@ -421,16 +421,6 @@ sub _characterStringLiteralWithoutIntroducer {
 
 # ----------------------------------------------------------------------------------------
 
-sub _signedNumericLiteral {
-  my ($self, $lexeme) = @_;
-
-  my ($start, $length, $text, $value) = @{$lexeme};
-
-  return [$start, $length, $text, Math::BigFloat->new("$value")->bstr()];
-}
-
-# ----------------------------------------------------------------------------------------
-
 sub _unsignedNumericLiteral {
   my ($self, $lexeme) = @_;
 

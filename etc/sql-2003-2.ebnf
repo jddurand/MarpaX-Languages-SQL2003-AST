@@ -923,9 +923,7 @@
 <hexit> ::= <digit> | A | B | C | D | E | F | a | b | c | d | e | f
 
 /* Revisited to truely match when there is a sign. In the other case the unsigned rule will take over */
-/* <signed numeric literal L0> ~ <sign L0> <unsigned numeric literal L0 internal> */
-<signed numeric literal L0> ~ <sign L0> <unsigned numeric literal L0 internal>
-<signed numeric literal> ::= <signed numeric literal L0> semanticAction => _signedNumericLiteral
+<signed numeric literal> ::= <sign>? <unsigned numeric literal>
 
 <unsigned numeric literal L0 internal> ~ <exact numeric literal L0> | <approximate numeric literal L0>
 <unsigned numeric literal L0> ~ <unsigned numeric literal L0 internal>

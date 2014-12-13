@@ -92,15 +92,6 @@ __[ <003> token:Unsigned Numeric Literal:Unsigned_Numeric_Literal ]__
 1E+10
 1E-20
 
-__[ <003> literal:Signed Numeric Literal:Signed_Numeric_Literal ]__
-/***************************************************************************/
-+0
-+0.21
--0.21
--.22
-+1E+10
--1E-20
-
 __[ <005> token:National Character String Literal:National_Character_String_Literal ]__
 /***************************************************************************/
 N'some text'
