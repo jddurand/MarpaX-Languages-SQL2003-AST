@@ -7,7 +7,7 @@ use XML::LibXML;
 
 our $lexemesXpath = XML::LibXML::XPathExpression->new('//*[@start]');
 
-plan tests => 3 + scalar(__PACKAGE__->section_data_names);
+plan tests => 4 + scalar(__PACKAGE__->section_data_names);
 
 use_ok('MarpaX::Languages::SQL2003::AST');
 
@@ -19,19 +19,27 @@ my $tokenObj;
     $tokenObj = new_ok('MarpaX::Languages::SQL2003::AST');
     diag("Second grammar with <token>+ as value");
 }
+my $generalLiteralObj;
+{
+    no warnings;
+    local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <General_Literals>\n<General_Literals> ::= <General_Literal>+\n";
+    $generalLiteralObj = new_ok('MarpaX::Languages::SQL2003::AST');
+    diag("Third grammar with <General_Literal>+ as value");
+}
 foreach (sort __PACKAGE__->section_data_names) {
     my $testName = $_;
     my $stringp = __PACKAGE__->section_data($testName);
-    if ($testName =~ /\btoken:/) {
+    if ($testName =~ /\b(?:token|general literal):/) {
         subtest $testName => sub {
             foreach (split(/\n/, ${$stringp})) {
                 my $input = $_;
                 $input =~ s/^\s*//;
                 $input =~ s/\s*$//;
                 if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
-                    my $xml = $tokenObj->asXML($input
-                                               # , trace_terminals => 1
-                        );
+		    my $obj = ($testName =~ /\btoken:/) ? $tokenObj : $generalLiteralObj;
+                    my $xml = $obj->asXML($input
+					  # , trace_terminals => 1
+					 );
 		    diag("\n" . ('=' x length($input)) . "\n$input\n" . ('=' x length($input)) . "\n" . $xml->toString(1));
                     my %wantedLexemes = ();
                     map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
@@ -105,11 +113,21 @@ U&"m\00fcde"
 U&"m\00fcde""m\00fcde"
 U&"m\00fcde"/* Comment */"m\00fcde"
 
-__[ <007> token:Large object:Large_Object_Length_Token ]__
+__[ <008> token:Large object:Large_Object_Length_Token ]__
 /***************************************************************************/
 1M
 100K
 2G
+
+__[ <007> token:Delimited Identifier:Delimited_Identifier ]__
+/***************************************************************************/
+"This"
+"This \"quoted\""
+
+__[ <008> general literal:Character String Literal:Character_String_Literal ]__
+/***************************************************************************/
+'This' 'String'
+_setName'This' 'String'
 
 __[ <100> SELECT ]__
 /***************************************************************************/
