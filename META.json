@@ -82,19 +82,19 @@
    "provides" : {
       "MarpaX::Languages::SQL2003::AST" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       },
       "MarpaX::Languages::SQL2003::AST::Actions" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       },
       "MarpaX::Languages::SQL2003::AST::Actions::Blessed" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions/Blessed.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       },
       "MarpaX::Languages::SQL2003::AST::Actions::XML" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions/XML.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       }
    },
    "release_status" : "testing",
@@ -110,6 +110,6 @@
          "web" : "https://github.com/jddurand/marpax-languages-sql2003-ast"
       }
    },
-   "version" : "0.002"
+   "version" : "0.003"
 }
 

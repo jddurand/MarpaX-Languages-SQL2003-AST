@@ -8,7 +8,7 @@ MarpaX::Languages::SQL2003::AST - Translate SQL-2003 source to an AST
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

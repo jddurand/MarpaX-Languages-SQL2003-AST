@@ -70,7 +70,7 @@ foreach (sort __PACKAGE__->section_data_names) {
     } else {
       my $input = ${$stringp};
       my $xml = $obj->asXML($input
-			    , trace_terminals => 1
+			    # , trace_terminals => 1
 			   );
       my $length = length($input);
       $length = 78 if ($length > 78);

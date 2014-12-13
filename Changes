@@ -1,6 +1,11 @@
 Changelog for MarpaX-Languages-SQL2003-AST
 
-0.002 2014-12-13T12:50:41
+0.003 2014-12-13T21:12:36
+ [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - Period causes trouble
+ - XML::LibXML and UTF8 flag
+
+0.002 2014-12-13T12:50:41Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - schema name fixes
  - bin/sql2003toxml
