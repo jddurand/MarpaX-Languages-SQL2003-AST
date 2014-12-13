@@ -80,6 +80,9 @@ foreach (sort __PACKAGE__->section_data_names) {
 }
 
 __DATA__
+__[ <000> General statements ]__
+SELECT user.* FROM user;
+
 __[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
 A
@@ -157,4 +160,5 @@ CREATE CHARACTER SET bob.charset_1 AS GET LATIN1 COLLATE bob.collation_1;
 
 __[ <102> General statements ]__
 /* Found at https://github.com/nilportugues/sql-query-builder */
+SELECT user.* FROM user;
 SELECT user.user_id, user.name, user.email FROM user;

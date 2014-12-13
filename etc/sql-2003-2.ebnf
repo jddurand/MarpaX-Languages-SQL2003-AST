@@ -2042,12 +2042,12 @@
 <select sublist> ::= <derived column> | <qualified asterisk>
 
 <qualified asterisk> ::=
-		<asterisked identifier chain> <period> <asterisk>
+		/*LEX*/(<asterisked identifier chain L0> <period L0> <asterisk L0>)
 	|	<all fields reference>
 
-<asterisked identifier chain> ::= <asterisked identifier> ( <period> <asterisked identifier> )*
+<asterisked identifier chain L0> ~ <asterisked identifier L0> /*LEX*/( <period L0> <asterisked identifier L0> )*
 
-<asterisked identifier> ::= <identifier>
+<asterisked identifier L0> ~ <identifier L0 internal>
 
 <derived column> ::= <value expression> <as clause>?
 
