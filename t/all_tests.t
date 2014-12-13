@@ -134,7 +134,6 @@ __[ <100> SELECT ]__
 /***************************************************************************/
 /* Please note that SQL2003 *REQUIRES* a FROM */
 SELECT _latin1'string' FROM dual;
-/*
 SELECT _latin1'string' COLLATE latin1_danish_ci FROM dual;
 SELECT N'some text' FROM dual;
 SELECT n'some text' FROM dual;
@@ -143,10 +142,8 @@ SELECT 'hello', '"hello"', '""hello""', 'hel''lo', '\'hello' FROM dual;
 SELECT "hello", "'hello'", "''hello''", "hel""lo", "\"hello" FROM dual;
 SELECT 'This\nIs\nFour\nLines' FROM dual;
 SELECT 'disappearing\ backslash' FROM dual;
-*/
+
 __[ <101> CREATE CHARACTER SET ]__
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1;
-/*
 CREATE CHARACTER SET bob.charset_1 GET LATIN1;
 CREATE CHARACTER SET bob.charset_1 AS GET LATIN1 COLLATE bob.collation_1;
-*/
