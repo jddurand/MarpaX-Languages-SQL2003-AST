@@ -1,7 +1,8 @@
 Changelog for MarpaX-Languages-SQL2003-AST
 
-0.003 2014-12-13T21:12:36
+0.003 2014-12-13T21:14:33
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - t/all_tests.c: commented trace_terminals
  - Period causes trouble
  - XML::LibXML and UTF8 flag
 
