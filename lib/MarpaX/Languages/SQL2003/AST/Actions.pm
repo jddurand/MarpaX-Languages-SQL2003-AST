@@ -9,6 +9,36 @@ use Carp qw/croak/;
 
 # VERSION
 
+our $SEPARATOR = <<SEPARATOR;
+_WS ~ [\\s]+
+<space any L0> ~ _WS
+<discard> ~ <space any L0>
+
+_COMMENT_EVERYYHERE_START ~ '--'
+_COMMENT_EVERYYHERE_END ~ [^\\n]*
+_COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
+<SQL style comment L0> ~ _COMMENT
+<discard> ~ <SQL style comment L0>
+
+############################################################################
+# Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
+############################################################################
+<C style comment L0> ~ '/*' <comment interior> '*/'
+<comment interior> ~
+    <optional non stars>
+    <optional star prefixed segments>
+    <optional pre final stars>
+<optional non stars> ~ [^*]*
+<optional star prefixed segments> ~ <star prefixed segment>*
+<star prefixed segment> ~ <stars> [^/*] <optional star free text>
+<stars> ~ [*]+
+<optional star free text> ~ [^*]*
+<optional pre final stars> ~ [*]*
+<discard> ~ <C style comment L0>
+
+<separator> ::= <discard>
+SEPARATOR
+
 =head1 DESCRIPTION
 
 This modules give a semantic actions generic class associated to SQL-2003 grammar
@@ -83,15 +113,15 @@ sub _unicodeDelimitedIdentifierValue {
   #
   # Now that we have the unicode specifier, redo on-the-fly a grammar that is handling the full text!
   #
-  $self->{Unicode_Escape_Specifier} //= {};
-  if (! defined($self->{Unicode_Escape_Specifier}->{$Unicode_Escape_Specifier_Value})) {
+  $self->{Unicode_Escape_Specifier_Grammar} //= {};
+  if (! defined($self->{Unicode_Escape_Specifier_Grammar}->{$Unicode_Escape_Specifier_Value})) {
     my $Unicode_Escape_Specifier_Hex = sprintf('%x', ord($Unicode_Escape_Specifier_Value));
     my $data = <<GRAMMAR;
 :default ::= action => ::first
 :start ::= <Unicode delimited identifier value>
 
 <Unicode delimiter body many> ::= <Unicode delimiter body>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
-<Unicode delimited identifier value> ::= ('U&') <Unicode delimiter body many>
+<Unicode delimited identifier value> ::= ('U&':i) <Unicode delimiter body many>
 
 <nondoublequote character> ~ [^"]
                            | [\\x{$Unicode_Escape_Specifier_Hex}] '"'
@@ -118,37 +148,11 @@ sub _unicodeDelimitedIdentifierValue {
 <Unicode 6 digit escape value> ~ [\\x{$Unicode_Escape_Specifier_Hex}] '+' <hexit> <hexit> <hexit> <hexit> <hexit> <hexit>
 <Unicode character escape value> ~ [\\x{$Unicode_Escape_Specifier_Hex}] [\\x{$Unicode_Escape_Specifier_Hex}]
 
-_WS ~ [\\s]+
-<space any L0> ~ _WS
-<discard> ~ <space any L0>
-
-_COMMENT_EVERYYHERE_START ~ '--'
-_COMMENT_EVERYYHERE_END ~ [^\\n]*
-_COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
-<SQL style comment L0> ~ _COMMENT
-<discard> ~ <SQL style comment L0>
-
-############################################################################
-# Discard of a C comment, c.f. https://gist.github.com/jeffreykegler/5015057
-############################################################################
-<C style comment L0> ~ '/*' <comment interior> '*/'
-<comment interior> ~
-    <optional non stars>
-    <optional star prefixed segments>
-    <optional pre final stars>
-<optional non stars> ~ [^*]*
-<optional star prefixed segments> ~ <star prefixed segment>*
-<star prefixed segment> ~ <stars> [^/*] <optional star free text>
-<stars> ~ [*]+
-<optional star free text> ~ [^*]*
-<optional pre final stars> ~ [*]*
-<discard> ~ <C style comment L0>
-
-<separator> ::= <discard>
+$SEPARATOR
 GRAMMAR
-    $self->{Unicode}->{$Unicode_Escape_Specifier_Value} = Marpa::R2::Scanless::G->new({source => \$data});
+    $self->{Unicode_Escape_Specifier_Grammar}->{$Unicode_Escape_Specifier_Value} = Marpa::R2::Scanless::G->new({source => \$data});
   }
-  my $r = Marpa::R2::Scanless::R->new({grammar => $self->{Unicode}->{$Unicode_Escape_Specifier_Value},
+  my $r = Marpa::R2::Scanless::R->new({grammar => $self->{Unicode_Escape_Specifier_Grammar}->{$Unicode_Escape_Specifier_Value},
                                        # trace_terminals => 1,
                                        # trace_values => 1,
                                        semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
@@ -170,9 +174,6 @@ GRAMMAR
 sub _unicodeDelimitedIdentifier {
   my ($self, $Unicode_Delimited_Identifier_Lexeme) = @_;
 
-  #
-  # $Unicode_Delimited_Identifier_Value is a lexeme, not yet processed
-  #
   my $Unicode_Delimited_Identifier_Value = $Unicode_Delimited_Identifier_Lexeme->[2];
 
   my $start = $Unicode_Delimited_Identifier_Lexeme->[0];
@@ -260,6 +261,64 @@ sub _UnicodeEscape {
   substr($unicode, 0, 1) = '';
 
   return $unicode;
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _nationalCharacterStringLiteral {
+  my ($self, $nationalCharacterStringLiteral_Lexeme) = @_;
+
+  my $nationalCharacterStringLiteral_Value = $nationalCharacterStringLiteral_Lexeme->[2];
+
+  my $start = $nationalCharacterStringLiteral_Lexeme->[0];
+  my $length = $nationalCharacterStringLiteral_Lexeme->[1];
+
+  return $self->_nationalCharacterStringLiteralValue($start, $length, $nationalCharacterStringLiteral_Value, '\\');
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _nationalCharacterStringLiteralValue {
+  my ($self, $start, $length, $nationalCharacterStringLiteral_Value, $Escape_Specifier_Value) = @_;
+
+  $self->{National_Character_String_Literal_Grammar} //= {};
+  if (! defined($self->{National_Character_String_Literal_Grammar}->{$Escape_Specifier_Value})) {
+    my $Escape_Specifier_Value_Hex = sprintf('%x', ord($Escape_Specifier_Value));
+    my $data = <<GRAMMAR;
+:default ::= action => ::first
+:start ::= <National Character String Literal value>
+
+<_quote> ~ [']
+<quote> ~ <_quote>
+
+<_notquote> ~ [^']
+<notquote> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+
+<character representation many> ::= <character representation>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<National Character String Literal value> ::= ('N':i) <character representation many>
+
+<character representation> ::= (<quote>) <inner> (<quote>)
+<inner> ::= <notquote>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+
+$SEPARATOR
+GRAMMAR
+    $self->{National_Character_String_Literal_Grammar}->{$Escape_Specifier_Value} = Marpa::R2::Scanless::G->new({source => \$data});
+  }
+  my $r = Marpa::R2::Scanless::R->new({grammar => $self->{National_Character_String_Literal_Grammar}->{$Escape_Specifier_Value},
+                                       # trace_terminals => 1,
+                                       # trace_values => 1,
+                                       semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
+  $r->read(\$nationalCharacterStringLiteral_Value);
+  #
+  # Fake this is a lexeme
+  #
+  my $text = ${$r->value};
+  #
+  # Unicode stuff. Make sure this has the UTF8 flag in perl.
+  # Otherwise you might hit the "error: string is not in UTF-8".
+  #
+  utf8::upgrade($text);
+  return [$start, $length, $text];
 }
 
 # ----------------------------------------------------------------------------------------

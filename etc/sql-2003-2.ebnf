@@ -883,7 +883,9 @@
 
 <quote symbol L0> ~ /*LEX*/"'" /*LEX*/"'"
 
-<national character string literal> ~
+<national character string literal> ::= <national character string literal L0> semanticAction => _nationalCharacterStringLiteral
+
+<national character string literal L0> ~
                 /*LEX*/'N' <quote L0> /*LEX*/(<character representation L0>)* <quote L0>
                 /*LEX*/( /*LEX*/(<separator L0>)* <quote L0> /*LEX*/(<character representation L0>)* <quote L0>)*
 
