@@ -1054,7 +1054,8 @@
 
 <qualified identifier> ~ <qualified identifier L0>
 
-<column name> ::= <identifier>
+<column name L0> ~ <identifier L0 internal>
+<column name> ~ <column name L0>
 
 <correlation name> ::= <identifier>
 
@@ -1072,9 +1073,9 @@
 
 <cursor name> ::= <local qualified name>
 
-<local qualified name> ::= ( <local qualifier> <period> )? <qualified identifier>
+<local qualified name> ~ /*LEX*/( <local qualifier L0> <period L0> )? <qualified identifier L0>
 
-<local qualifier> ::= MODULE
+<local qualifier L0> ~ /*LEX*/MODULE
 
 <host parameter name> ::= <colon> <identifier>
 
@@ -1100,7 +1101,7 @@
 
 <schema_resolved user_defined type name> ::= <user_defined type name>
 
-<schema qualified type name> ::= ( <schema name> <period> )? <qualified identifier>
+<schema qualified type name> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <qualified identifier L0>
 
 <attribute name> ::= <identifier>
 
@@ -1339,13 +1340,13 @@
 
 <default specification> ::= DEFAULT
 
-<identifier chain> ::= <identifier> ( <period> <identifier> )*
+<identifier chain> ~ <identifier L0 internal> /*LEX*/( <period L0> <identifier L0 internal> )*
 
 <basic identifier chain> ::= <identifier chain>
 
 <column reference> ::=
 		<basic identifier chain>
-	|	MODULE <period> <qualified identifier> <period> <column name>
+	|	/*LEX*/(/*LEX*/MODULE <period L0> <qualified identifier L0> <period L0> <column name L0>)
 
 <SQL parameter reference> ::= <basic identifier chain>
 
@@ -2371,7 +2372,7 @@
 
 <routine invocation> ::= <routine name> <SQL argument list>
 
-<routine name> ::= ( <schema name> <period> )? <qualified identifier>
+<routine name> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <qualified identifier L0>
 
 <SQL argument list> ::= <left paren> ( <SQL argument> ( <comma> <SQL argument> )* )? <right paren>
 
@@ -2895,7 +2896,7 @@
 		( INSTANCE | STATIC | CONSTRUCTOR )? METHOD <method name> <SQL parameter declaration list>
 		<returns clause> ( SPECIFIC <specific method name> )?
 
-<specific method name> ::= ( <schema name> <period> )? <qualified identifier>
+<specific method name> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <qualified identifier L0>
 
 <method characteristics> ::= <method characteristic>+
 
