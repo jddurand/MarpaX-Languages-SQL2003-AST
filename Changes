@@ -1,0 +1,36 @@
+Changelog for MarpaX-Languages-SQL2003-AST
+
+0.002 2014-12-13T12:03:06
+ [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - t/all_tests.t: re-enable full statements tests
+
+0.001 2014-12-13T11:18:46Z
+ [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - Signed Numeric Literal reversal
+ - Remove temporary <000> test
+ - Signed numeric literals
+ - Character String Literal: dev+
+ - National Character String: dev+
+ - General Literal: t+
+ - Do not say that multiplier is a <token>
+ - AST/Actions.pm: renamed _unicodeValue to
+   _unicodeDelimitedIdentifierValue
+ - AST/Actions.pm: removed a bad comment
+ - Unicde Delimited Identifier fix v.s. separator
+ - UESCAPE post-processing
+ - etc/bnf2marpa.pl: action semantic
+ - Actions: subclassing dev+
+ - Large Object Length
+ - dev+
+ - String Literal: dev+
+ - t+
+ - SQL2003/AST.pm: parse -> _parse_debug for my private usage
+ - t/all_tests.t: removed trace_terminals
+ - Quoted String Literal fixed
+ - Packaging: dev+
+ - SQL2003/AST.pm: fix lexeme generated name
+ - etc/bnf2marpa.pl: fix lexeme generated name
+ - Preparation
+ - Dist::Zilla configuration
+ - .git configuration
+
