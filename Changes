@@ -1,7 +1,10 @@
 Changelog for MarpaX-Languages-SQL2003-AST
 
-0.002 2014-12-13T12:03:06
+0.002 2014-12-13T12:50:41
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - schema name fixes
+ - bin/sql2003toxml
+ - For release
  - t/all_tests.t: re-enable full statements tests
 
 0.001 2014-12-13T11:18:46Z
