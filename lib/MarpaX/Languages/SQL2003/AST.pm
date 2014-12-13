@@ -3800,7 +3800,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Character_Representation_Many> ::= <Character_Representation>+ rank => 0
 <Ada_Initial_Value> ::= <Ada_Assignment_Operator> <Character_Representation_Many> rank => 0
 <Ada_Assignment_Operator> ::= <Colon> <Equals_Operator> rank => 0
-<Ada_Host_Identifier> ::= <Lex576_Many> rank => 0
+<Ada_Host_Identifier> ~ <Identifier_L0_Internal>
 <Ada_Type_Specification> ::= <Ada_Qualified_Type_Specification> rank => 0
                            | <Ada_Unqualified_Type_Specification> rank => -1
                            | <Ada_Derived_Type_Specification> rank => -2
@@ -3809,16 +3809,16 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Gen3585> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
 <Gen3585_Maybe> ::= <Gen3585> rank => 0
 <Gen3585_Maybe> ::= rank => -1
-<Ada_Qualified_Type_Specification> ::= <Lex577> <Period> <CHAR> <Gen3585_Maybe> <Left_Paren> <Lex578> <Double_Period> <Length> <Right_Paren> rank => 0
-                                     | <Lex577> <Period> <SMALLINT> rank => -1
-                                     | <Lex577> <Period> <INT> rank => -2
-                                     | <Lex577> <Period> <BIGINT> rank => -3
-                                     | <Lex577> <Period> <REAL> rank => -4
-                                     | <Lex577> <Period> <DOUBLE_PRECISION> rank => -5
-                                     | <Lex577> <Period> <BOOLEAN> rank => -6
-                                     | <Lex577> <Period> <SQLSTATE_TYPE> rank => -7
-                                     | <Lex577> <Period> <INDICATOR_TYPE> rank => -8
-<Ada_Unqualified_Type_Specification> ::= <CHAR> <Left_Paren> <Lex578> <Double_Period> <Length> <Right_Paren> rank => 0
+<Ada_Qualified_Type_Specification> ::= <Lex576> <Period> <CHAR> <Gen3585_Maybe> <Left_Paren> <Lex577> <Double_Period> <Length> <Right_Paren> rank => 0
+                                     | <Lex576> <Period> <SMALLINT> rank => -1
+                                     | <Lex576> <Period> <INT> rank => -2
+                                     | <Lex576> <Period> <BIGINT> rank => -3
+                                     | <Lex576> <Period> <REAL> rank => -4
+                                     | <Lex576> <Period> <DOUBLE_PRECISION> rank => -5
+                                     | <Lex576> <Period> <BOOLEAN> rank => -6
+                                     | <Lex576> <Period> <SQLSTATE_TYPE> rank => -7
+                                     | <Lex576> <Period> <INDICATOR_TYPE> rank => -8
+<Ada_Unqualified_Type_Specification> ::= <CHAR> <Left_Paren> <Lex577> <Double_Period> <Length> <Right_Paren> rank => 0
                                        | <SMALLINT> rank => -1
                                        | <INT> rank => -2
                                        | <BIGINT> rank => -3
@@ -3882,7 +3882,7 @@ lexeme default = action => [start,length,value,value] latm => 1
                      | <unsigned> <char> rank => -1
                      | <unsigned> <short> rank => -2
 <C_Array_Specification> ::= <Left_Bracket> <Length> <Right_Bracket> rank => 0
-<C_Host_Identifier> ::= <Lex593_Many> rank => 0
+<C_Host_Identifier> ~ <Identifier_L0_Internal>
 <C_Derived_Variable> ::= <C_Varchar_Variable> rank => 0
                        | <C_Nchar_Variable> rank => -1
                        | <C_Nchar_Varying_Variable> rank => -2
@@ -3950,9 +3950,9 @@ lexeme default = action => [start,length,value,value] latm => 1
 <C_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <C_Initial_Value> ::= <Equals_Operator> <Character_Representation_Many> rank => 0
 <Embedded_SQL_Cobol_Program> ::= <EXEC> <SQL> rank => 0
-<Cobol_Host_Identifier> ::= <Lex594_Many> rank => 0
-<Gen3730> ::= <Lex595> rank => 0
-            | <Lex596> rank => -1
+<Cobol_Host_Identifier> ~ <Identifier_L0_Internal>
+<Gen3730> ::= <Lex592> rank => 0
+            | <Lex593> rank => -1
 <Character_Representation_Any> ::= <Character_Representation>* rank => 0
 <Cobol_Variable_Definition> ::= <Gen3730> <Cobol_Host_Identifier> <Cobol_Type_Specification> <Character_Representation_Any> <Period> rank => 0
 <Cobol_Type_Specification> ::= <Cobol_Character_Type> rank => 0
@@ -4061,11 +4061,11 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Gen3837> ::= <Left_Paren> <Length> <Right_Paren> rank => 0
 <Gen3837_Maybe> ::= <Gen3837> rank => 0
 <Gen3837_Maybe> ::= rank => -1
-<Gen3840> ::= <Lex605> <Gen3837_Maybe> rank => 0
+<Gen3840> ::= <Lex602> <Gen3837_Maybe> rank => 0
 <Gen3840_Many> ::= <Gen3840>+ rank => 0
 <Cobol_Nines> ::= <Gen3840_Many> rank => 0
 <Embedded_SQL_Fortran_Program> ::= <EXEC> <SQL> rank => 0
-<Fortran_Host_Identifier> ::= <Lex606_Many> rank => 0
+<Fortran_Host_Identifier> ~ <Identifier_L0_Internal>
 <Gen3845> ::= <Comma> <Fortran_Host_Identifier> rank => 0
 <Gen3845_Any> ::= <Gen3845>* rank => 0
 <Fortran_Variable_Definition> ::= <Fortran_Type_Specification> <Fortran_Host_Identifier> <Gen3845_Any> rank => 0
@@ -4075,7 +4075,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Gen3851> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
 <Gen3851_Maybe> ::= <Gen3851> rank => 0
 <Gen3851_Maybe> ::= rank => -1
-<Gen3854> ::= <Lex608_Many> rank => 0
+<Gen3854> ::= <Lex604_Many> rank => 0
 <Gen3854> ::= rank => -1
 <Gen3856> ::= <Asterisk> <Length> rank => 0
 <Gen3856_Maybe> ::= <Gen3856> rank => 0
@@ -4084,7 +4084,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Gen3859_Maybe> ::= <Gen3859> rank => 0
 <Gen3859_Maybe> ::= rank => -1
 <Fortran_Type_Specification> ::= <CHARACTER> <Gen3848_Maybe> <Gen3851_Maybe> rank => 0
-                               | <CHARACTER> <KIND> <Equals_Operator> <Lex608> <Gen3854> <Gen3856_Maybe> <Gen3859_Maybe> rank => -1
+                               | <CHARACTER> <KIND> <Equals_Operator> <Lex604> <Gen3854> <Gen3856_Maybe> <Gen3859_Maybe> rank => -1
                                | <INTEGER> rank => -2
                                | <REAL> rank => -3
                                | <DOUBLE> <PRECISION> rank => -4
@@ -4115,7 +4115,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Mumps_Variable_Definition> ::= <Mumps_Numeric_Variable> <Semicolon> rank => 0
                               | <Mumps_Character_Variable> <Semicolon> rank => -1
                               | <Mumps_Derived_Type_Specification> <Semicolon> rank => -2
-<Mumps_Host_Identifier> ::= <Lex611_Many> rank => 0
+<Mumps_Host_Identifier> ~ <Identifier_L0_Internal>
 <Gen3895> ::= <Comma> <Mumps_Host_Identifier> <Mumps_Length_Specification> rank => 0
 <Gen3895_Any> ::= <Gen3895>* rank => 0
 <Mumps_Character_Variable> ::= <VARCHAR> <Mumps_Host_Identifier> <Mumps_Length_Specification> <Gen3895_Any> rank => 0
@@ -4154,7 +4154,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Mumps_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
 <Mumps_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <Embedded_SQL_Pascal_Program> ::= <EXEC> <SQL> rank => 0
-<Pascal_Host_Identifier> ::= <Lex612_Many> rank => 0
+<Pascal_Host_Identifier> ~ <Identifier_L0_Internal>
 <Gen3934> ::= <Comma> <Pascal_Host_Identifier> rank => 0
 <Gen3934_Any> ::= <Gen3934>* rank => 0
 <Pascal_Variable_Definition> ::= <Pascal_Host_Identifier> <Gen3934_Any> <Colon> <Pascal_Type_Specification> <Semicolon> rank => 0
@@ -4164,7 +4164,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Gen3940> ::= <CHARACTER> <SET> <Is_Maybe> <Character_Set_Specification> rank => 0
 <Gen3940_Maybe> ::= <Gen3940> rank => 0
 <Gen3940_Maybe> ::= rank => -1
-<Pascal_Type_Specification> ::= <PACKED> <ARRAY> <Left_Bracket> <Lex578> <Double_Period> <Length> <Right_Bracket> <OF> <CHAR> <Gen3937_Maybe> rank => 0
+<Pascal_Type_Specification> ::= <PACKED> <ARRAY> <Left_Bracket> <Lex577> <Double_Period> <Length> <Right_Bracket> <OF> <CHAR> <Gen3937_Maybe> rank => 0
                               | <INTEGER> rank => -1
                               | <REAL> rank => -2
                               | <CHAR> <Gen3940_Maybe> rank => -3
@@ -4192,7 +4192,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Pascal_Multiset_Locator_Variable> ::= <SQL> <TYPE> <IS> <Multiset_Type> <AS> <LOCATOR> rank => 0
 <Pascal_Ref_Variable> ::= <SQL> <TYPE> <IS> <Reference_Type> rank => 0
 <Embedded_SQL_Pl_I_Program> ::= <EXEC> <SQL> rank => 0
-<Pl_I_Host_Identifier> ::= <Lex614_Many> rank => 0
+<Pl_I_Host_Identifier> ~ <Identifier_L0_Internal>
 <Gen3972> ::= <DCL> rank => 0
             | <DECLARE> rank => -1
 <Gen3974> ::= <Comma> <Pl_I_Host_Identifier> rank => 0
@@ -4766,20 +4766,13 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Lex569> ~ [^\[\]()|\^\-+*_%?{\\]
 <Lex570> ~ [\x{5c}]
 <Lex571> ~ [\[\]()|\^\-+*_%?{\\]
-<Lex576_Many> ~ [^\s]+
-<Lex577> ~ 'Interfaces.SQL'
-<Lex578> ~ '1'
-<Lex593_Many> ~ [^\s]+
-<Lex594_Many> ~ [^\s]+
-<Lex595> ~ '01'
-<Lex596> ~ '77'
-<Lex605> ~ '9'
-<Lex606_Many> ~ [^\s]+
-<Lex608> ~ [0-9]
-<Lex608_Many> ~ [0-9]*
-<Lex611_Many> ~ [^\s]+
-<Lex612_Many> ~ [^\s]+
-<Lex614_Many> ~ [^\s]+
+<Lex576> ~ 'Interfaces.SQL'
+<Lex577> ~ '1'
+<Lex592> ~ '01'
+<Lex593> ~ '77'
+<Lex602> ~ '9'
+<Lex604> ~ [0-9]
+<Lex604_Many> ~ [0-9]*
 <M> ~ 'M':i
 <MAP> ~ 'MAP':i
 :lexeme ~ <MATCH> priority => 1

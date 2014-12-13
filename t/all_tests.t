@@ -70,7 +70,7 @@ foreach (sort __PACKAGE__->section_data_names) {
     } else {
       my $input = ${$stringp};
       my $xml = $obj->asXML($input
-			    # , trace_terminals => 1
+			    , trace_terminals => 1
 			   );
       my $length = length($input);
       $length = 78 if ($length > 78);
@@ -82,6 +82,8 @@ foreach (sort __PACKAGE__->section_data_names) {
 __DATA__
 __[ <000> General statements ]__
 SELECT user.* FROM user;
+SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user;
+SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user WHERE (user.user_id < :v1) AND (user.username NOT LIKE :v2);
 
 __[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
