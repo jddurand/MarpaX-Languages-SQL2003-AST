@@ -214,7 +214,7 @@
 /* 	|	<bit string literal> UNDEFINED + UNUSED */
 /*	|	<hex string literal> UNDEFINED + UNUSED */
 	|	<large object length token>
-	|	<multiplier>
+/*	|	<multiplier> */
 
 <regular identifier L0 internal> ~ <SQL language identifier L0 internal>
 <regular identifier L0> ~ <regular identifier L0 internal>

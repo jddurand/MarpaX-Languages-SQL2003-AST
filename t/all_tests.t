@@ -65,22 +65,18 @@ foreach (sort __PACKAGE__->section_data_names) {
 }
 
 __DATA__
-__[ <001> token:Identifier:Regular_Identifier ]__
+__[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
 A
 A0
 A_0
 A_0_B
 
-__[ <002> token:Reserved:ADD ]__
+__[ <002> token:Key word:ADD ]__
 /***************************************************************************/
 ADD
 
-__[ <002> token:Reserved:ALL ]__
-/***************************************************************************/
-ALL
-
-__[ <003> token:Numeric:Unsigned_Numeric_Literal ]__
+__[ <003> token:Unsigned Numeric Literal:Unsigned_Numeric_Literal ]__
 /***************************************************************************/
 0
 0.21
@@ -88,24 +84,20 @@ __[ <003> token:Numeric:Unsigned_Numeric_Literal ]__
 1E+10
 1E-20
 
-__[ <004> token:National String:National_Character_String_Literal ]__
+__[ <004> token:National Character String Literal:National_Character_String_Literal ]__
 /***************************************************************************/
 N'some text'
 n'some text'
-
-__[ <005> token:National String:National_Character_String_Literal ]__
-/***************************************************************************/
 N'some text'/*A comment */'Another text'
 n'some text'/*A comment */'Another text'/* Another comment */
 
-__[ <006> token:String:Character_String_Literal ]__
+__[ <005> token:Large Object Length Token:Large_Object_Length_Token ]__
 /***************************************************************************/
-_utf8'some text'
-_latin1'string'
-_utf8'some text'/* A comment */'Something else'
-'hello'
+1G
+10K
+1000m
 
-__[ <007> token:Unicode:Unicode_Delimited_Identifier ]__
+__[ <007> token:Unicode Delimited Identifier:Unicode_Delimited_Identifier ]__
 /***************************************************************************/
 U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '#'
 U&"\0441\043F\0430\0441\0438\0431\043E" UESCAPE '\'
