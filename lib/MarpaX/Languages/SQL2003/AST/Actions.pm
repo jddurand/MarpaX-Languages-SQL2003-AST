@@ -168,7 +168,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($value);
   return [$start, $length, $text, $value];
 }
 
@@ -315,7 +314,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($value);
   return [$start, $length, $text, $value];
 }
 
@@ -398,8 +396,6 @@ GRAMMAR
   # Unicode stuff. Make sure this has the UTF8 flag in perl.
   # Otherwise you might hit the "error: string is not in UTF-8".
   #
-  utf8::upgrade($introducerValue);
-  utf8::upgrade($value);
   return [$start, $length, $text, $value, $label, $introducerValue];
 }
 

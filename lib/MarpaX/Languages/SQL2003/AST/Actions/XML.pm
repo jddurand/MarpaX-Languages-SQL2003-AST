@@ -20,7 +20,7 @@ This modules give the XML semantic actions associated to SQL-2003 grammar
 sub new {
     my $class = shift;
     my $self = {
-		dom => XML::LibXML::Document->new(),
+		dom => XML::LibXML::Document->new("1.0", "UTF-8"),
 	       };
     bless($self, $class);
     return $self;
@@ -46,7 +46,11 @@ sub _nonTerminalSemantic {
     if (! blessed($_[$index])) {
       #
       # This is a lexeme
+      # We want to make sure that all data has the UTF8 flag on
       #
+      foreach (0..$#{$_[$index]}) {
+	utf8::upgrade($_[$index]->[$_]);
+      }
       $child = XML::LibXML::Element->new($rhs[$index]);
       $child->setAttribute('start',  $_[$index]->[0]);
       $child->setAttribute('length', $_[$index]->[1]);
@@ -65,7 +69,7 @@ sub _nonTerminalSemantic {
 
   my $rc;
 
-  if ($lhs eq 'SQL Start Sequence') {
+  if ($lhs eq 'SQL_Start_Sequence') {
     $self->{dom}->setDocumentElement($node);
     $rc = $self->{dom};
   } else {
