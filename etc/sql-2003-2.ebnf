@@ -867,7 +867,9 @@
 		( <separator>* <quote> <character representation>* <quote> )*
 */
 
-<character string literal> ~
+<character string literal> ::= <character string literal L0> semanticAction => _characterStringLiteral
+
+<character string literal L0> ~
                 /*LEX*/(<introducer L0> <character set specification L0 internal>)?
 		<character string literal unit L0> /*LEX*/( /*LEX*/(<separator L0>)* <character string literal unit L0> )*
 

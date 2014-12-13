@@ -323,4 +323,91 @@ GRAMMAR
 
 # ----------------------------------------------------------------------------------------
 
+sub _characterStringLiteral {
+  my ($self, $characterStringLiteral_Lexeme) = @_;
+
+  my $characterStringLiteral_Value = $characterStringLiteral_Lexeme->[2];
+
+  my $start = $characterStringLiteral_Lexeme->[0];
+  my $length = $characterStringLiteral_Lexeme->[1];
+
+  return $self->_characterStringLiteralValue($start, $length, $characterStringLiteral_Value, '\\');
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _characterStringLiteralValue {
+  my ($self, $start, $length, $characterStringLiteral_Value, $Escape_Specifier_Value) = @_;
+
+  $self->{Character_String_Literal_Grammar} //= {};
+  if (! defined($self->{Character_String_Literal_Grammar}->{$Escape_Specifier_Value})) {
+    my $Escape_Specifier_Value_Hex = sprintf('%x', ord($Escape_Specifier_Value));
+    my $data = <<GRAMMAR;
+:default ::= action => ::first
+:start ::= <Character String Literal value>
+
+<_quote> ~ [']
+<quote> ~ <_quote>
+
+<_notquote> ~ [^']
+<notquote> ~ <_notquote> | [\\x{$Escape_Specifier_Value_Hex}] <_quote>
+
+<character representation many> ::= <character representation>+  separator => <separator> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<not space> ~ [^\\s]
+<not space many> ::= <not space>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+
+<Character String Literal introducer> ::= ('_':i) <not space many> action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+
+<Character String Literal value> ::= <Character String Literal introducer> <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithIntroducer
+                                   |
+                                   <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithoutIntroducer
+
+<character representation> ::= (<quote>) <inner> (<quote>)
+<inner> ::= <notquote>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+
+$SEPARATOR
+GRAMMAR
+    $self->{Character_String_Literal_Grammar}->{$Escape_Specifier_Value} = Marpa::R2::Scanless::G->new({source => \$data});
+  }
+  my $r = Marpa::R2::Scanless::R->new({grammar => $self->{Character_String_Literal_Grammar}->{$Escape_Specifier_Value},
+                                       # trace_terminals => 1,
+                                       # trace_values => 1,
+                                       semantics_package => 'MarpaX::Languages::SQL2003::AST::Actions'});
+  $r->read(\$characterStringLiteral_Value);
+  #
+  # Fake this is a lexeme.
+  # Here the value is guaranteed to be an array reference containing:
+  # ['introducer', $introducerValue, $text]
+  # where $introducerValue can be an empty string
+  #
+  my $arrayp = ${$r->value};
+
+  my ($label, $introducerValue, $text) = @{$arrayp};
+  #
+  # Unicode stuff. Make sure this has the UTF8 flag in perl.
+  # Otherwise you might hit the "error: string is not in UTF-8".
+  #
+  utf8::upgrade($introducerValue);
+  utf8::upgrade($text);
+  return [$start, $length, $text, $label, $introducerValue];
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _characterStringLiteralWithIntroducer {
+  my ($self, $introducer, $value) = @_;
+
+  return ['introducer', $introducer, $value];
+}
+
+# ----------------------------------------------------------------------------------------
+
+sub _characterStringLiteralWithoutIntroducer {
+  my ($self, $value) = @_;
+
+  return ['introducer', '', $value];
+}
+
+# ----------------------------------------------------------------------------------------
+
 1;

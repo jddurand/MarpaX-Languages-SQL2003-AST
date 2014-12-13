@@ -50,6 +50,11 @@ sub _nonTerminalSemantic {
       $child->setAttribute('start', $_[$_]->[0]);
       $child->setAttribute('length', $_[$_]->[1]);
       $child->setAttribute('text', $_[$_]->[2]);
+      my $i = 3;
+      while ($#{$_[$_]} >= $i) {
+	$child->setAttribute($_[$_]->[$i], $_[$_]->[$i+1]);
+	$i += 2;
+      }
     } else {
       $child = $_[$_];
     }
@@ -137,6 +142,10 @@ sub _showProgressAndExit { super(); }
 # ----------------------------------------------------------------------------------------
 
 sub _nationalCharacterStringLiteral { super(); }
+
+# ----------------------------------------------------------------------------------------
+
+sub _characterStringLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
 
