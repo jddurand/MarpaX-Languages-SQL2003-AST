@@ -1016,8 +1016,7 @@
 <boolean literal> ::= TRUE | FALSE | UNKNOWN
 
 <identifier L0 internal> ~ <actual identifier L0>
-<identifier L0> ~ <identifier L0 internal>
-<identifier> ::= <identifier L0>
+<identifier> ~ <identifier L0 internal>
 
 <actual identifier L0> ~ <regular identifier L0 internal> | <delimited identifier L0>
 
@@ -1045,13 +1044,15 @@
 <catalog name L0> ~ <catalog name L0 internal>
 <catalog name> ::= <catalog name L0>
 
-<schema qualified name> ::= ( <schema name> <period> )? <qualified identifier>
+<schema qualified name> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <qualified identifier L0>
 
-<local or schema qualified name> ::= ( <local or schema qualifier> <period> )? <qualified identifier>
+<local or schema qualified name> ~ /*LEX*/( <local or schema qualifier L0> <period L0> )? <qualified identifier L0>
 
-<local or schema qualifier> ::= <schema name> | MODULE
+<local or schema qualifier L0> ~ <schema name L0 internal> | /*LEX*/MODULE
 
-<qualified identifier> ::= <identifier>
+<qualified identifier L0> ~ <identifier L0 internal>
+
+<qualified identifier> ~ <qualified identifier L0>
 
 <column name> ::= <identifier>
 
@@ -1089,7 +1090,7 @@
 
 <character set name L0 internal> ~ /*LEX*/( <schema name L0 internal> <period L0> )? <SQL language identifier L0 internal>
 <character set name L0> ~ <character set name L0 internal>
-<character set name> ::= <character set name L0>
+<character set name> ~ <character set name L0>
 
 <transliteration name> ::= <schema qualified name>
 
@@ -2386,15 +2387,10 @@
 	|	<implementation_defined character set name L0 internal>
 	|	<user_defined character set name L0 internal>
 
-<character set specification L0> ~ <character set specification L0 internal>
-<character set specification> ::= <character set specification L0>
+<character set specification> ~ <character set specification L0 internal>
 
 <standard character set name L0 internal> ~ <character set name L0 internal>
-<standard character set name L0> ~ <standard character set name L0 internal>
-<standard character set name> ::= <standard character set name L0>
-
 <implementation_defined character set name L0 internal> ~ <character set name L0 internal>
-
 <user_defined character set name L0 internal> ~ <character set name L0 internal>
 
 <specific routine designator> ::=

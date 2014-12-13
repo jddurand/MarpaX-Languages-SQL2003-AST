@@ -40,7 +40,9 @@ foreach (sort __PACKAGE__->section_data_names) {
                     my $xml = $obj->asXML($input
 					  # , trace_terminals => 1
 					 );
-		    diag("\n" . ('=' x length($input)) . "\n$input\n" . ('=' x length($input)) . "\n" . $xml->toString(1));
+		    my $length = length($input);
+		    $length = 78 if ($length > 78);
+		    diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
                     my %wantedLexemes = ();
                     map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
                     my %unwantedLexemes = ();
@@ -66,9 +68,14 @@ foreach (sort __PACKAGE__->section_data_names) {
             }
         }
     } else {
-        ok(defined($obj->parse(${$stringp}
-                               # , trace_terminals => 1
-                   )), $testName);
+      my $input = ${$stringp};
+      my $xml = $obj->asXML($input
+			    # , trace_terminals => 1
+			   );
+      my $length = length($input);
+      $length = 78 if ($length > 78);
+      diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+      ok(defined($xml), $testName);
     }
 }
 
