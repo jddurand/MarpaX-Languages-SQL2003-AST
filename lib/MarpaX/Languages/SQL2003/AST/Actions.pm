@@ -66,7 +66,7 @@ sub _showProgressAndExit {
 
 # ----------------------------------------------------------------------------------------
 
-sub _unicodeValue {
+sub _unicodeDelimitedIdentifierValue {
   my ($self, $start, $length, $Unicode_Delimited_Identifier_Value, $Unicode_Escape_Specifier_Value) = @_;
 
   #
@@ -178,7 +178,7 @@ sub _unicodeDelimitedIdentifier {
   my $start = $Unicode_Delimited_Identifier_Lexeme->[0];
   my $length = $Unicode_Delimited_Identifier_Lexeme->[1];
 
-  return $self->_unicodeValue($start, $length, $Unicode_Delimited_Identifier_Value, '\\');
+  return $self->_unicodeDelimitedIdentifierValue($start, $length, $Unicode_Delimited_Identifier_Value, '\\');
 }
 
 # ----------------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ sub _unicodeDelimitedIdentifierUescape {
   substr($Unicode_Escape_Specifier_Value,  0, 1) = '';
   substr($Unicode_Escape_Specifier_Value, -1, 1) = '';
 
-  return $self->_unicodeValue($start, $length, $Unicode_Delimited_Identifier_Value, $Unicode_Escape_Specifier_Value);
+  return $self->_unicodeDelimitedIdentifierValue($start, $length, $Unicode_Delimited_Identifier_Value, $Unicode_Escape_Specifier_Value);
 }
 
 # ----------------------------------------------------------------------------------------
