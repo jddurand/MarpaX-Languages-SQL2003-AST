@@ -73,10 +73,6 @@ foreach (sort __PACKAGE__->section_data_names) {
 }
 
 __DATA__
-__[ <000> literal:Character String Literal:Character_String_Literal ]__
-/***************************************************************************/
-_anotherSetName'This' /* A Comment */ 'Other''String with a simple and an escaped quotes: \' inside'
-
 __[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
 A
