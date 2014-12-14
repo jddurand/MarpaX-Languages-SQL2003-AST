@@ -162,6 +162,16 @@ sub Marpa::R2::Scanless::G::_parse_debug {
     return $value_ref[0];
 } ## end sub Marpa::R2::Scanless::G::parse
 
+# ----------------------------------------------------------------------------------------
+
+sub _parse {
+  my $self = shift;
+
+  return $ENV{TEST_DEBUG} ? $self->{G}->_parse_debug(@_) : $self->{G}->parse(@_);
+}
+
+# ----------------------------------------------------------------------------------------
+
 sub parse {
   my ($self, $input, %opts) = @_;
 
@@ -170,10 +180,10 @@ sub parse {
   my $basenameSemanticsPackage = $xml ? 'XML' : 'Blessed';
   my %otherOpts = map {$_ => $opts{$_}} grep {$_ ne 'xml'} keys %opts;
 
-  my $value = $self->{G}->_parse_debug(\$input,
-                                join('::',__PACKAGE__, 'Actions', $basenameSemanticsPackage),
-                                {%otherOpts,
-                                 ranking_method => 'high_rule_only'});
+  my $value = $self->_parse(\$input,
+			    join('::',__PACKAGE__, 'Actions', $basenameSemanticsPackage),
+			    {%otherOpts,
+			     ranking_method => 'high_rule_only'});
 
   return defined($value) ? ${$value} : undef;
 }
