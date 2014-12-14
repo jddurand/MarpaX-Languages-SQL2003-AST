@@ -52,6 +52,10 @@ This really is the string '_utf8', which is the introducer's value.
 
 =back
 
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions>
+
 =cut
 
 sub new {

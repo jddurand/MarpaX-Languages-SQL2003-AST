@@ -239,7 +239,7 @@ sub asBlessed {
 
 =head1 SEE ALSO
 
-L<MarpaX::Languages::SQL2003::AST::Actions>, L<Marpa::R2>, L<XML::LibXML>
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<Marpa::R2>
 
 =cut
 

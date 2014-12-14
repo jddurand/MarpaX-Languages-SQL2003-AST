@@ -12,14 +12,37 @@ use Math::BigFloat;
 
 # VERSION
 
-=head1 NOTES
+=head1 DESCRIPTION
 
-The hierarchical structure of the AST is done with the non-terminals, and depend if you work in blessed or XML mode.
-The 
+This modules give a semantic actions generic class associated to SQL-2003 grammar
+
+The following rules have dedicated semantics:
+
+=over
+
+=item Unicode Delimited Identifier
+
+Syntax is U&"..." "..." [UESCAPE '.'] and is considered as a whole token. The value is the unicode string concatenation with respect to UESCAPE character.
+
+=item Character String Literal
+
+Syntax is an eventual introducer followed by the string. The value is the string, and and extra attribute "introducer" is created.
+
+=item National Character String Literal
+
+Syntax is a succession of N'...'. The value is the string concatenation.
+
+=item Unsigned Numeric Literal
+
+The value is the perl's Math::BigFloat string representation.
+
+=back
+
+=cut
 
 =head1 SEE ALSO
 
-L<MarpaX::Languages::SQL2003::AST::Actions::Blessed>, L<MarpaX::Languages::SQL2003::AST::Actions::XML>
+L<MarpaX::Languages::SQL2003::AST>, L<MarpaX::Languages::SQL2003::AST::Actions::Blessed>, L<MarpaX::Languages::SQL2003::AST::Actions::XML>
 
 =cut
 
@@ -54,34 +77,6 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 
 <separator> ::= <discard many>
 SEPARATOR
-
-=head1 DESCRIPTION
-
-This modules give a semantic actions generic class associated to SQL-2003 grammar
-
-The following rules have dedicated semantics:
-
-=over
-
-=item Unicode Delimited Identifier
-
-Syntax is U&"..." "..." [UESCAPE '.'] and is considered as a whole token. The value is the unicode string concatenation with respect to UESCAPE character.
-
-=item Character String Literal
-
-Syntax is an eventual introducer followed by the string. The value is the string, and and extra attribute "introducer" is created.
-
-=item National Character String Literal
-
-Syntax is a succession of N'...'. The value is the string concatenation.
-
-=item Unsigned Numeric Literal
-
-The value is the perl's Math::BigFloat string representation.
-
-=back
-
-=cut
 
 sub new {
     my $class = shift;

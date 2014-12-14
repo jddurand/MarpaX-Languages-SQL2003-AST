@@ -49,6 +49,10 @@ Attribute's value is the string introducer, e.g. "_utf8".
 
 =back
 
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<XML::LibXML>
+
 =cut
 
 sub new {
