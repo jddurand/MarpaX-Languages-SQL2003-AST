@@ -50,7 +50,7 @@ Instantiate a new object. %opts supported keys are:
 
 =item host
 
-Target host language. Supported values are: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI. Default value is none, meaning that AST takes the first host language that matches your input, with respect to host languages grammar order of appearance in the grammar. Order of appearance is: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI.
+Target host language. Supported values are: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI. Default value C.
 
 =back
 

@@ -55,6 +55,7 @@ where options can be:
 
   --help            This help.
   --xml             XML mode. Default is a true value. Say --noxml for bless mode.
+  --host            Host language.
   --trace_terminals Trace terminals. Default is a false value.
   --trace_values    Trace AST values. Default is a false value.
 
@@ -64,17 +65,23 @@ and arguments can be:
 
 =head1 NOTES
 
-Say --noxml to disable the XML mode, i.e. to use a blessed mode (i.e. a hierarchical structure of blessed perl's arrays).
-
 =over
 
 =item
 
-  If file is absent or equal to '-', then STDIN is assumed.
+Say --noxml to disable the XML mode, i.e. to use a blessed mode (i.e. a hierarchical structure of blessed perl's arrays).
 
 =item
 
-  Any ambiguous parse will result in a failure, with a hopefully clear stack trace.
+--host option value if zhen grammar is using Host Identifiers, e.g. "EXEC SQL SELECT salary INTO :a FROM employees". Default host SQL sub-grammar is the C language. Supported values are: C, Ada, Cobol, Fortran, Mumps, Pascal, PLI.
+
+=item
+
+If file is absent or equal to '-', then STDIN is assumed.
+
+=item
+
+Any ambiguous parse will result in a failure, with a hopefully clear stack trace.
 
 =back
 
