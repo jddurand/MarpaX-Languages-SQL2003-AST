@@ -12,7 +12,45 @@ use Scalar::Util qw/blessed/;
 
 =head1 DESCRIPTION
 
-This modules give the blessed semantic actions associated to SQL-2003 grammar
+This modules give the blessed semantic actions associated to SQL-2003 grammar.
+
+A non-terminal is a blessed array reference, blessed name is the non-terminal symbol. Each array item is also a blessed array reference.
+
+A terminal is a blessed hash reference, blessed name is the terminal symbol. The referenced array contain no blessed item, and there are at least four of them: start, length, text, value;
+
+=over
+
+=item start
+
+Start position in the input stream.
+
+=item lengh
+
+Lengh of the terminal in the input stream.
+
+=item text
+
+Terminal text.
+
+=item value
+
+Terminal value.
+
+=back
+
+optionnaly followed by pairs of (key, value), e.g. for character string literals, you'll might have:
+
+=over
+
+=item introducer
+
+This really is the string 'introducer'
+
+=item _utf8
+
+This really is the string '_utf8', which is the introducer's value.
+
+=back
 
 =cut
 
@@ -114,10 +152,6 @@ sub _unicodeDelimitedIdentifier { super(); }
 # ----------------------------------------------------------------------------------------
 
 sub _unicodeDelimitedIdentifierUescape { super(); }
-
-# ----------------------------------------------------------------------------------------
-
-sub _showProgressAndExit { super(); }
 
 # ----------------------------------------------------------------------------------------
 

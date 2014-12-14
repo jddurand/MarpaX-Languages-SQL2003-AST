@@ -2,8 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 package MarpaX::Languages::SQL2003::AST;
-use MarpaX::Languages::SQL2003::AST::Actions::XML;
-use MarpaX::Languages::SQL2003::AST::Actions::Blessed;
+use MarpaX::Languages::SQL2003::AST::Actions;
 
 # ABSTRACT: Translate SQL-2003 source to an AST
 
@@ -12,7 +11,17 @@ use Marpa::R2 2.100000;
 # VERSION
 
 our $DATA = do {local $/; <DATA>};
-our $G = Marpa::R2::Scanless::G->new({source => \$DATA});
+our @HOSTS = qw/C Ada Cobol Fortran Mumps Pascal PLI/;
+our %HOST2G = map {$_ => $_} @HOSTS;
+# Exception: PLI
+$HOST2G{PLI} = 'Pl_I';
+our %HOST_IDENTIFIER_DEFAULT_PRIORITY = ();
+our $DATA_DEFAULT = $DATA;
+foreach (0..$#HOSTS) {
+  $HOST_IDENTIFIER_DEFAULT_PRIORITY{$HOSTS[$_]} = -$_;
+  $DATA_DEFAULT .= "\n:lexeme ~ <$HOST2G{$HOSTS[$_]}_Host_Identifier> priority => $HOST_IDENTIFIER_DEFAULT_PRIORITY{$HOSTS[$_]}\n";
+}
+our %G = ($HOSTS[0] => Marpa::R2::Scanless::G->new({source => \$DATA_DEFAULT}));
 
 =head1 DESCRIPTION
 
@@ -27,15 +36,21 @@ This module translates SQL-2003 to an AST.
     # Parse SQL
     #
     my $input = 'select * from myTable;';
-    my $obj = MarpaX::Languages::SQL2003::AST->new();
+    my $obj = MarpaX::Languages::SQL2003::AST->new(host => 'C');
     my $ast = $obj->parse($input);
     my $xml = $obj->parse($input, xml => 1);
 
 =head1 SUBROUTINES/METHODS
 
-=head2 new($class)
+=head2 new($class, %opts)
 
-Instantiate a new object.
+Instantiate a new object. %opts supported keys are:
+
+=over
+
+=item host
+
+Target host language. Supported values are: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI. Default value is none, meaning that AST takes the first host language that matches your input, with respect to host languages grammar order of appearance in the grammar. Order of appearance is: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI.
 
 =back
 
@@ -44,9 +59,27 @@ Instantiate a new object.
 # ----------------------------------------------------------------------------------------
 
 sub new {
-  my ($class) = @_;
+  my ($class, %opts) = @_;
 
-  my $self  = {G => $G};
+  my $host = (exists($opts{host}) && defined($opts{host})) ? $opts{host} : '';
+  if (! grep {$host eq $_} @HOSTS) {
+    $host = $HOSTS[0];
+  }
+
+  if (! defined($G{$host})) {
+    our %HOST_IDENTIFIER_PRIORITY = ();
+    foreach (keys %HOST_IDENTIFIER_DEFAULT_PRIORITY) {
+      $HOST_IDENTIFIER_PRIORITY{$_} = $HOST_IDENTIFIER_DEFAULT_PRIORITY{$_};
+    }
+    my $data = $DATA;
+    foreach (0..$#HOSTS) {
+      $HOST_IDENTIFIER_PRIORITY{$HOSTS[$_]} = ($HOSTS[$_] eq $host) ? 1 : -$_;
+      $data .= "\n:lexeme ~ <$HOST2G{$HOSTS[$_]}_Host_Identifier> priority => $HOST_IDENTIFIER_PRIORITY{$HOSTS[$_]}\n";
+    }
+    $G{$host} = Marpa::R2::Scanless::G->new({source => \$data});
+  }
+
+  my $self  = {G => $G{$host}};
 
   #
   # This "hiden" variable is used by the test suite only
@@ -67,33 +100,17 @@ sub new {
 
 =head2 parse($self, $input, %opts)
 
-Parse $input and return $self. Accept an optional %opts hash that can be:
+Parse $input and return $self. Accept an optional %opts hash whose keys can be:
 
 =over
 
 =item xml
 
-If true, produces the AST as an XML::LibXML::Document object. Default is a false value, meaning that the AST is a composite structure of blessed hash references and array references. Any LHS or RHS of the SQL grammar is a blessed hash. Any token is an array reference containing three items:
-
-=item
-
-Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to have a meaning to Marpa's recognizer. Typical examples are: trace_terminals => 1, trace_values => 1.
-
-=over
-
-=item start
-
-Start position in the input stream.
-
-=item lengh
-
-Lengh of the token in the input stream.
-
-=item text
-
-Token value.
+If $opts{xml} is a true value, produces the AST as an XML::LibXML::Document object. Default is a false value, meaning that the AST is a composite structure of blessed hash references and array references.
 
 =back
+
+Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to have a meaning to Marpa's recognizer. Typical examples are: trace_terminals => 1, trace_values => 1.
 
 =cut
 
@@ -194,6 +211,8 @@ sub parse {
 
 Alias to $self->parse($input, xml => 1, %opts).
 
+Please refer to L<MarpaX::Languages::SQL2003::AST::Actions> for the semantic actions.
+
 =cut
 
 sub asXML {
@@ -208,6 +227,8 @@ sub asXML {
 
 Alias to $self->parse($input, xml => 0, %opts).
 
+Please refer to L<MarpaX::Languages::SQL2003::AST::Actions> for the semantic actions.
+
 =cut
 
 sub asBlessed {
@@ -218,7 +239,7 @@ sub asBlessed {
 
 =head1 SEE ALSO
 
-L<Marpa::R2>, L<XML::LibXML>
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<Marpa::R2>, L<XML::LibXML>
 
 =cut
 

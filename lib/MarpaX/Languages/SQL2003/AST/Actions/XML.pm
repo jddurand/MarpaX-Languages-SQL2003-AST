@@ -13,7 +13,41 @@ use Scalar::Util qw/blessed/;
 
 =head1 DESCRIPTION
 
-This modules give the XML semantic actions associated to SQL-2003 grammar
+This modules give the XML semantic actions associated to SQL-2003 grammar.
+
+A non-terminal is an XML element with no attribute, element's name is the non-terminal symbol.
+
+A terminal is an XML element with at least four attributes:
+
+=over
+
+=item start
+
+Attribute's value is the start position in the input stream.
+
+=item lengh
+
+Attribute's value is the lengh of the terminal in the input stream.
+
+=item text
+
+Attribute's value is the terminal text.
+
+=item value
+
+Attribute's value is the terminal value.
+
+=back
+
+and optionnaly other attributes, e.g. for character string literals, you'll might have:
+
+=over
+
+=item introducer
+
+Attribute's value is the string introducer, e.g. "_utf8".
+
+=back
 
 =cut
 
@@ -140,10 +174,6 @@ sub _unicodeDelimitedIdentifier { super(); }
 # ----------------------------------------------------------------------------------------
 
 sub _unicodeDelimitedIdentifierUescape { super(); }
-
-# ----------------------------------------------------------------------------------------
-
-sub _showProgressAndExit { super(); }
 
 # ----------------------------------------------------------------------------------------
 

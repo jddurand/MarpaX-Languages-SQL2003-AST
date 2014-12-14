@@ -2,13 +2,26 @@ use strict;
 use warnings FATAL => 'all';
 
 package MarpaX::Languages::SQL2003::AST::Actions;
+use MarpaX::Languages::SQL2003::AST::Actions::XML;
+use MarpaX::Languages::SQL2003::AST::Actions::Blessed;
 use Marpa::R2;
 use Carp qw/croak/;
- use Math::BigFloat;
+use Math::BigFloat;
 
 # ABSTRACT: Translate SQL-2003 source to an AST - Semantic actions generic class
 
 # VERSION
+
+=head1 NOTES
+
+The hierarchical structure of the AST is done with the non-terminals, and depend if you work in blessed or XML mode.
+The 
+
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions::Blessed>, L<MarpaX::Languages::SQL2003::AST::Actions::XML>
+
+=cut
 
 our $SEPARATOR = <<SEPARATOR;
 _WS ~ [\\s]+
@@ -45,6 +58,28 @@ SEPARATOR
 =head1 DESCRIPTION
 
 This modules give a semantic actions generic class associated to SQL-2003 grammar
+
+The following rules have dedicated semantics:
+
+=over
+
+=item Unicode Delimited Identifier
+
+Syntax is U&"..." "..." [UESCAPE '.'] and is considered as a whole token. The value is the unicode string concatenation with respect to UESCAPE character.
+
+=item Character String Literal
+
+Syntax is an eventual introducer followed by the string. The value is the string, and and extra attribute "introducer" is created.
+
+=item National Character String Literal
+
+Syntax is a succession of N'...'. The value is the string concatenation.
+
+=item Unsigned Numeric Literal
+
+The value is the perl's Math::BigFloat string representation.
+
+=back
 
 =cut
 
@@ -87,14 +122,6 @@ sub _getRuleDescription {
   my ($lhs, @rhs) = map { $slg->symbol_display_form($_) } $slg->rule_expand($rule_id);
 
   return ($lhs, @rhs);
-}
-
-# ----------------------------------------------------------------------------------------
-
-sub _showProgressAndExit {
-  my $slr         = $Marpa::R2::Context::slr;
-
-  die $slr->show_progress();
 }
 
 # ----------------------------------------------------------------------------------------
