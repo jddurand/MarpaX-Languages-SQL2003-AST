@@ -11,20 +11,26 @@ plan tests => 4 + scalar(__PACKAGE__->section_data_names);
 
 use_ok('MarpaX::Languages::SQL2003::AST');
 
+sub _diag {
+  if ($ENV{TEST_DEBUG}) {
+    diag(@_);
+  }
+}
+
 my $obj = new_ok('MarpaX::Languages::SQL2003::AST');
 my $tokenObj;
 {
     no warnings;
     local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Tokens>\n<Tokens> ::= <Token>+\n";
     $tokenObj = new_ok('MarpaX::Languages::SQL2003::AST');
-    diag("Second grammar with <token>+ as value");
+    _diag("Second grammar with <token>+ as value");
 }
 my $literalObj;
 {
     no warnings;
     local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Literals>\n<Literals> ::= <Literal>+\n";
     $literalObj = new_ok('MarpaX::Languages::SQL2003::AST');
-    diag("Third grammar with <Literal>+ as value");
+    _diag("Third grammar with <Literal>+ as value");
 }
 foreach (sort __PACKAGE__->section_data_names) {
     my $testName = $_;
@@ -42,7 +48,7 @@ foreach (sort __PACKAGE__->section_data_names) {
 					 );
 		    my $length = length($input);
 		    $length = 78 if ($length > 78);
-		    diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+		    _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
                     my %wantedLexemes = ();
                     map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
                     my %unwantedLexemes = ();
@@ -68,23 +74,26 @@ foreach (sort __PACKAGE__->section_data_names) {
             }
         }
     } else {
-      my $input = ${$stringp};
-      my $xml = $obj->asXML($input
-			    , trace_terminals => 1
-			   );
-      my $length = length($input);
-      $length = 78 if ($length > 78);
-      diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
-      ok(defined($xml), $testName);
+      subtest $testName => sub {
+	foreach (split(/\n/, ${$stringp})) {
+	  my $input = $_;
+	  $input =~ s/^\s*//;
+	  $input =~ s/\s*$//;
+	  if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
+	    my $xml = $obj->asXML($input
+				  # , trace_terminals => 1
+				 );
+	    my $length = length($input);
+	    $length = 78 if ($length > 78);
+	    _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+	    pass("$testName: $input");
+	  }
+	}
+      }
     }
 }
 
 __DATA__
-__[ <000> General statements ]__
-SELECT user.* FROM user;
-SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user;
-SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user WHERE (user.user_id < :v1) AND (user.username NOT LIKE :v2);
-
 __[ <001> token:Regular Identifier:Regular_Identifier ]__
 /***************************************************************************/
 A
@@ -162,5 +171,31 @@ CREATE CHARACTER SET bob.charset_1 AS GET LATIN1 COLLATE bob.collation_1;
 
 __[ <102> General statements ]__
 /* Found at https://github.com/nilportugues/sql-query-builder */
+/* Note that this page claims to provide SQL2003 compliant thingies. Not */
+/* totally true: colum names are not enclosed in quotes. LIMIT is not part of */
+/* SQL2003, a SELECT requires a FROM and so on. */
+INSERT INTO user (user_id, name, contact) VALUES (:v1, :v2, :v3);
 SELECT user.* FROM user;
-SELECT user.user_id, user.name, user.email FROM user;
+SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user;
+SELECT user.user_id AS userId, user.name AS username, user.email AS email FROM user WHERE (user.user_id < :v1) AND (user.username NOT LIKE :v2);
+SELECT user.* FROM user WHERE (user.user_id = :v1) AND (user.user_id = :v2) AND ((user.user_id < :v3) OR (user.user_id > :v4));
+SELECT user.user_id AS userId, user.name AS username, user.email AS email, user.created_at, news.title AS newsTitle, news.body, news.created_at, news.updated_at FROM user LEFT JOIN news ON (news.author_id = user.user_id) AND (news.author_id = :v1) WHERE (user.user_id < :v2) AND (user.username NOT LIKE :v3) ORDER BY user.user_id DESC, news.created_at DESC;
+SELECT COUNT(*) FROM user;
+SELECT COUNT(user.user_id) FROM user;
+SELECT COUNT(user.user_id) AS total_users FROM user;
+UPDATE user SET user.user_id = :v1, user.name = :v2, user.contact = :v3 WHERE (user.user_id = :v4);
+UPDATE user SET user.name = :v1 WHERE (user.username LIKE :v2) AND (user.user_id BETWEEN :v3 AND :v4);
+DELETE FROM user;
+DELETE FROM user WHERE (user.user_id = :v1);
+DELETE FROM user WHERE (user.username LIKE :v1) AND (user.user_id BETWEEN :v2 AND :v3);
+SELECT user.* FROM user INTERSECT SELECT user_email.* FROM user_email;
+SELECT user.* FROM user MINUS SELECT user_email.* FROM user_email;
+SELECT user.* FROM user UNION SELECT user_email.* FROM user_email;
+SELECT user.* FROM user UNION ALL SELECT user_email.* FROM user_email;
+SELECT user.* FROM user WHERE (user.user_id = :v1) OR (user.name LIKE :v2);
+SELECT user.user_id AS userId, user.name AS username, user.email AS email, user.created_at FROM user GROUP BY user.user_id, user.name HAVING (user.user_id = :v1) AND (user.user_id = :v2);
+SELECT user.user_id AS userId, user.name AS username, user.email AS email, user.created_at FROM user GROUP BY user.user_id, user.name HAVING (user.user_id = :v1) OR (user.user_id = :v2);
+SELECT user.user_id, user.username, ( SELECT role.role_name FROM role WHERE (role.role_id = :v1) ) AS user_role, ( SELECT role.role_name FROM role WHERE (role.role_id = :v4) ) AS role FROM user WHERE (user.user_id = :v7);
+SELECT user.user_id, user.username, :v1 AS priority FROM user WHERE (user.user_id = :v2);
+SELECT user.user_id, user.username, MAX(user_id) AS max_id FROM user WHERE (user.user_id = :v1);
+SELECT user.user_id, user.username, CURRENT_TIMESTAMP AS server_time FROM user WHERE (user.user_id = :v1);
