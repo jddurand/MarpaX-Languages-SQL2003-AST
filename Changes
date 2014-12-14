@@ -1,6 +1,15 @@
 Changelog for MarpaX-Languages-SQL2003-AST
 
-0.003 2014-12-13T21:14:33
+0.004 2014-12-14T15:28:34
+ [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - POD dev+
+ - bin/sql2003toxml -> bin/sql2003ast + more POD
+ - Call Marpas native parse() method unless $ENV{TEST_DEBUG}
+ - More tests
+ - Revisit Host identifiers
+ - qualified asterisk dev+
+
+0.003 2014-12-13T21:14:33Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - t/all_tests.c: commented trace_terminals
  - Period causes trouble

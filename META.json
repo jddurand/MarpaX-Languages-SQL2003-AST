@@ -47,6 +47,7 @@
       "runtime" : {
          "requires" : {
             "Carp" : "0",
+            "Data::Dumper" : "0",
             "File::Slurp" : "0",
             "Getopt::Long" : "0",
             "IO::String" : "0",
@@ -82,22 +83,22 @@
    "provides" : {
       "MarpaX::Languages::SQL2003::AST" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "MarpaX::Languages::SQL2003::AST::Actions" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "MarpaX::Languages::SQL2003::AST::Actions::Blessed" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions/Blessed.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       },
       "MarpaX::Languages::SQL2003::AST::Actions::XML" : {
          "file" : "lib/MarpaX/Languages/SQL2003/AST/Actions/XML.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-MarpaX-Languages-SQL2003-AST@rt.cpan.org",
@@ -110,6 +111,6 @@
          "web" : "https://github.com/jddurand/marpax-languages-sql2003-ast"
       }
    },
-   "version" : "0.003"
+   "version" : "0.004"
 }
 

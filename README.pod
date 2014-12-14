@@ -8,7 +8,7 @@ MarpaX::Languages::SQL2003::AST - Translate SQL-2003 source to an AST
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -19,7 +19,7 @@ version 0.003
     # Parse SQL
     #
     my $input = 'select * from myTable;';
-    my $obj = MarpaX::Languages::SQL2003::AST->new();
+    my $obj = MarpaX::Languages::SQL2003::AST->new(host => 'C');
     my $ast = $obj->parse($input);
     my $xml = $obj->parse($input, xml => 1);
 
@@ -29,53 +29,51 @@ This module translates SQL-2003 to an AST.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 new($class)
+=head2 new($class, %opts)
 
-Instantiate a new object.
+Instantiate a new object. %opts supported keys are:
+
+=over
+
+=item host
+
+Target host language. Supported values are: Ada, C, Cobol, Fortran, Mumps, Pascal, PLI. Default value C.
 
 =back
 
 =head2 parse($self, $input, %opts)
 
-Parse $input and return $self. Accept an optional %opts hash that can be:
+Parse $input and return $self. Accept an optional %opts hash whose keys can be:
 
 =over
 
 =item xml
 
-If true, produces the AST as an XML::LibXML::Document object. Default is a false value, meaning that the AST is a composite structure of blessed hash references and array references. Any LHS or RHS of the SQL grammar is a blessed hash. Any token is an array reference containing three items:
-
-=item
-
-Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to have a meaning to Marpa's recognizer. Typical examples are: trace_terminals => 1, trace_values => 1.
-
-=over
-
-=item start
-
-Start position in the input stream.
-
-=item lengh
-
-Lengh of the token in the input stream.
-
-=item text
-
-Token value.
+If $opts{xml} is a true value, produces the AST as an XML::LibXML::Document object. Default is a false value, meaning that the AST is a composite structure of blessed hash references and array references.
 
 =back
+
+Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to have a meaning to Marpa's recognizer. Typical examples are: trace_terminals => 1, trace_values => 1.
 
 =head2 asXML($self, $input, %opts)
 
 Alias to $self->parse($input, xml => 1, %opts).
 
+Please refer to L<MarpaX::Languages::SQL2003::AST::Actions> for the semantic actions.
+
 =head2 asBlessed($self, $input, %opts)
 
 Alias to $self->parse($input, xml => 0, %opts).
 
+Please refer to L<MarpaX::Languages::SQL2003::AST::Actions> for the semantic actions.
+
+=head1 NOTES
+
+This module is using a generated Marpa::R2's BNF grammar, based on a manipulation of L<http://savage.net.au/SQL/sql-2003-2.bnf>, the later being in EBNF format. That is, some rules or lexemes in the output may appear as Genxxx or GenLexyyy, showing unfortunately some of the internals of the EBNF to BNF transformation.
+
 =head1 SEE ALSO
 
-L<Marpa::R2>, L<XML::LibXML>
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<Marpa::R2>
 
 =for :stopwords cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee diff irc mailto metadata placeholders metacpan
 
