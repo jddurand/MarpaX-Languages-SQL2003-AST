@@ -237,6 +237,10 @@ sub asBlessed {
   return $self->parse($input, xml => 0, %opts);
 }
 
+=head1 NOTES
+
+This module is using a generated Marpa::R2's BNF grammar, based on a manipulation of L<http://savage.net.au/SQL/sql-2003-2.bnf>, the later being in EBNF format. That is, some rules or lexemes in the output may appear as Genxxx or GenLexyyy, showing unfortunately some of the internals of the EBNF to BNF transformation.
+
 =head1 SEE ALSO
 
 L<MarpaX::Languages::SQL2003::AST::Actions>, L<Marpa::R2>
