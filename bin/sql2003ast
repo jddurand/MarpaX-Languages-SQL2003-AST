@@ -73,7 +73,7 @@ Say --noxml to disable the XML mode, i.e. to use a blessed mode (i.e. a hierarch
 
 =item
 
---host option value if zhen grammar is using Host Identifiers, e.g. "EXEC SQL SELECT salary INTO :a FROM employees". Default host SQL sub-grammar is the C language. Supported values are: C, Ada, Cobol, Fortran, Mumps, Pascal, PLI.
+--host option value if when grammar is using Host Identifiers, e.g. "EXEC SQL SELECT salary INTO :a FROM employees". Default host SQL sub-grammar is the C language. Supported values are: C, Ada, Cobol, Fortran, Mumps, Pascal, PLI.
 
 =item
 
