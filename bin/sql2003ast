@@ -32,7 +32,7 @@ if ($help || $#ARGV > 0) {
   pod2usage(-verbose => 2, -noperldoc => 1, -input => $podfh, -exitval => $help ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
-my $input = @ARGV ? read_file(shift) : <STDIN>;
+my $input = (@ARGV && $ARGV[0] ne '-') ? read_file(shift) : <STDIN>;
 my $ast = MarpaX::Languages::SQL2003::AST->new(host => $host);
 my %opts = (trace_terminals => $trace_terminals, trace_values => $trace_values);
 print $xml ? $ast->asXML($input, %opts)->toString(1) : Dumper($ast->asBlessed($input, %opts));
