@@ -1,12 +1,17 @@
 Changelog for MarpaX-Languages-SQL2003-AST
 
-0.005 2014-12-15T11:16:11
+0.005 2014-12-15T18:14:38
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
+ - xt
+ - bin/sql2003ast: fix when file is -
+ - Fix sub-grammars for strings where inner is empty
+ - Removed production <embedded SQL host program>, assuming all host
+   programs start with EXEC SQL
  - Allow balanced parenthesis in generic host identifier
  - A More generic host identifier
  - bin/sql2003ast: POD spelling error
 
-0.004 2014-12-14T15:30:23
+0.004 2014-12-14T15:30:23Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - Release of version 0.004
  - POD dev+
@@ -18,14 +23,14 @@ Changelog for MarpaX-Languages-SQL2003-AST
  - Revisit Host identifiers
  - qualified asterisk dev+
 
-0.003 2014-12-13T21:15:36
+0.003 2014-12-13T21:15:36Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - Release of version 0.003
  - t/all_tests.c: commented trace_terminals
  - Period causes trouble
  - XML::LibXML and UTF8 flag
 
-0.002 2014-12-13T12:51:45
+0.002 2014-12-13T12:51:45Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - Release of version 0.002
  - schema name fixes
@@ -33,7 +38,7 @@ Changelog for MarpaX-Languages-SQL2003-AST
  - For release
  - t/all_tests.t: re-enable full statements tests
 
-0.001 2014-12-13T11:18:46
+0.001 2014-12-13T11:18:46Z
  [Jean-Damien Durand <jeandamiendurand@free.fr>]
  - Signed Numeric Literal reversal
  - Remove temporary <000> test
