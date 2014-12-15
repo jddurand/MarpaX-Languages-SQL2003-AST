@@ -2,13 +2,14 @@
 ############################################################################
 # Comments:                                                                #
 ############################################################################
-# <host identifier> is approximated to <identifier> for ANY language       #
+# <host identifier> is approximated to the following sub-grammar:          #
+# <host identifier L0 internal> ~ [^\s,;:()]+                              #
+# <host identifier L0> ~ <host identifier L0 internal>                     #
+#                     | '(' <host identifier L0> ')'                       #
+# All host programs as assumed to start with EXEC SQL                      #
 # <regular identifier> is supposed to match <SQL language identifier>      #
 # <direct implementation-defined statement> is skipped.                    #
-# UESCAPE is fully supported.                                              #
-# <embeded SQL TARGET LANGUAGE> are supposed to all be EXEC SQL            #
-# <host label identifier> is skipped                                       #
-# <host PL/I label variable> is skipped                                    #
+# <UESCAPE> is fully supported.                                            #
 # <COBOL dbcs> is not implemented                                          #
 #                                                                          #
 # Take care that in SQL-2003 string are single quoted, Unicode strings are #
@@ -71,7 +72,7 @@
 <SQL start>  ::= <preparable statement>
                | <direct SQL statement>
                | <embedded SQL declare section>
-               | <embedded SQL host program>
+/*             | <embedded SQL host program> */ /* Generates useless ambiguity */
                | <embedded SQL statement>
                | <SQL_client module definition>
 
@@ -4235,7 +4236,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <COBOL literal> ::= <COBOL nonnumeric>
                   | <COBOL numeric>
-                  | <COBOL dbcs> 
+                  | <COBOL dbcs>
                   | <COBOL figurative-constant>
 
 <COBOL nonnumeric> ::= '"' ([^"] | '"' '"')* '"'
@@ -4247,7 +4248,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <COBOL numeric> ::= ('+' | '-')? (<digit>* '.' <digit>+ | <digit>+)
 
- <COBOL dbcs> = NOT IMPLEMENTED 
+<COBOL dbcs> = NOT IMPLEMENTED
 
 <COBOL figurative-constant> ::= "ZERO"
                               | "ZEROS"
