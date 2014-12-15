@@ -49,17 +49,19 @@ Attribute's value is the string introducer, e.g. "_utf8".
 
 =back
 
-=head1 SEE ALSO
+=head1 SUBROUTINES/METHODS
 
-L<MarpaX::Languages::SQL2003::AST::Actions>, L<XML::LibXML>
+=head2 new($class)
+
+Instantiate a new object of the class $class.
 
 =cut
 
 sub new {
     my $class = shift;
     my $self = {
-		dom => XML::LibXML::Document->new("1.0", "UTF-8"),
-	       };
+      dom => XML::LibXML::Document->new("1.0", "UTF-8"),
+    };
     bless($self, $class);
     return $self;
 }
@@ -87,7 +89,7 @@ sub _nonTerminalSemantic {
       # We want to make sure that all data has the UTF8 flag on
       #
       foreach (0..$#{$_[$index]}) {
-	utf8::upgrade($_[$index]->[$_]);
+        utf8::upgrade($_[$index]->[$_]);
       }
       $child = XML::LibXML::Element->new($rhs[$index]);
       $child->setAttribute('start',  $_[$index]->[0]);
@@ -96,8 +98,8 @@ sub _nonTerminalSemantic {
       $child->setAttribute('value',  $_[$index]->[3]);
       my $i = 4;
       while ($#{$_[$index]} >= $i) {
-	$child->setAttribute($_[$index]->[$i], $_[$index]->[$i+1]);
-	$i += 2;
+        $child->setAttribute($_[$index]->[$i], $_[$index]->[$i+1]);
+        $i += 2;
       }
     } else {
       $child = $_[$index];
@@ -122,11 +124,9 @@ sub _nonTerminalSemantic {
 sub _lexemeValue {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('value') : undef;
 
-  return $node->getAttribute('value');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -134,11 +134,9 @@ sub _lexemeValue {
 sub _lexemeStart {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('start') : undef;
 
-  return $node->getAttribute('start');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -146,11 +144,9 @@ sub _lexemeStart {
 sub _lexemeLength {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->getAttribute('length') : undef;
 
-  return $node->getAttribute('length');
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -158,14 +154,14 @@ sub _lexemeLength {
 sub _childByIndex {
   my ($self, $node, $index) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $child = undef;
 
-  my $i = -1;
-  my $child = $node->firstChild();
-  while (++$i < $index) {
-    $child = $child->nextSibling();
+  if (defined($node)) {
+    my $i = -1;
+    $child = $node->firstChild();
+    while (++$i < $index) {
+      $child = $child->nextSibling();
+    }
   }
 
   return $child;
@@ -192,5 +188,11 @@ sub _characterStringLiteral { super(); }
 sub _unsignedNumericLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
+
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions>, L<XML::LibXML>
+
+=cut
 
 1;

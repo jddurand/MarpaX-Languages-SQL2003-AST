@@ -52,9 +52,11 @@ This really is the string '_utf8', which is the introducer's value.
 
 =back
 
-=head1 SEE ALSO
+=head1 SUBROUTINES/METHODS
 
-L<MarpaX::Languages::SQL2003::AST::Actions>
+=head2 new($class)
+
+Instantiate a new object of the class $class.
 
 =cut
 
@@ -88,8 +90,8 @@ sub _nonTerminalSemantic {
       my $raw = {start => $_[$index]->[0], length => $_[$index]->[1], text => $_[$index]->[2], value => $_[$index]->[3]};
       my $i = 4;
       while ($#{$_[$index]} >= $i) {
-	$raw->{$_[$index]->[$i]} = $_[$index]->[$i+1];
-	$i += 2;
+        $raw->{$_[$index]->[$i]} = $_[$index]->[$i+1];
+        $i += 2;
       }
       $child = bless($raw, $rhs[$index]);
     } else {
@@ -106,11 +108,9 @@ sub _nonTerminalSemantic {
 sub _lexemeValue {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->[2] : undef;
 
-  return $node->[2];
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -118,11 +118,9 @@ sub _lexemeValue {
 sub _lexemeStart {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->[0] : undef;
 
-  return $node->[0];
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -130,11 +128,9 @@ sub _lexemeStart {
 sub _lexemeLength {
   my ($self, $node) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? $node->[1] : undef;
 
-  return $node->[1];
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -142,11 +138,9 @@ sub _lexemeLength {
 sub _childByIndex {
   my ($self, $node, $index) = @_;
 
-  if (! defined($node)) {
-    return undef;
-  }
+  my $rc = defined($node) ? (($index <= $#{$node}) ? $node->[$index] : undef) : undef;
 
-  return ($index <= $#{$node}) ? $node->[$index] : undef;
+  return $rc;
 }
 
 # ----------------------------------------------------------------------------------------
@@ -170,5 +164,11 @@ sub _characterStringLiteral { super(); }
 sub _unsignedNumericLiteral { super(); }
 
 # ----------------------------------------------------------------------------------------
+
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST::Actions>
+
+=cut
 
 1;

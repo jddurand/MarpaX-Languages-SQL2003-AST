@@ -12,40 +12,6 @@ use Math::BigFloat;
 
 # VERSION
 
-=head1 DESCRIPTION
-
-This modules give a semantic actions generic class associated to SQL-2003 grammar
-
-The following rules have dedicated semantics:
-
-=over
-
-=item Unicode Delimited Identifier
-
-Syntax is U&"..." "..." [UESCAPE '.'] and is considered as a whole token. The value is the unicode string concatenation with respect to UESCAPE character.
-
-=item Character String Literal
-
-Syntax is an eventual introducer followed by the string. The value is the string, and and extra attribute "introducer" is created.
-
-=item National Character String Literal
-
-Syntax is a succession of N'...'. The value is the string concatenation.
-
-=item Unsigned Numeric Literal
-
-The value is the perl's Math::BigFloat string representation.
-
-=back
-
-=cut
-
-=head1 SEE ALSO
-
-L<MarpaX::Languages::SQL2003::AST>, L<MarpaX::Languages::SQL2003::AST::Actions::Blessed>, L<MarpaX::Languages::SQL2003::AST::Actions::XML>
-
-=cut
-
 our $SEPARATOR = <<SEPARATOR;
 _WS ~ [\\s]+
 <space any L0> ~ _WS
@@ -77,6 +43,42 @@ _COMMENT ~ _COMMENT_EVERYYHERE_START _COMMENT_EVERYYHERE_END
 
 <separator> ::= <discard many>
 SEPARATOR
+
+=head1 DESCRIPTION
+
+This modules give a semantic actions generic class associated to SQL-2003 grammar
+
+The following rules have dedicated semantics:
+
+=over
+
+=item Unicode Delimited Identifier
+
+Syntax is U&"..." "..." [UESCAPE '.'] and is considered as a whole token. The value is the unicode string concatenation with respect to UESCAPE character.
+
+=item Character String Literal
+
+Syntax is an eventual introducer followed by the string. The value is the string, and and extra attribute "introducer" is created.
+
+=item National Character String Literal
+
+Syntax is a succession of N'...'. The value is the string concatenation.
+
+=item Unsigned Numeric Literal
+
+The value is the perl's Math::BigFloat string representation.
+
+=back
+
+=cut
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new($class)
+
+Instantiate a new object of the class $class.
+
+=cut
 
 sub new {
     my $class = shift;
@@ -162,10 +164,9 @@ sub _unicodeDelimitedIdentifierValue {
 <doublequote symbol> ::= '""' action => MarpaX::Languages::SQL2003::AST::Actions::_lastChar
 
 <Unicode escape value> ::=
-		<Unicode 4 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
-	|	<Unicode 6 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
-	|	<Unicode character escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_UnicodeEscape
-
+                           <Unicode 4 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
+                         | <Unicode 6 digit escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_Unicode4
+                         | <Unicode character escape value> action => MarpaX::Languages::SQL2003::AST::Actions::_UnicodeEscape
 
 <hexit> ~ [a-fA-f0-9]
 
@@ -210,7 +211,7 @@ sub _unicodeDelimitedIdentifierUescape {
 
   my $text = $Unicode_Delimited_Identifier_Lexeme->[2];
   #
-  # $Unicode_Escape_Specifier is: 
+  # $Unicode_Escape_Specifier is:
   # <Unicode_Escape_Specifier> ::= <XXX_Maybe>
   # <XXX_Maybe> ::= <XXX>
   # <XXX_Maybe> ::=
@@ -448,5 +449,11 @@ sub _unsignedNumericLiteral {
 }
 
 # ----------------------------------------------------------------------------------------
+
+=head1 SEE ALSO
+
+L<MarpaX::Languages::SQL2003::AST>, L<MarpaX::Languages::SQL2003::AST::Actions::Blessed>, L<MarpaX::Languages::SQL2003::AST::Actions::XML>
+
+=cut
 
 1;

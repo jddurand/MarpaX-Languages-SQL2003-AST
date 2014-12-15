@@ -3,6 +3,7 @@ use warnings FATAL => 'all';
 
 package MarpaX::Languages::SQL2003::AST;
 use MarpaX::Languages::SQL2003::AST::Actions;
+use Carp qw/croak/;
 
 # ABSTRACT: Translate SQL-2003 source to an AST
 
@@ -115,68 +116,67 @@ Any other key will be passed as-is to the Marpa's parse() method, i.e. it has to
 =cut
 
 sub Marpa::R2::Scanless::G::_parse_debug {
-    my ( $slg, $input_ref, $arg1, @more_args ) = @_;
-    if ( not defined $input_ref or ref $input_ref ne 'SCALAR' ) {
-        Marpa::R2::exception(
-            q{$slr->parse(): first argument must be a ref to string});
-    }
-    my @recce_args = ( { grammar => $slg } );
-    my @semantics_package_arg = ();
-    DO_ARG1: {
-        last if not defined $arg1;
-        my $reftype = ref $arg1;
-        if ( $reftype eq 'HASH' ) {
-
-            # if second arg is ref to hash, it is the first set
-            # of named args for
-            # the recognizer
-            push @recce_args, $arg1;
-            last DO_ARG1;
-        } ## end if ( $reftype eq 'HASH' )
-        if ( $reftype eq q{} ) {
-
-            # if second arg is a string, it is the semantic package
-            push @semantics_package_arg, { semantics_package => $arg1 };
-        }
-        if ( ref $arg1 and ref $input_ref ne 'HASH' ) {
-            Marpa::R2::exception(
-                q{$slr->parse(): second argument must be a package name or a ref to HASH}
-            );
-        }
-    } ## end DO_ARG1:
-    if ( grep { ref $_ ne 'HASH' } @more_args ) {
-        Marpa::R2::exception(
-            q{$slr->parse(): third and later arguments must be ref to HASH});
-    }
-    my $slr = Marpa::R2::Scanless::R->new( @recce_args, @more_args,
-        @semantics_package_arg );
-    my $input_length = ${$input_ref};
-    my $length_read  = eval {$slr->read($input_ref)} || die "$@\n" . $slr->show_progress() . "\nTerminals expected: " . join(' ', @{$slr->terminals_expected}) . "\n";;
-    if ( $length_read != length $input_length ) {
-        die 'read in $slr->parse() ended prematurely', "\n",
-            "  The input length is $input_length\n",
-            "  The length read is $length_read\n",
-            "  The cause may be an event\n",
-            "  The $slr->parse() method does not allow parses to trigger events";
-    } ## end if ( $length_read != length $input_length )
-
-    my @value_ref = ();
-    while (defined(my $value_ref = $slr->value())) {
-      push(@value_ref, $value_ref);
-    }
+  my ( $slg, $input_ref, $arg1, @more_args ) = @_;
+  if ( not defined $input_ref or ref $input_ref ne 'SCALAR' ) {
     Marpa::R2::exception(
-        '$slr->parse() read the input, but there was no parse', "\n", "Context is: ", $slr->show_progress(), "\n", "Terminals expected: ",  join(' ', @{$slr->terminals_expected}))
-        if not @value_ref;
+                         q{$slr->parse(): first argument must be a ref to string});
+  }
+  my @recce_args = ( { grammar => $slg } );
+  my @semantics_package_arg = ();
+ DO_ARG1: {
+    last if not defined $arg1;
+    my $reftype = ref $arg1;
+    if ( $reftype eq 'HASH' ) {
+      # if second arg is ref to hash, it is the first set
+      # of named args for
+      # the recognizer
+      push @recce_args, $arg1;
+      last DO_ARG1;
+    } ## end if ( $reftype eq 'HASH' )
+    if ( $reftype eq q{} ) {
 
-    if (scalar(@value_ref) > 1) {
-      print STDERR "AMBIGUITY:\n";
-      foreach (@value_ref) {
-        print STDERR "\n" . ${$_}->toString(1) . "\n";
-      }
-      exit;
+      # if second arg is a string, it is the semantic package
+      push @semantics_package_arg, { semantics_package => $arg1 };
     }
+    if ( ref $arg1 and ref $input_ref ne 'HASH' ) {
+      Marpa::R2::exception(
+                           q{$slr->parse(): second argument must be a package name or a ref to HASH}
+                          );
+    }
+  } ## end DO_ARG1:
+  if ( grep { ref $_ ne 'HASH' } @more_args ) {
+    Marpa::R2::exception(
+                         q{$slr->parse(): third and later arguments must be ref to HASH});
+  }
+  my $slr = Marpa::R2::Scanless::R->new( @recce_args, @more_args,
+                                         @semantics_package_arg );
+  my $input_length = ${$input_ref};
+  my $length_read  = eval {$slr->read($input_ref)} || die "$@\n" . $slr->show_progress() . "\nTerminals expected: " . join(' ', @{$slr->terminals_expected}) . "\n";
+  if ( $length_read != length $input_length ) {
+    die 'read in $slr->parse() ended prematurely', "\n",
+      "  The input length is $input_length\n",
+        "  The length read is $length_read\n",
+          "  The cause may be an event\n",
+            "  The $slr->parse() method does not allow parses to trigger events";
+  } ## end if ( $length_read != length $input_length )
 
-    return $value_ref[0];
+  my @value_ref = ();
+  while (defined(my $value_ref = $slr->value())) {
+    push(@value_ref, $value_ref);
+  }
+  Marpa::R2::exception(
+                       '$slr->parse() read the input, but there was no parse', "\n", "Context is: ", $slr->show_progress(), "\n", "Terminals expected: ",  join(' ', @{$slr->terminals_expected}))
+      if not @value_ref;
+
+  if (scalar(@value_ref) > 1) {
+    my $croak = "AMBIGUITY:\n";
+    foreach (@value_ref) {
+      $croak .= "\n" . ${$_}->toString(1) . "\n";
+    }
+    croak $croak;
+  }
+
+  return $value_ref[0];
 } ## end sub Marpa::R2::Scanless::G::parse
 
 # ----------------------------------------------------------------------------------------
@@ -198,9 +198,9 @@ sub parse {
   my %otherOpts = map {$_ => $opts{$_}} grep {$_ ne 'xml'} keys %opts;
 
   my $value = $self->_parse(\$input,
-			    join('::',__PACKAGE__, 'Actions', $basenameSemanticsPackage),
-			    {%otherOpts,
-			     ranking_method => 'high_rule_only'});
+                            join('::',__PACKAGE__, 'Actions', $basenameSemanticsPackage),
+                            {%otherOpts,
+                             ranking_method => 'high_rule_only'});
 
   return defined($value) ? ${$value} : undef;
 }
