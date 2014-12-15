@@ -151,8 +151,8 @@ sub _unicodeDelimitedIdentifierValue {
 <nondoublequote character> ~ [^"]
                            | [\\x{$Unicode_Escape_Specifier_Hex}] '"'
 
-<Unicode identifier part many> ::= <Unicode identifier part>+  action => MarpaX::Languages::SQL2003::AST::Actions::_concat
-<Unicode delimiter body> ::= ('"') <Unicode identifier part many> ('"')
+<Unicode identifier part any> ::= <Unicode identifier part>*  action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<Unicode delimiter body> ::= ('"') <Unicode identifier part any> ('"')
 <Unicode identifier part> ::= <Unicode delimited identifier part>
                             | <Unicode escape value>
 
@@ -317,7 +317,7 @@ lexeme default = latm => 1
 <National Character String Literal value> ::= ('N':i) <character representation many>
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>* action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 
 $SEPARATOR
 GRAMMAR
@@ -393,7 +393,7 @@ lexeme default = latm => 1        # LATM is important here because <set name> an
                                    <character representation many> action => MarpaX::Languages::SQL2003::AST::Actions::_characterStringLiteralWithoutIntroducer
 
 <character representation> ::= (<quote>) <inner> (<quote>)
-<inner> ::= <inner representation>+ action => MarpaX::Languages::SQL2003::AST::Actions::_concat
+<inner> ::= <inner representation>* action => MarpaX::Languages::SQL2003::AST::Actions::_concat
 <inner representation> ::= <notquote symbol> | <quote symbol>
 
 $SEPARATOR
