@@ -25,9 +25,9 @@ A terminal is an XML element with at least four attributes:
 
 Attribute's value is the start position in the input stream.
 
-=item lengh
+=item length
 
-Attribute's value is the lengh of the terminal in the input stream.
+Attribute's value is the length of the terminal in the input stream.
 
 =item text
 
@@ -39,7 +39,7 @@ Attribute's value is the terminal value.
 
 =back
 
-and optionnaly other attributes, e.g. for character string literals, you'll might have:
+and optionaly other attributes, e.g. for character string literals, you'll might have:
 
 =over
 

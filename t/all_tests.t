@@ -20,77 +20,76 @@ sub _diag {
 my $obj = new_ok('MarpaX::Languages::SQL2003::AST');
 my $tokenObj;
 {
-    no warnings;
-    local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Tokens>\n<Tokens> ::= <Token>+\n";
-    $tokenObj = new_ok('MarpaX::Languages::SQL2003::AST');
-    _diag("Second grammar with <token>+ as value");
+  no warnings;
+  local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Tokens>\n<Tokens> ::= <Token>+\n";
+  $tokenObj = new_ok('MarpaX::Languages::SQL2003::AST');
+  _diag("Second grammar with <token>+ as value");
 }
 my $literalObj;
 {
-    no warnings;
-    local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Literals>\n<Literals> ::= <Literal>+\n";
-    $literalObj = new_ok('MarpaX::Languages::SQL2003::AST');
-    _diag("Third grammar with <Literal>+ as value");
+  no warnings;
+  local $MarpaX::Languages::SQL2003::AST::start = ":start ::= <Literals>\n<Literals> ::= <Literal>+\n";
+  $literalObj = new_ok('MarpaX::Languages::SQL2003::AST');
+  _diag("Third grammar with <Literal>+ as value");
 }
 foreach (sort __PACKAGE__->section_data_names) {
-    my $testName = $_;
-    my $stringp = __PACKAGE__->section_data($testName);
-    if ($testName =~ /\b(?:token|literal):/) {
-        subtest $testName => sub {
-            foreach (split(/\n/, ${$stringp})) {
-                my $input = $_;
-                $input =~ s/^\s*//;
-                $input =~ s/\s*$//;
-                if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
-		    my $obj = ($testName =~ /\btoken:/) ? $tokenObj : $literalObj;
-                    my $xml = $obj->asXML($input
-					  # , trace_terminals => 1
-					 );
-		    my $length = length($input);
-		    $length = 78 if ($length > 78);
-		    _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
-                    my %wantedLexemes = ();
-                    map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
-                    my %unwantedLexemes = ();
-                    foreach ($xml->findnodes($lexemesXpath)) {
-                        my $localname = $_->localname();
-                        if (exists($wantedLexemes{$localname})) {
-                            $wantedLexemes{$localname}++;
-                        } else {
-                            $unwantedLexemes{$localname}++;
-                        }
-                    }
-                    if (%unwantedLexemes) {
-                        fail("$testName: $input");
-                        diag("Some lexemes are not of type " . join(', or ', keys %wantedLexemes) . ": " . join(', ', keys %unwantedLexemes) . ". XML AST is:\n" . $xml->toString(1) . "\n");
-                    } elsif (grep {$wantedLexemes{$_} <= 0} keys %wantedLexemes) {
-                        fail("$testName: $input");
-                        diag("Some lexemes are not found: " . join(', ', grep {$wantedLexemes{$_} <= 0} keys %wantedLexemes) . ". XML AST is:\n" . $xml->toString(1) . "\n");
-
-                    } else {
-                        pass("$testName: $input");
-                    }
-                }
-            }
-        }
-    } else {
-      subtest $testName => sub {
-	foreach (split(/\n/, ${$stringp})) {
-	  my $input = $_;
-	  $input =~ s/^\s*//;
-	  $input =~ s/\s*$//;
-	  if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
-	    my $xml = $obj->asXML($input
-				  # , trace_terminals => 1
-				 );
-	    my $length = length($input);
-	    $length = 78 if ($length > 78);
-	    _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+  my $testName = $_;
+  my $stringp = __PACKAGE__->section_data($testName);
+  if ($testName =~ /\b(?:token|literal):/) {
+    subtest $testName => sub {
+      foreach (split(/\n/, ${$stringp})) {
+	my $input = $_;
+	$input =~ s/^\s*//;
+	$input =~ s/\s*$//;
+	if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
+	  my $obj = ($testName =~ /\btoken:/) ? $tokenObj : $literalObj;
+	  my $xml = $obj->asXML($input
+				# , trace_terminals => 1
+			       );
+	  my $length = length($input);
+	  $length = 78 if ($length > 78);
+	  _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+	  my %wantedLexemes = ();
+	  map {$wantedLexemes{$_} = 0} split(/,/, (split(/:/, $testName))[-1]);
+	  my %unwantedLexemes = ();
+	  foreach ($xml->findnodes($lexemesXpath)) {
+	    my $localname = $_->localname();
+	    if (exists($wantedLexemes{$localname})) {
+	      $wantedLexemes{$localname}++;
+	    } else {
+	      $unwantedLexemes{$localname}++;
+	    }
+	  }
+	  if (%unwantedLexemes) {
+	    fail("$testName: $input");
+	    diag("Some lexemes are not of type " . join(', or ', keys %wantedLexemes) . ": " . join(', ', keys %unwantedLexemes) . ". XML AST is:\n" . $xml->toString(1) . "\n");
+	  } elsif (grep {$wantedLexemes{$_} <= 0} keys %wantedLexemes) {
+	    fail("$testName: $input");
+	    diag("Some lexemes are not found: " . join(', ', grep {$wantedLexemes{$_} <= 0} keys %wantedLexemes) . ". XML AST is:\n" . $xml->toString(1) . "\n");
+	  } else {
 	    pass("$testName: $input");
 	  }
 	}
       }
     }
+  } else {
+    subtest $testName => sub {
+      foreach (split(/\n/, ${$stringp})) {
+	my $input = $_;
+	$input =~ s/^\s*//;
+	$input =~ s/\s*$//;
+	if (length($input) > 0 && substr($input, 0, 2) ne '/*') {
+	  my $xml = $obj->asXML($input
+				# , trace_terminals => 1
+			       );
+	  my $length = length($input);
+	  $length = 78 if ($length > 78);
+	  _diag("\n" . ('=' x $length) . "\n$input\n" . ('=' x $length) . "\n" . $xml->toString(1));
+	  pass("$testName: $input");
+	}
+      }
+    }
+  }
 }
 
 __DATA__

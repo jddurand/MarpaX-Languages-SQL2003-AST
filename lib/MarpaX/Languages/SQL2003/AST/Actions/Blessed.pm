@@ -24,9 +24,9 @@ A terminal is a blessed hash reference, blessed name is the terminal symbol. The
 
 Start position in the input stream.
 
-=item lengh
+=item length
 
-Lengh of the terminal in the input stream.
+Length of the terminal in the input stream.
 
 =item text
 
@@ -38,7 +38,7 @@ Terminal value.
 
 =back
 
-optionnaly followed by pairs of (key, value), e.g. for character string literals, you'll might have:
+optionaly followed by pairs of (key, value), e.g. for character string literals, you'll might have:
 
 =over
 
