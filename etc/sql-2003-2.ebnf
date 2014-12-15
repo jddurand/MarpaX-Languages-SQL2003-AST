@@ -1015,7 +1015,10 @@
 
 <boolean literal> ::= TRUE | FALSE | UNKNOWN
 
-<host identifier L0 internal> ~ [^\s,;:]+
+<host identifier L0 internal> ~ [^\s,;:()]+
+<host identifier L0> ~ <host identifier L0 internal>
+                     | /*LEX*/'(' <host identifier L0> /*LEX*/')'
+
 <identifier L0 internal> ~ <actual identifier L0>
 <identifier> ~ <identifier L0 internal>
 
@@ -4011,7 +4014,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <Ada assignment operator> ::= <colon><equals operator>
 
-<Ada host identifier> ~ <host identifier L0 internal>
+<Ada host identifier> ~ <host identifier L0>
 
 /*
 <Ada host identifier> ::= <Ada host identifier letter> ( <underscore>? ( <Ada host identifier letter> | <digit> ) )*
@@ -4100,7 +4103,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <C array specification> ::= <left bracket> <length> <right bracket>
 
-<C host identifier> ~ <host identifier L0 internal>
+<C host identifier> ~ <host identifier L0>
 
 /*
 <C host identifier> ::= <regular identifier> */ /* !! See the Syntax Rules. */
@@ -4189,7 +4192,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL COBOL program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<COBOL host identifier> ~ <host identifier L0 internal>
+<COBOL host identifier> ~ <host identifier L0>
 
 <COBOL variable definition> ::=
 		( 01 | 77 ) <COBOL host identifier> <COBOL type specification>
@@ -4339,7 +4342,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL Fortran program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<Fortran host identifier> ~ <host identifier L0 internal>
+<Fortran host identifier> ~ <host identifier L0>
 
 <Fortran variable definition> ::=
 		<Fortran type specification> <Fortran host identifier> ( <comma> <Fortran host identifier> )*
@@ -4397,7 +4400,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 	|	<MUMPS character variable> <semicolon>
 	|	<MUMPS derived type specification> <semicolon>
 
-<MUMPS host identifier> ~ <host identifier L0 internal>
+<MUMPS host identifier> ~ <host identifier L0>
 
 <MUMPS character variable> ::=
 		VARCHAR <MUMPS host identifier> <MUMPS length specification>
@@ -4449,7 +4452,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL Pascal program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<Pascal host identifier> ~ <host identifier L0 internal>
+<Pascal host identifier> ~ <host identifier L0>
 
 <Pascal variable definition> ::=
 		<Pascal host identifier> ( <comma> <Pascal host identifier> )* <colon> <Pascal type specification> <semicolon>
@@ -4500,7 +4503,7 @@ ALTER TYPE <schema_resolved user_defined type name> <alter type action>
 
 <embedded SQL PL_I program> ::= EXEC SQL /* !! See the Syntax Rules. */
 
-<PL_I host identifier> ~ <host identifier L0 internal>
+<PL_I host identifier> ~ <host identifier L0>
 
 <PL_I variable definition> ::=
 		( DCL | DECLARE ) <PL_I host identifier>
