@@ -16,13 +16,7 @@ our @HOSTS = qw/C Ada Cobol Fortran Mumps Pascal PLI/;
 our %HOST2G = map {$_ => $_} @HOSTS;
 # Exception: PLI
 $HOST2G{PLI} = 'Pl_I';
-our %HOST_IDENTIFIER_DEFAULT_PRIORITY = ();
-our $DATA_DEFAULT = $DATA;
-foreach (0..$#HOSTS) {
-  $HOST_IDENTIFIER_DEFAULT_PRIORITY{$HOSTS[$_]} = -$_;
-  $DATA_DEFAULT .= "\n:lexeme ~ <$HOST2G{$HOSTS[$_]}_Host_Identifier> priority => $HOST_IDENTIFIER_DEFAULT_PRIORITY{$HOSTS[$_]}\n";
-}
-our %G = ($HOSTS[0] => Marpa::R2::Scanless::G->new({source => \$DATA_DEFAULT}));
+our %G = ();
 
 =head1 DESCRIPTION
 
@@ -68,14 +62,10 @@ sub new {
   }
 
   if (! defined($G{$host})) {
-    our %HOST_IDENTIFIER_PRIORITY = ();
-    foreach (keys %HOST_IDENTIFIER_DEFAULT_PRIORITY) {
-      $HOST_IDENTIFIER_PRIORITY{$_} = $HOST_IDENTIFIER_DEFAULT_PRIORITY{$_};
-    }
     my $data = $DATA;
+    my %hostIdentifierPriority = map {$HOSTS[$_] => ($HOSTS[$_] eq $host) ? 1 : -$_} (0..$#HOSTS);
     foreach (0..$#HOSTS) {
-      $HOST_IDENTIFIER_PRIORITY{$HOSTS[$_]} = ($HOSTS[$_] eq $host) ? 1 : -$_;
-      $data .= "\n:lexeme ~ <$HOST2G{$HOSTS[$_]}_Host_Identifier> priority => $HOST_IDENTIFIER_PRIORITY{$HOSTS[$_]}\n";
+      $data .= "\n:lexeme ~ <$HOST2G{$HOSTS[$_]}_Host_Identifier> priority => $hostIdentifierPriority{$HOSTS[$_]}\n";
     }
     $G{$host} = Marpa::R2::Scanless::G->new({source => \$data});
   }
