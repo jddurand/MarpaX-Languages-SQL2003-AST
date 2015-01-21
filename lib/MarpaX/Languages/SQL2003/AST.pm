@@ -247,6 +247,10 @@ inaccessible is ok by default
 :default ::= action => _nonTerminalSemantic
 lexeme default = action => [start,length,value,value] latm => 1
 
+<UNKNOWN_STUFF> ::= <Identifier>
+				  | <SQL_Terminal_Character>
+				  | <SET>
+
 :start ::= <SQL_Start_Sequence>
 <SQL_Start_Many> ::= <SQL_Start>+ rank => 0
 <SQL_Start_Sequence> ::= <SQL_Start_Many> rank => 0
@@ -255,6 +259,7 @@ lexeme default = action => [start,length,value,value] latm => 1
               | <Embedded_SQL_Declare_Section> rank => -2
               | <Embedded_SQL_Statement> rank => -3
               | <SQL_Client_Module_Definition> rank => -4
+              | <UNKNOWN_STUFF> rank => 1
 <SQL_Terminal_Character> ::= <SQL_Language_Character> rank => 0
 <SQL_Language_Character_L0> ~ <Simple_Latin_Letter_L0>
                               | <Digit_L0>
@@ -369,7 +374,15 @@ lexeme default = action => [start,length,value,value] latm => 1
                   | <Lex034>
 <Multiplier> ~ <Multiplier_L0>
 <Delimited_Identifier_L0> ~ <Lex035> <Delimited_Identifier_Body_L0> <Lex036>
+
 <Delimited_Identifier> ~ <Delimited_Identifier_L0>
+					   | <Delimited_Identifier_L1>
+
+<Delimited_Identifier_L1> ~ <Lex023> <Delimited_Identifier_Body_L1> <Lex025>
+<Genlex125> ~ [^\[\]]
+<Genlex125_Many> ~ <Genlex125>+
+<Delimited_Identifier_Body_L1> ~ <Genlex125_Many>
+
 <Genlex124> ~ <Delimited_Identifier_Part_L0>
 <Genlex124_Many> ~ <Genlex124>+
 <Delimited_Identifier_Body_L0> ~ <Genlex124_Many>
@@ -1126,6 +1139,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Identifier> ~ <Identifier_L0_Internal>
 <Actual_Identifier_L0> ~ <Regular_Identifier_L0_Internal>
                          | <Delimited_Identifier_L0>
+						 |  <Delimited_Identifier_L1>
 <Genlex880> ~ <Underscore_L0>
               | <SQL_Language_Identifier_Part_L0>
 <Genlex880_Any> ~ <Genlex880>*
