@@ -377,11 +377,17 @@ lexeme default = action => [start,length,value,value] latm => 1
 
 <Delimited_Identifier> ~ <Delimited_Identifier_L0>
 					   | <Delimited_Identifier_L1>
+					   | <Delimited_Identifier_L2>
 
 <Delimited_Identifier_L1> ~ <Lex023> <Delimited_Identifier_Body_L1> <Lex025>
+<Delimited_Identifier_L2> ~ <Lex008> <Delimited_Identifier_Body_L2> <Lex008>
 <Genlex125> ~ [^\[\]]
 <Genlex125_Many> ~ <Genlex125>+
 <Delimited_Identifier_Body_L1> ~ <Genlex125_Many>
+
+<Genlex126> ~ [^']
+<Genlex126_Many> ~ <Genlex126>+
+<Delimited_Identifier_Body_L2> ~ <Genlex126_Many>
 
 <Genlex124> ~ <Delimited_Identifier_Part_L0>
 <Genlex124_Many> ~ <Genlex124>+
@@ -1139,7 +1145,9 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Identifier> ~ <Identifier_L0_Internal>
 <Actual_Identifier_L0> ~ <Regular_Identifier_L0_Internal>
                          | <Delimited_Identifier_L0>
-						 |  <Delimited_Identifier_L1>
+						 | <Delimited_Identifier_L1>
+						 | <Delimited_Identifier_L2>
+
 <Genlex880> ~ <Underscore_L0>
               | <SQL_Language_Identifier_Part_L0>
 <Genlex880_Any> ~ <Genlex880>*
@@ -1575,6 +1583,8 @@ lexeme default = action => [start,length,value,value] latm => 1
                             | <User_Defined_Type_Value_Expression> rank => -4
                             | <Reference_Value_Expression> rank => -5
                             | <Collection_Value_Expression> rank => -6
+							| <VARIABLE> rank => -7
+
 <User_Defined_Type_Value_Expression> ::= <Value_Expression_Primary> rank => 0
 <Reference_Value_Expression> ::= <Value_Expression_Primary> rank => 0
 <Collection_Value_Expression> ::= <Array_Value_Expression> rank => 0
@@ -2988,6 +2998,13 @@ lexeme default = action => [start,length,value,value] latm => 1
                                  | <Null_Call_Clause> rank => -3
                                  | <Dynamic_Result_Sets_Characteristic> rank => -4
                                  | <NAME> <External_Routine_Name> rank => -5
+								 | <VARIABLE_LIST> rank => -6
+								 | <AS> <SQL_Start_Sequence> rank => -7
+<VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ rank => 0
+<VARIABLE_DEFINITION> ::= <VARIABLE> <Identifier> rank => 0
+<VARIABLE> ::= <VARIABLE_START> <Identifier> rank => 0
+<VARIABLE_START> ~ '@'
+
 <Alter_Routine_Behavior> ::= <RESTRICT> rank => 0
 <Drop_Routine_Statement> ::= <DROP> <Specific_Routine_Designator> <Drop_Behavior> rank => 0
 <Gen2730> ::= <AS> <ASSIGNMENT> rank => 0
