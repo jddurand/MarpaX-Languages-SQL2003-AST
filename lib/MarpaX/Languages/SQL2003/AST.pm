@@ -3379,7 +3379,15 @@ lexeme default = action => [start,length,value,value] latm => 1
                          | <WITHOUT> <RETURN> rank => -1
 <Updatability_Clause_Maybe> ::= <Updatability_Clause> rank => 0
 <Updatability_Clause_Maybe> ::= rank => -1
-<Cursor_Specification> ::= <Query_Expression> <Order_By_Clause_Maybe> <Updatability_Clause_Maybe> rank => 0
+<Cursor_Specification> ::= <Query_Expression> <Order_By_Clause_Maybe> <Option_Clause_Maybe> <Updatability_Clause_Maybe> rank => 0
+
+<Option_Clause_Maybe> ::= <OPTION> <Left_Paren> <OPTION_LIST> <Right_Paren> rank => 0
+<Option_Clause_Maybe> ::= rank => -1
+<OPTION_LIST> ::= <opt>+ separator => <Comma> rank => 0
+<opt> ::= <Identifier> <Identifier>
+		| <Identifier> <Digits>
+<Digits> ~ [0-9]+
+
 <Gen3103> ::= <OF> <Column_Name_List> rank => 0
 <Gen3103_Maybe> ::= <Gen3103> rank => 0
 <Gen3103_Maybe> ::= rank => -1
@@ -3406,6 +3414,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Fetch_Target_List> ::= <Target_Specification> <Gen3124_Any> rank => 0
 <Close_Statement> ::= <CLOSE> <Cursor_Name> rank => 0
 <Select_Statement_Single_Row> ::= <SELECT> <Set_Quantifier_Maybe> <Select_List> <INTO> <Select_Target_List> <Table_Expression> rank => 0
+
 <Gen3129> ::= <Comma> <Target_Specification> rank => 0
 <Gen3129_Any> ::= <Gen3129>* rank => 0
 <Select_Target_List> ::= <Target_Specification> <Gen3129_Any> rank => 0
