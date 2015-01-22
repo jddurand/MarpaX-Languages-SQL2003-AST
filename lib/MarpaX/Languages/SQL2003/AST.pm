@@ -2991,7 +2991,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Multiple_Group_Specification> ::= <Group_Specification> <Gen2715_Any> rank => 0
 <Group_Specification> ::= <Group_Name> <FOR> <TYPE> <Path_Resolved_User_Defined_Type_Name> rank => 0
 <Alter_Routine_Statement> ::= <ALTER> <Specific_Routine_Designator> <Alter_Routine_Characteristics> <Alter_Routine_Behavior> rank => 0
-							| <ALTER> <Specific_Routine_Designator> <VARIABLE_LIST> <AS> <SQL_Start_Sequence> rank => 0
+							| <ALTER> <Specific_Routine_Designator> <VARIABLE_LIST> <ALTER_WITH_MAYBE> <AS> <SQL_Start_Sequence> rank => 0
 <Alter_Routine_Characteristic_Many> ::= <Alter_Routine_Characteristic>+ rank => 0
 <Alter_Routine_Characteristics> ::= <Alter_Routine_Characteristic_Many> rank => 0
 <Alter_Routine_Characteristic> ::= <Language_Clause> rank => 0
@@ -3000,10 +3000,24 @@ lexeme default = action => [start,length,value,value] latm => 1
                                  | <Null_Call_Clause> rank => -3
                                  | <Dynamic_Result_Sets_Characteristic> rank => -4
                                  | <NAME> <External_Routine_Name> rank => -5
-<VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ rank => 0
-<VARIABLE_DEFINITION> ::= <VARIABLE> <Identifier> rank => 0
+<VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ separator => <Comma> rank => 0
+<VARIABLE_DEFINITION> ::= <VARIABLE> <VARIABLE_TYPE> rank => 0
 <VARIABLE> ::= <VARIABLE_START> <Identifier> rank => 0
+<VARIABLE_TYPE> ::= <Identifier> <VARIABLE_DEFAULT_MAYBE> rank => 0
+<VARIABLE_DEFAULT_MAYBE> ::= <Equals_Operator> <Identifier> rank => 0
+						   | <Equals_Operator> <Digits> rank => 0
+						   | <Left_Paren> <Digits> <Right_Paren> rank => 0
+<VARIABLE_DEFAULT_MAYBE> ::= rank => -1
 <VARIABLE_START> ~ '@'
+
+<ALTER_WITH_MAYBE> ::= <WITH> <ALTER_WITH> rank => 0
+<ALTER_WITH_MAYBE> ::= rank => -1
+<ALTER_WITH> ::= <ALTER_WITH_OPTION>+ separator => <Comma> rank => 0
+<ALTER_WITH_OPTION> ::= <ENCRYPTION>
+					  | <RECOMPILE>
+					  | <EXECUTE> <AS> <Identifier>
+<ENCRYPTION> ~ 'ENCRYPTION'
+<RECOMPILE> ~ 'RECOMPILE'
 
 <Alter_Routine_Behavior> ::= <RESTRICT> rank => 0
 <Drop_Routine_Statement> ::= <DROP> <Specific_Routine_Designator> <Drop_Behavior> rank => 0
