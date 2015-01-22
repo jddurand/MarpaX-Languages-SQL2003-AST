@@ -248,8 +248,9 @@ inaccessible is ok by default
 lexeme default = action => [start,length,value,value] latm => 1
 
 <UNKNOWN_STUFF> ::= <Identifier>
-				  | <SQL_Terminal_Character>
+				  | <SEMI>
 				  | <SET>
+<SEMI> ~ <Semicolon_L0>
 
 :start ::= <SQL_Start_Sequence>
 <SQL_Start_Many> ::= <SQL_Start>+ rank => 0
@@ -259,7 +260,7 @@ lexeme default = action => [start,length,value,value] latm => 1
               | <Embedded_SQL_Declare_Section> rank => -2
               | <Embedded_SQL_Statement> rank => -3
               | <SQL_Client_Module_Definition> rank => -4
-              | <UNKNOWN_STUFF> rank => 1
+              | <UNKNOWN_STUFF> rank => -5
 <SQL_Terminal_Character> ::= <SQL_Language_Character> rank => 0
 <SQL_Language_Character_L0> ~ <Simple_Latin_Letter_L0>
                               | <Digit_L0>
@@ -2999,7 +3000,7 @@ lexeme default = action => [start,length,value,value] latm => 1
                                  | <Dynamic_Result_Sets_Characteristic> rank => -4
                                  | <NAME> <External_Routine_Name> rank => -5
 								 | <VARIABLE_LIST> rank => -6
-								 | <AS> <SQL_Start_Sequence> rank => -7
+								 | <AS> <SQL_Start_Sequence> rank => 1
 <VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ rank => 0
 <VARIABLE_DEFINITION> ::= <VARIABLE> <Identifier> rank => 0
 <VARIABLE> ::= <VARIABLE_START> <Identifier> rank => 0
