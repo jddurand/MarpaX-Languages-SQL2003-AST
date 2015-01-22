@@ -2991,6 +2991,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Multiple_Group_Specification> ::= <Group_Specification> <Gen2715_Any> rank => 0
 <Group_Specification> ::= <Group_Name> <FOR> <TYPE> <Path_Resolved_User_Defined_Type_Name> rank => 0
 <Alter_Routine_Statement> ::= <ALTER> <Specific_Routine_Designator> <Alter_Routine_Characteristics> <Alter_Routine_Behavior> rank => 0
+							| <ALTER> <Specific_Routine_Designator> <VARIABLE_LIST> <AS> <SQL_Start_Sequence> rank => 0
 <Alter_Routine_Characteristic_Many> ::= <Alter_Routine_Characteristic>+ rank => 0
 <Alter_Routine_Characteristics> ::= <Alter_Routine_Characteristic_Many> rank => 0
 <Alter_Routine_Characteristic> ::= <Language_Clause> rank => 0
@@ -2999,8 +3000,6 @@ lexeme default = action => [start,length,value,value] latm => 1
                                  | <Null_Call_Clause> rank => -3
                                  | <Dynamic_Result_Sets_Characteristic> rank => -4
                                  | <NAME> <External_Routine_Name> rank => -5
-								 | <VARIABLE_LIST> rank => -6
-								 | <AS> <SQL_Start_Sequence> rank => 1
 <VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ rank => 0
 <VARIABLE_DEFINITION> ::= <VARIABLE> <Identifier> rank => 0
 <VARIABLE> ::= <VARIABLE_START> <Identifier> rank => 0
