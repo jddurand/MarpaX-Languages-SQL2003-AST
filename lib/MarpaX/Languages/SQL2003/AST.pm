@@ -247,10 +247,15 @@ inaccessible is ok by default
 :default ::= action => _nonTerminalSemantic
 lexeme default = action => [start,length,value,value] latm => 1
 
-<UNKNOWN_STUFF> ::= <Identifier>
-				  | <SEMI>
-				  | <SET>
-<SEMI> ~ <Semicolon_L0>
+<UNKNOWN_STUFF> ::= <things>
+
+<things> ~ <thing>+
+<thing> ~ [^\s]+
+:lexeme ~ <things> priority => 0
+
+<TSQL> ::= <SET> <Identifier> <Identifier>
+		 | <Declare_Variable>
+		 | <SELECT> <VARIABLE> <Equals_Operator> <Identifier> # evil evil ms
 
 :start ::= <SQL_Start_Sequence>
 <SQL_Start_Many> ::= <SQL_Start>+ rank => 0
@@ -260,7 +265,8 @@ lexeme default = action => [start,length,value,value] latm => 1
               | <Embedded_SQL_Declare_Section> rank => -2
               | <Embedded_SQL_Statement> rank => -3
               | <SQL_Client_Module_Definition> rank => -4
-              | <UNKNOWN_STUFF> rank => -5
+              | <TSQL> rank => -5
+              | <UNKNOWN_STUFF> rank => -6
 <SQL_Terminal_Character> ::= <SQL_Language_Character> rank => 0
 <SQL_Language_Character_L0> ~ <Simple_Latin_Letter_L0>
                               | <Digit_L0>
@@ -1949,6 +1955,10 @@ lexeme default = action => [start,length,value,value] latm => 1
                   | <Table_Function_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1662_Maybe> rank => -4
                   | <Only_Spec> <Gen1668_Maybe> rank => -5
                   | <Left_Paren> <Joined_Table> <Right_Paren> rank => -6
+				  | <TSQL_FUNCTION> <Left_Paren> <PARAMETERS> <Right_Paren> <As_Maybe> <Correlation_Name> <Gen1662_Maybe> rank => -7
+<TSQL_FUNCTION> ::= <Identifier>
+<PARAMETERS> ~ [^)]+
+
 <Only_Spec> ::= <ONLY> <Left_Paren> <Table_Or_Query_Name> <Right_Paren> rank => 0
 <Lateral_Derived_Table> ::= <LATERAL> <Table_Subquery> rank => 0
 <Gen1680> ::= <WITH> <ORDINALITY> rank => 0
@@ -3802,6 +3812,8 @@ lexeme default = action => [start,length,value,value] latm => 1
                              | <Embedded_Collation_Specification> rank => -6
                              | <Embedded_Exception_Declaration> rank => -7
                              | <SQL_Procedure_Statement> rank => -8
+<Declare_Variable> ::= <DECLARE> <VARIABLE_DEFINITION>
+
 <SQL_Prefix> ::= <EXEC> <SQL> rank => 0
                | <Ampersand> <SQL> <Left_Paren> rank => -1
 <SQL_Terminator> ::= <Lex374> rank => 0
