@@ -1,2 +1,6 @@
 Makefile.PL
 lib/MarpaX/Languages/SQL2003/AST.pm
+lib/MarpaX/Languages/AST/Actions/Blessed.pm
+lib/MarpaX/Languages/AST/Actions/XML.pm
+lib/MarpaX/Languages/AST/Actions.pm
+
