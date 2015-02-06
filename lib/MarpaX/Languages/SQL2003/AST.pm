@@ -247,6 +247,16 @@ inaccessible is ok by default
 :default ::= action => _nonTerminalSemantic
 lexeme default = action => [start,length,value,value] latm => 1
 
+<UNKNOWN_STUFF> ::= <things>
+
+<things> ~ <thing>+
+<thing> ~ [^\s]+
+:lexeme ~ <things> priority => 0
+
+<TSQL> ::= <SET> <Identifier> <Identifier>
+		 | <Declare_Variable>
+		 | <SELECT> <VARIABLE> <Equals_Operator> <Identifier> # evil evil ms
+
 :start ::= <SQL_Start_Sequence>
 <SQL_Start_Many> ::= <SQL_Start>+ rank => 0
 <SQL_Start_Sequence> ::= <SQL_Start_Many> rank => 0
@@ -255,6 +265,8 @@ lexeme default = action => [start,length,value,value] latm => 1
               | <Embedded_SQL_Declare_Section> rank => -2
               | <Embedded_SQL_Statement> rank => -3
               | <SQL_Client_Module_Definition> rank => -4
+              | <TSQL> rank => -5
+              | <UNKNOWN_STUFF> rank => -6
 <SQL_Terminal_Character> ::= <SQL_Language_Character> rank => 0
 <SQL_Language_Character_L0> ~ <Simple_Latin_Letter_L0>
                               | <Digit_L0>
@@ -369,7 +381,21 @@ lexeme default = action => [start,length,value,value] latm => 1
                   | <Lex034>
 <Multiplier> ~ <Multiplier_L0>
 <Delimited_Identifier_L0> ~ <Lex035> <Delimited_Identifier_Body_L0> <Lex036>
+
 <Delimited_Identifier> ~ <Delimited_Identifier_L0>
+					   | <Delimited_Identifier_L1>
+					   | <Delimited_Identifier_L2>
+
+<Delimited_Identifier_L1> ~ <Lex023> <Delimited_Identifier_Body_L1> <Lex025>
+<Delimited_Identifier_L2> ~ <Lex008> <Delimited_Identifier_Body_L2> <Lex008>
+<Genlex125> ~ [^\[\]]
+<Genlex125_Many> ~ <Genlex125>+
+<Delimited_Identifier_Body_L1> ~ <Genlex125_Many>
+
+<Genlex126> ~ [^']
+<Genlex126_Many> ~ <Genlex126>+
+<Delimited_Identifier_Body_L2> ~ <Genlex126_Many>
+
 <Genlex124> ~ <Delimited_Identifier_Part_L0>
 <Genlex124_Many> ~ <Genlex124>+
 <Delimited_Identifier_Body_L0> ~ <Genlex124_Many>
@@ -1126,6 +1152,9 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Identifier> ~ <Identifier_L0_Internal>
 <Actual_Identifier_L0> ~ <Regular_Identifier_L0_Internal>
                          | <Delimited_Identifier_L0>
+						 | <Delimited_Identifier_L1>
+						 | <Delimited_Identifier_L2>
+
 <Genlex880> ~ <Underscore_L0>
               | <SQL_Language_Identifier_Part_L0>
 <Genlex880_Any> ~ <Genlex880>*
@@ -1561,6 +1590,8 @@ lexeme default = action => [start,length,value,value] latm => 1
                             | <User_Defined_Type_Value_Expression> rank => -4
                             | <Reference_Value_Expression> rank => -5
                             | <Collection_Value_Expression> rank => -6
+							| <VARIABLE> rank => -7
+
 <User_Defined_Type_Value_Expression> ::= <Value_Expression_Primary> rank => 0
 <Reference_Value_Expression> ::= <Value_Expression_Primary> rank => 0
 <Collection_Value_Expression> ::= <Array_Value_Expression> rank => 0
@@ -1924,6 +1955,10 @@ lexeme default = action => [start,length,value,value] latm => 1
                   | <Table_Function_Derived_Table> <As_Maybe> <Correlation_Name> <Gen1662_Maybe> rank => -4
                   | <Only_Spec> <Gen1668_Maybe> rank => -5
                   | <Left_Paren> <Joined_Table> <Right_Paren> rank => -6
+				  | <TSQL_FUNCTION> <Left_Paren> <PARAMETERS> <Right_Paren> <As_Maybe> <Correlation_Name> <Gen1662_Maybe> rank => -7
+<TSQL_FUNCTION> ::= <Identifier>
+<PARAMETERS> ~ [^)]+
+
 <Only_Spec> ::= <ONLY> <Left_Paren> <Table_Or_Query_Name> <Right_Paren> rank => 0
 <Lateral_Derived_Table> ::= <LATERAL> <Table_Subquery> rank => 0
 <Gen1680> ::= <WITH> <ORDINALITY> rank => 0
@@ -2966,6 +3001,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Multiple_Group_Specification> ::= <Group_Specification> <Gen2715_Any> rank => 0
 <Group_Specification> ::= <Group_Name> <FOR> <TYPE> <Path_Resolved_User_Defined_Type_Name> rank => 0
 <Alter_Routine_Statement> ::= <ALTER> <Specific_Routine_Designator> <Alter_Routine_Characteristics> <Alter_Routine_Behavior> rank => 0
+							| <ALTER> <Specific_Routine_Designator> <VARIABLE_LIST> <ALTER_WITH_MAYBE> <AS> <SQL_Start_Sequence> rank => 0
 <Alter_Routine_Characteristic_Many> ::= <Alter_Routine_Characteristic>+ rank => 0
 <Alter_Routine_Characteristics> ::= <Alter_Routine_Characteristic_Many> rank => 0
 <Alter_Routine_Characteristic> ::= <Language_Clause> rank => 0
@@ -2974,6 +3010,25 @@ lexeme default = action => [start,length,value,value] latm => 1
                                  | <Null_Call_Clause> rank => -3
                                  | <Dynamic_Result_Sets_Characteristic> rank => -4
                                  | <NAME> <External_Routine_Name> rank => -5
+<VARIABLE_LIST> ::= <VARIABLE_DEFINITION>+ separator => <Comma> rank => 0
+<VARIABLE_DEFINITION> ::= <VARIABLE> <VARIABLE_TYPE> rank => 0
+<VARIABLE> ::= <VARIABLE_START> <Identifier> rank => 0
+<VARIABLE_TYPE> ::= <Identifier> <VARIABLE_DEFAULT_MAYBE> rank => 0
+<VARIABLE_DEFAULT_MAYBE> ::= <Equals_Operator> <Identifier> rank => 0
+						   | <Equals_Operator> <Digits> rank => 0
+						   | <Left_Paren> <Digits> <Right_Paren> rank => 0
+<VARIABLE_DEFAULT_MAYBE> ::= rank => -1
+<VARIABLE_START> ~ '@'
+
+<ALTER_WITH_MAYBE> ::= <WITH> <ALTER_WITH> rank => 0
+<ALTER_WITH_MAYBE> ::= rank => -1
+<ALTER_WITH> ::= <ALTER_WITH_OPTION>+ separator => <Comma> rank => 0
+<ALTER_WITH_OPTION> ::= <ENCRYPTION>
+					  | <RECOMPILE>
+					  | <EXECUTE> <AS> <Identifier>
+<ENCRYPTION> ~ 'ENCRYPTION'
+<RECOMPILE> ~ 'RECOMPILE'
+
 <Alter_Routine_Behavior> ::= <RESTRICT> rank => 0
 <Drop_Routine_Statement> ::= <DROP> <Specific_Routine_Designator> <Drop_Behavior> rank => 0
 <Gen2730> ::= <AS> <ASSIGNMENT> rank => 0
@@ -3348,7 +3403,15 @@ lexeme default = action => [start,length,value,value] latm => 1
                          | <WITHOUT> <RETURN> rank => -1
 <Updatability_Clause_Maybe> ::= <Updatability_Clause> rank => 0
 <Updatability_Clause_Maybe> ::= rank => -1
-<Cursor_Specification> ::= <Query_Expression> <Order_By_Clause_Maybe> <Updatability_Clause_Maybe> rank => 0
+<Cursor_Specification> ::= <Query_Expression> <Order_By_Clause_Maybe> <Option_Clause_Maybe> <Updatability_Clause_Maybe> rank => 0
+
+<Option_Clause_Maybe> ::= <OPTION> <Left_Paren> <OPTION_LIST> <Right_Paren> rank => 0
+<Option_Clause_Maybe> ::= rank => -1
+<OPTION_LIST> ::= <opt>+ separator => <Comma> rank => 0
+<opt> ::= <Identifier> <Identifier>
+		| <Identifier> <Digits>
+<Digits> ~ [0-9]+
+
 <Gen3103> ::= <OF> <Column_Name_List> rank => 0
 <Gen3103_Maybe> ::= <Gen3103> rank => 0
 <Gen3103_Maybe> ::= rank => -1
@@ -3375,6 +3438,7 @@ lexeme default = action => [start,length,value,value] latm => 1
 <Fetch_Target_List> ::= <Target_Specification> <Gen3124_Any> rank => 0
 <Close_Statement> ::= <CLOSE> <Cursor_Name> rank => 0
 <Select_Statement_Single_Row> ::= <SELECT> <Set_Quantifier_Maybe> <Select_List> <INTO> <Select_Target_List> <Table_Expression> rank => 0
+
 <Gen3129> ::= <Comma> <Target_Specification> rank => 0
 <Gen3129_Any> ::= <Gen3129>* rank => 0
 <Select_Target_List> ::= <Target_Specification> <Gen3129_Any> rank => 0
@@ -3748,6 +3812,8 @@ lexeme default = action => [start,length,value,value] latm => 1
                              | <Embedded_Collation_Specification> rank => -6
                              | <Embedded_Exception_Declaration> rank => -7
                              | <SQL_Procedure_Statement> rank => -8
+<Declare_Variable> ::= <DECLARE> <VARIABLE_DEFINITION>
+
 <SQL_Prefix> ::= <EXEC> <SQL> rank => 0
                | <Ampersand> <SQL> <Left_Paren> rank => -1
 <SQL_Terminator> ::= <Lex374> rank => 0

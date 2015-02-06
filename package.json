@@ -1,0 +1,26 @@
+{
+  "name": "MarpaX-Languages-SQL2003-AST",
+  "version": "v0.1.0+2015-Q1",
+  "description": "MarpaX Languages SQL2003 AST (marpa parser for T SQL)",
+  "contributors": [
+    "David Aebersold <DAebersold@riverainc.com>"
+  ],
+  "scripts": {
+    "postinstall": "./postinstall.sh",
+    "start": "",
+    "test": ""
+  },
+  "repository": {
+    "url": "git+https://github.com/RiveraGroup/MarpaX-Languages-SQL2003-AST.git#master"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "license": "Commercial",
+  "private": true,
+  "engine": {
+    "node": ">=0.10"
+  },
+  "config": {}
+}
